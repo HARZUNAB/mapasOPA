@@ -60,8 +60,10 @@ arch_base = "base_2025.dat"
 
 if os.path.exists(arch_base):
     df_base = lee_catalogo(arch_base)
+    #print(f"DEBUG: Base cargada. Total eventos: {len(df_base)}")
 else:
-    df_base = pd.DataFrame() 
+    #print(f"DEBUG: El archivo {arch_base} no se encuentra en {os.getcwd()}")
+    df_base = pd.DataFrame()
 
 # Definir la base
 base_dir = Path("./figuras_turno")
@@ -186,7 +188,22 @@ for i in tqdm(range(len(str_rectas)),
     df_b = dfs_base[i]
 
     if not df_b.empty:
+        ax.scatter(df_b['lon'], -df_b['prof'], 
+        color='gray',      # Gris más visible
+        alpha=0.4,         # Un poco más de opacidad
+        s=5,               # Puntos más pequeños para que no tapen todo
+        marker='.',        # Usar punto en vez de círculo ayuda a la densidad
+        zorder=1)          # Mantener al fondo
+
+    if not df_base.empty:
+        df_b = proyectar_dicc(recta, df_base, distmin=2.5)
+        #print(f"Perfil {str_rectas[i]}: Base tiene {len(df_b)} sismos") # <--- AGREGA ESTO
+        dfs_base.append(df_b)
+
+    """
+    if not df_b.empty:
         ax.scatter(df_b['lon'], -df_b['prof'], color='lightgrey', alpha=0.3, s=10, zorder=1)
+    """
 
     df_sens = df[df['sensible'] == True]
     df_nosens = df[df['sensible'] == False]

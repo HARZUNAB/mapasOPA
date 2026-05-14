@@ -47,7 +47,7 @@ echo "======================================================="
 # VISOR CON AYUDA INTEGRADA EN LA IMAGEN
 if [ -d "./$NOMBRE_CARPETA" ]; then
     # Definimos el texto de ayuda
-    AYUDA_TEXTO="Nav: Flechas | Zoom: +/- | Full: V | Cerrar: Q"
+    AYUDA_TEXTO="Nav: Flechas | Zoom: +/- | Cerrar: Q"
     
     # Lanzamos feh con la opción --info para dibujar el texto sobre la imagen
     feh -g 1200x900 -B black --scale-down \
