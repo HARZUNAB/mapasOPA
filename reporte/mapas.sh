@@ -37,7 +37,7 @@ if [ -f "$CSV_INPUT" ]; then
     rm "$CSV_INPUT"
     #echo "  Eliminado de raíz: $CSV_INPUT"
 fi
-
+###
 # Borra el archivo de variables temporales de la interfaz
 #if [ -f "temp_vars.txt" ]; then
     #rm "temp_vars.txt"
