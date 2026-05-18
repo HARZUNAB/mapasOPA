@@ -1,2 +1,4 @@
 __pycache__/
 *.log
+reporte/keygen.txt
+reporte/ssh-copy-id*
