@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -8,10 +9,19 @@ import os
 import sys
 from datetime import datetime
 import locale
+from pathlib import Path  # <--- AGREGADO
+
+# =========================================================================
+# CONFIGURACIÓN DE RUTAS DINÁMICAS (Consistencia de entorno)
+# =========================================================================
+DIRECTORIO_SCRIPT = Path(__file__).resolve().parent
+CARPETA_GRILLAS = DIRECTORIO_SCRIPT / "grillas"
 
 fecha = sys.argv[3]
 fecha_str = str(fecha)
 objeto_fecha = datetime.strptime(fecha_str, "%Y%m")
+#objeto_fecha = datetime.datetime.strptime(fecha_str, "%Y%m")
+
 # %B es el nombre completo del mes, %Y es el año de 4 dígitos
 resultado = objeto_fecha.strftime("%B %Y")
 
@@ -60,7 +70,6 @@ if not os.path.exists(carpeta_fig):
     print('Creando carpeta...')
     os.makedirs(carpeta_fig)
 
-###############################################################################
 # Tratamiento inicial de los datos y contadores
 tamanio = tamanio_magnitud(df_catalogo['mag'])
 tamanio_sensibles = tamanio_magnitud(df_sensibles['mag'])
@@ -92,7 +101,8 @@ for j in range(len(df_catalogo['mag'])):
         mag5+=1
     elif mag>=6 and mag<7:
         mag6+=1
-
+    elif mag>=7:
+        mag7+=1   
     if df_catalogo['sensible'][j]:
         sensibles+=1
 
@@ -103,13 +113,13 @@ print("Hubo %s sismos con magnitud entre 3 y 4"%(mag3))
 print("Hubo %s sismos con magnitud entre 4 y 5"%(mag4))
 print("Hubo %s sismos con magnitud entre 5 y 6"%(mag5))
 print("Hubo %s sismos con magnitud entre 6 y 7"%(mag6))
+print("Hubo %s sismos con magnitud superior o igual a 7"%(mag7))
 
 print("\nHubo %s sismos percibidos de un total de %s"%(sensibles, len(df_catalogo['mag'])))
 
 print("Generando mapas...")
 print("Al finalizar proceso revise carpeta ./figuras/", os.path.basename(os.path.normpath(carpeta_fig.strip())), sep="")
 
-###############################################################################
 # Mapas en planta:
 # 1. Definición de límites
 limites_mapas_y = [(-24.5, -16), (-32.5, -24), (-40.5, -32),
@@ -145,12 +155,35 @@ for i in range(len(limites_mapas_x)):
     f = plt.figure(figsize=(8,7))
     ax0 = plt.axes(projection = ccrs.PlateCarree())
     plotMap(ax0, lonmin, lonmax, latmin, latmax, rios=False, ciudades=True)
-    ax0.scatter(df_sensibles['lon'], df_sensibles['lat'],  marker='o',
-                s=tamanio_sensibles, c='tomato', linewidth=.4,
-                edgecolors='k', label="Percib.")
-    ax0.scatter(df_nosensibles['lon'], df_nosensibles['lat'],  marker='o',
-                s=tamanio_nosensibles, c='teal', linewidth=.4,
-                edgecolors='k', label="No Percib.1")
+    #Comprobar sensibles y no sensibles
+    if not tamanio_sensibles.empty:
+        ax0.scatter(df_sensibles['lon'], df_sensibles['lat'],  marker='o',
+                    s=tamanio_sensibles, c='tomato', linewidth=.4,
+                    edgecolors='k', label="Percib.")
+    else:
+        ax0.scatter(df_sensibles['lon'], df_sensibles['lat'],  marker='',
+                    s=tamanio_sensibles, c='tomato', linewidth=.4,
+                    edgecolors='k')
+        
+    if not tamanio_nosensibles.empty:
+        ax0.scatter(df_nosensibles['lon'], df_nosensibles['lat'],  marker='o',
+                    s=tamanio_nosensibles, c='teal', linewidth=.4,
+                    edgecolors='k', label="No Percib.")
+    else:
+        ax0.scatter(df_nosensibles['lon'], df_nosensibles['lat'],  marker='',
+                    s=tamanio_nosensibles, c='teal', linewidth=.4,
+                    edgecolors='k')
+     
+################################ Evento magn>7.5 ##############################
+
+    if max(df_catalogo.mag)>7.5:
+        for x in range(len(df_catalogo)):
+            if df_catalogo.mag[x]>7.5:
+                ax0.scatter(df_catalogo.lon[x], df_catalogo.lat[x],  marker='*',
+                            s=100, c='red', linewidth=.4,
+                            edgecolors='k',label="Epicentro")
+        
+###############################################################################    
 
     # Leyenda magnitudes
     pws = np.arange(int(min_mag),int(round(max_mag))+1)
@@ -158,88 +191,225 @@ for i in range(len(limites_mapas_x)):
         plt.scatter([], [], s=tamanio_magnitud(pw), c="w",label=str(pw),
                     linewidth=1, edgecolors='k', alpha=0.6)
 
-    h, l = plt.gca().get_legend_handles_labels()
-    h = h[2:] + h[0:2]
-    l = l[2:] + l[0:2]
+############################# Etiquetas autoajustables #######################
+    ax = plt.gca()
 
-    # 1. Creamos la leyenda con un espaciado equilibrado
-    lgd = plt.legend(h, l, 
-                        labelspacing=1.2,    # Espacio vertical entre filas
-                        handletextpad=1,   # Distancia entre círculo y texto
-                        borderpad=1,       
-                        prop={'size': 8},    # Tamaño de fuente legible pero pequeño
-                        frameon=True, 
-                        framealpha=0.6, 
-                        edgecolor="k", 
-                        facecolor="w",
-                        bbox_to_anchor=(0.01, 0.99),
-                        loc='upper left')
+    # Obtener handles y labels reales del eje
+    handles, labels = ax.get_legend_handles_labels()
+
+    # Reordenar las etiquetas y ordenar de acuerdo a si existen o no evento sensibles
+    if tamanio_sensibles.empty:
+        if not tamanio_nosensibles.empty:
+            handles = handles[1:] + handles[:1]
+            labels  = labels[1:] + labels[:1]
+ 
+    if tamanio_nosensibles.empty:
+        if not tamanio_sensibles.empty:
+            handles = handles[1:] + handles[:1]
+            labels  = labels[1:] + labels[:1]
     
-    lgd.set_title('Magnitud',prop={'size':10})
+    if not tamanio_sensibles.empty:
+        if not tamanio_nosensibles.empty:
+            handles = handles[2:] + handles[:2]
+            labels  = labels[2:] + labels[:2]
+        
+    lgd = ax.legend(
+        handles,
+        labels,
+        loc="upper left", #Localiczacion automatica
+        edgecolor="k", #Color del borde
+        facecolor="w", #Color del fondo   
+        #bbox_to_anchor=(0.42, 1.006), #Ubicacion exacta de la leyenda 
+        ncol=1,                    # se adapta mejor al ancho
+        labelspacing=1, #Vertical space label 
+        handlelength=1.5, #Largo del simbolo
+        handletextpad=1.8, # espacio fig - etiqueta
+        borderpad=1.8,  #Bordes con respecto al centro del marco
+        frameon=True,   #Activa o desactiva el recuadro 
+        framealpha=0.6, # Transparencia 
+        prop={'size': 11},   # configuracion de etiquetas 
+    ) 
+
+    lgd.set_title("Magnitud", prop={'size': 14, 'weight': 'bold'}) #Configuracion de titulo 
+    lgd._legend_box.align = "center"
+    
+    
     # guardar mapa_i
     plt.tight_layout()
     f.savefig(carpeta_fig + nombre_imagen, dpi=300, bbox_inches='tight')
     #bbox_extra_artists=(lgd,), bbox_inches='tight')#, transparent=True)
 plt.close('all')
 
-# 3. Plot Chile
+# 3. Plot Chile---------------------------------------------------------------------------------------
+#f = plt.figure(figsize=(6,15))
+#ax0 = plt.axes(projection = ccrs.PlateCarree())
+#plotMap(ax0, -79, -65.5, -56.5, -16, rios=False, ciudades=False)
+#ax0.scatter(df_sensibles['lon'], df_sensibles['lat'],  marker='o',
+#            s=tamanio_sensibles, c='tomato', zorder=20, linewidth=.4,
+#            edgecolors='k', label="Percib.")
+#ax0.scatter(df_nosensibles['lon'], df_nosensibles['lat'],  marker='o',
+#            s=tamanio_nosensibles, c='teal', zorder=18, linewidth=.4,
+#            edgecolors='k', label="No Percib.2")
+
+# 3. Plot Chile ###################################################################################################
+
 f = plt.figure(figsize=(6,15))
 ax0 = plt.axes(projection = ccrs.PlateCarree())
 plotMap(ax0, -79, -65.5, -56.5, -16, rios=False, ciudades=False)
-ax0.scatter(df_sensibles['lon'], df_sensibles['lat'],  marker='o',
-            s=tamanio_sensibles, c='tomato', zorder=20, linewidth=.4,
-            edgecolors='k', label="Percib.")
-ax0.scatter(df_nosensibles['lon'], df_nosensibles['lat'],  marker='o',
-            s=tamanio_nosensibles, c='teal', zorder=18, linewidth=.4,
-            edgecolors='k', label="No Percib.2")
 
+#Comprobar existencia de sensibles o no sensibles:
+if not tamanio_sensibles.empty:
+    ax0.scatter(df_sensibles['lon'], df_sensibles['lat'],  marker='o',
+                s=tamanio_sensibles, c='tomato', zorder=20, linewidth=.4,
+                edgecolors='k', label="Percib.")
+else:
+    ax0.scatter(df_sensibles['lon'], df_sensibles['lat'],  marker='',
+                s=tamanio_sensibles, c='tomato', zorder=20, linewidth=.4,
+                edgecolors='k')
+
+if not tamanio_nosensibles.empty:
+    ax0.scatter(df_nosensibles['lon'], df_nosensibles['lat'],  marker='o',
+                s=tamanio_nosensibles, c='teal', zorder=18, linewidth=.4,
+                edgecolors='k', label="No Percib.")
+else:
+    ax0.scatter(df_nosensibles['lon'], df_nosensibles['lat'],  marker='',
+                s=tamanio_nosensibles, c='teal', zorder=18, linewidth=.4,
+                edgecolors='k')        
+    
+################################ Evento magn>7.5 ##############################
+                                                                              #  
+if max(df_catalogo.mag)>7.5:                                                  #  
+    for x in range(len(df_catalogo)):                                         #  
+        if df_catalogo.mag[x]>7.5:                                            #
+            ax0.scatter(df_catalogo.lon[x], df_catalogo.lat[x],  marker='*',  #
+                        s=100, c='red', zorder=18, linewidth=.4,                         #  
+                        edgecolors='k',label="Epicentro")                     # 
+                                                                              #
+############################################################################### 
 # Leyenda magnitudes
 pws = np.arange(int(min_mag),int(round(max_mag))+1)
 for pw in pws:
     plt.scatter([], [], s=tamanio_magnitud(pw), c="w",label=str(pw),
                 linewidth=1, edgecolors='k', alpha=0.6)
 
-h, l = plt.gca().get_legend_handles_labels()
-h = h[2:] + h[0:2]
-l = l[2:] + l[0:2]
+################### Etiquetas original ##########################
+# h, l = plt.gca().get_legend_handles_labels()
+# h = h[2:] + h[0:2]
+# l = l[2:] + l[0:2]
+# lgd = plt.legend(h, l, labelspacing=1.4, borderpad=1,  prop={'size': 11},
+#                  frameon=True, framealpha=0.6, edgecolor="k", facecolor="w",
+#                  bbox_to_anchor=(0.4, 0.9))
+# lgd.set_title('Magnitud',prop={'size':14})
 
-# Titulo del mapa
-#titulo_completo = f"SISMICIDAD DE CHILE  {fecha_trans}\nCentro Sismológico Nacional - Universidad de Chile"
-titulo_completo = f"SISMICIDAD DE CHILE \nCentro Sismológico Nacional - Universidad de Chile"
+############################# Etiquetas autoajustables #######################
+    ax = plt.gca()
 
-# 0.5 es el centro horizontal, 1.05 es un poco arriba del mapa
-ax0.text(0.5, 1.05, titulo_completo, 
+    # Obtener handles y labels reales del eje
+    handles, labels = ax.get_legend_handles_labels()
+
+    # Reordenar las etiquetas y ordenar de acuerdo a si existen o no evento sensibles
+    if tamanio_sensibles.empty:
+        if not tamanio_nosensibles.empty:
+            handles = handles[1:] + handles[:1]
+            labels  = labels[1:] + labels[:1]
+ 
+    if tamanio_nosensibles.empty:
+        if not tamanio_sensibles.empty:
+            handles = handles[1:] + handles[:1]
+            labels  = labels[1:] + labels[:1]
+    
+    if not tamanio_sensibles.empty:
+        if not tamanio_nosensibles.empty:
+            handles = handles[2:] + handles[:2]
+            labels  = labels[2:] + labels[:2]
+
+    lgd = ax.legend(
+        handles,
+        labels,
+        loc="upper left", #Localiczacion automatica
+        edgecolor="k", #Color del borde
+        facecolor="w", #Color del fondo   
+        #bbox_to_anchor=(0.42, 1.006), #Ubicacion exacta de la leyenda 
+        ncol=1,                    # se adapta mejor al ancho
+        labelspacing=1, #Vertical space label 
+        handlelength=1.5, #Largo del simbolo
+        handletextpad=1.8, # espacio fig - etiqueta
+        borderpad=1.8,  #Bordes con respecto al centro del marco
+        frameon=True,   #Activa o desactiva el recuadro 
+        framealpha=0.6, # Transparencia 
+        prop={'size': 11},   # configuracion de etiquetas 
+    ) 
+    # Titulo del mapa
+    #titulo_completo = f"SISMICIDAD DE CHILE  {fecha_trans}\nCentro Sismológico Nacional - Universidad de Chile"
+    titulo_completo = f"SISMICIDAD DE CHILE \nCentro Sismológico Nacional - Universidad de Chile"
+
+    # 0.5 es el centro horizontal, 1.05 es un poco arriba del mapa
+    ax0.text(0.5, 1.05, titulo_completo, 
          transform=ax0.transAxes, 
          fontsize=11, fontweight='bold', 
          ha='center', va='bottom')
 
-# Agrega línea justo debajo
-# Los valores [0.3, 0.7] definen que la línea va del 30% al 70% del ancho del mapa
-ax0.plot([0.2, 0.8], [1.04, 1.04], 
-         transform=ax0.transAxes, 
-         color='black', lw=1.5, 
-         clip_on=False)
-
-# Leyenda con un espaciado equilibrado
-lgd = plt.legend(h, l, 
-                     labelspacing=1.2,    # Espacio vertical entre filas
-                     handletextpad=1,   # Distancia entre círculo y texto
-                     borderpad=1,       
-                     prop={'size': 8},    # Tamaño de fuente legible pero pequeño
-                     frameon=True, 
-                     framealpha=0.6, 
-                     edgecolor="k", 
-                     facecolor="w",
-                     #bbox_to_anchor=(0.33, 0.98))
-                     bbox_to_anchor=(0.01, 0.99),
-                     loc='upper left')
-
-lgd.set_title('Magnitud',prop={'size':10})
+    # Agrega línea justo debajo
+    # Los valores [0.3, 0.7] definen que la línea va del 30% al 70% del ancho del mapa
+    ax0.plot([0.2, 0.8], [1.04, 1.04], 
+             transform=ax0.transAxes, 
+             color='black', lw=1.5, 
+            clip_on=False)
+    
+    lgd.set_title("Magnitud", prop={'size': 14, 'weight': 'bold'}) #Configuracion de titulo 
+    lgd._legend_box.align = "center"
+    
 
 f.savefig(carpeta_fig + "Chileplanta.png", format='png', dpi=300,
           bbox_inches='tight')
 
-# Percibidos por region
+# Leyenda magnitudes
+#pws = np.arange(int(min_mag),int(round(max_mag))+1)
+#for pw in pws:
+#    plt.scatter([], [], s=tamanio_magnitud(pw), c="w",label=str(pw),
+#                linewidth=1, edgecolors='k', alpha=0.6)
+
+#h, l = plt.gca().get_legend_handles_labels()
+#h = h[2:] + h[0:2]
+#l = l[2:] + l[0:2]
+
+# Titulo del mapa
+#titulo_completo = f"SISMICIDAD DE CHILE  {fecha_trans}\nCentro Sismológico Nacional - Universidad de Chile"
+#titulo_completo = f"SISMICIDAD DE CHILE \nCentro Sismológico Nacional - Universidad de Chile"
+
+# 0.5 es el centro horizontal, 1.05 es un poco arriba del mapa
+#ax0.text(0.5, 1.05, titulo_completo, 
+#         transform=ax0.transAxes, 
+#         fontsize=11, fontweight='bold', 
+#         ha='center', va='bottom')
+
+# Agrega línea justo debajo
+# Los valores [0.3, 0.7] definen que la línea va del 30% al 70% del ancho del mapa
+#ax0.plot([0.2, 0.8], [1.04, 1.04], 
+#         transform=ax0.transAxes, 
+#         color='black', lw=1.5, 
+#         clip_on=False)
+
+# Leyenda con un espaciado equilibrado
+#lgd = plt.legend(h, l, 
+#                     labelspacing=1.2,    # Espacio vertical entre filas
+#                     handletextpad=1,   # Distancia entre círculo y texto
+#                     borderpad=1,       
+#                     prop={'size': 8},    # Tamaño de fuente legible pero pequeño
+#                     frameon=True, 
+#                     framealpha=0.6, 
+#                     edgecolor="k", 
+#                     facecolor="w",
+#                     #bbox_to_anchor=(0.33, 0.98))
+#                     bbox_to_anchor=(0.01, 0.99),
+#                     loc='upper left')
+
+#lgd.set_title('Magnitud',prop={'size':10})
+
+#f.savefig(carpeta_fig + "Chileplanta.png", format='png', dpi=300,
+#         bbox_inches='tight')
+
+# Percibidos por region----------------------------------------------------------------------
 # Plot Chile
 f = plt.figure(figsize=(6,15))
 ax0 = plt.axes(projection = ccrs.PlateCarree())
@@ -284,7 +454,7 @@ lgd = plt.legend(h, l,
                  loc='upper left')
 
 # Fuerza que los iconos de la leyenda tengan el tamaño fijo
-for handle in lgd.legendHandles:
+for handle in lgd.legend_handles:
     handle._sizes = [TAMANIO_FIJO]
 
 f.savefig(carpeta_fig + "Percibidosregion.png", format='png', dpi=300,
@@ -363,9 +533,9 @@ if not df_m5_total.empty:
     #print('l', l)
 
     # Asegurar que los puntos en la leyenda tengan el tamaño visual del mapa
-    for handle in lgd.legendHandles:
+    for handle in lgd.legend_handles:
         handle._sizes = [TAMANIO_FIJO]
-
+        
     # Tabla de parámetros (Esquina inferior)
     # Si hay muchos sismos, la tabla se puede dividir para no tapar el mapa
     texto_leyenda = "DETALLE DE EVENTOS:\n" + "\n".join(lista_detalles)
@@ -387,25 +557,37 @@ if not df_m5_total.empty:
 else:
     print("ℹ️ No se encontraron eventos de magnitud >= 5.0 para graficar.")
 
-# 4. ANTÁRTICA
-plot_antartica = False
+# 4. ANTÁRTICA---------------------------------------------------------------------------------------------------------------
+plot_antartica = True
 
 for j in range(len(df_catalogo['lon'])):
-    if df_catalogo['lon'][j] >= -64 and df_catalogo['lon'][j] <= -56:
-        if df_catalogo['lat'][j] >= -64.8 and df_catalogo['lat'][j] <= -58:
+    if df_catalogo['lon'][j] >= -64 and df_catalogo['lon'][j] <= -56:           #Modif?
+        if df_catalogo['lat'][j] >= -64.8 and df_catalogo['lat'][j] <= -60:     #Modif?
             plot_antartica = True
             break
 
 if plot_antartica:
     f = plt.figure(figsize=(8,8))
     ax0 = plt.axes(projection = ccrs.PlateCarree())
-    plotMap(ax0, -64, -56, -64.8, -58, rios=False, ciudades=False)
-    ax0.scatter(df_sensibles['lon'], df_sensibles['lat'],  marker='o',
-                s=tamanio_sensibles, c='tomato', zorder=20, linewidth=.4,
-                edgecolors='k', label="Percib.")
-    ax0.scatter(df_nosensibles['lon'], df_nosensibles['lat'],  marker='o',
-                s=tamanio_nosensibles, c='teal', zorder=18, linewidth=.4,
-                edgecolors='k', label="No Percib.4")
+    plotMap(ax0, -70, -56, -68, -50, rios=False, ciudades=False)
+    #Comprobar sensibles y no sensibles
+    if not tamanio_sensibles.empty:
+        ax0.scatter(df_sensibles['lon'], df_sensibles['lat'],  marker='o',
+                    s=tamanio_sensibles, c='tomato', zorder=20, linewidth=.4,
+                    edgecolors='k', label="Percib.")
+    else:
+        ax0.scatter(df_sensibles['lon'], df_sensibles['lat'],  marker='',
+                    s=tamanio_sensibles, c='tomato', zorder=20, linewidth=.4,
+                    edgecolors='k')
+        
+    if not tamanio_nosensibles.empty:
+        ax0.scatter(df_nosensibles['lon'], df_nosensibles['lat'],  marker='o',
+                    s=tamanio_nosensibles, c='teal', zorder=18, linewidth=.4,
+                    edgecolors='k', label="No Percib.")
+    else:
+        ax0.scatter(df_nosensibles['lon'], df_nosensibles['lat'],  marker='',
+                    s=tamanio_nosensibles, c='teal', zorder=18, linewidth=.4,
+                    edgecolors='k')
 
     # Leyenda magnitudes
     pws = np.arange(int(min_mag),int(round(max_mag))+1)
@@ -413,25 +595,47 @@ if plot_antartica:
         plt.scatter([], [], s=tamanio_magnitud(pw), c="w",label=str(pw),
                     linewidth=1, edgecolors='k', alpha=0.6)
 
-    h, l = plt.gca().get_legend_handles_labels()
-    h = h[2:-1] + h[0:2]
-    l = l[2:-1] + l[0:2]
+    ############################# Etiquetas autoajustables #######################
+    ax = plt.gca()
+
+    # Obtener handles y labels reales del eje
+    handles, labels = ax.get_legend_handles_labels()
+
+    # Reordenar las etiquetas y ordenar de acuerdo a si existen o no evento sensibles
+    if tamanio_sensibles.empty:
+        if not tamanio_nosensibles.empty:
+            handles = handles[1:] + handles[:1]
+            labels  = labels[1:] + labels[:1]
+ 
+    if tamanio_nosensibles.empty:
+        if not tamanio_sensibles.empty:
+            handles = handles[1:] + handles[:1]
+            labels  = labels[1:] + labels[:1]
     
-    # leyenda con un espaciado equilibrado
-    lgd = plt.legend(h, l, 
-                     labelspacing=1.2,    # Espacio vertical entre filas
-                     handletextpad=1.0,   # Distancia entre círculo y texto
-                     borderpad=1.0,       
-                     prop={'size': 8},    # Tamaño de fuente legible pero pequeño
-                     frameon=True, 
-                     framealpha=0.6, 
-                     edgecolor="k", 
-                     facecolor="w",
-                     bbox_to_anchor=(0.01, 0.99),
-                     loc='upper left')
-                     #bbox_to_anchor=(0.20, 0.98))
-    
-    lgd.set_title('Magnitudes', prop={'size': 10})
+    if not tamanio_sensibles.empty:
+        if not tamanio_nosensibles.empty:
+            handles = handles[2:] + handles[:2]
+            labels  = labels[2:] + labels[:2]
+
+    lgd = ax.legend(
+        handles,
+        labels,
+        loc="best", #Localiczacion automatica
+        edgecolor="k", #Color del borde
+        facecolor="w", #Color del fondo   
+        #bbox_to_anchor=(0.42, 1.006), #Ubicacion exacta de la leyenda 
+        ncol=1,                    # se adapta mejor al ancho
+        labelspacing=1, #Vertical space label 
+        handlelength=1.5, #Largo del simbolo
+        handletextpad=1.8, # espacio fig - etiqueta
+        borderpad=1.8,  #Bordes con respecto al centro del marco
+        frameon=True,   #Activa o desactiva el recuadro 
+        framealpha=0.6, # Transparencia 
+        prop={'size': 11},   # configuracion de etiquetas 
+    ) 
+
+    lgd.set_title("Magnitud", prop={'size': 14, 'weight': 'bold'}) #Configuracion de titulo 
+    lgd._legend_box.align = "center"
 
     f.savefig(carpeta_fig + "Antartica_planta.png", format='png', dpi=300,
               bbox_inches='tight')
@@ -448,45 +652,82 @@ if plot_insular:
     f = plt.figure(figsize=(8,8))
     ax0 = plt.axes(projection = ccrs.PlateCarree())
     plotMap(ax0, -110, -70, -47, -25, rios=False, ciudades=False)
-    ax0.scatter(df_sensibles['lon'], df_sensibles['lat'],
-                marker='o', s=tamanio_sensibles, c='tomato', zorder=20, linewidth=.4,
-                edgecolors='k', label="Percib.")
-    ax0.scatter(df_nosensibles['lon'], df_nosensibles['lat'],
-             marker='o', s=tamanio_nosensibles, c='teal', zorder=18, linewidth=.4,
-             edgecolors='k', label="No Percib.insular5")
+    #Comprobar sensibles y no sensibles
+    if not tamanio_sensibles.empty:
+        ax0.scatter(df_sensibles['lon'], df_sensibles['lat'],  marker='o',
+                    s=tamanio_sensibles, c='tomato', zorder=20, linewidth=.4,
+                    edgecolors='k', label="Percib.")
+    else:
+        ax0.scatter(df_sensibles['lon'], df_sensibles['lat'],  marker='',
+                    s=tamanio_sensibles, c='tomato', zorder=20, linewidth=.4,
+                    edgecolors='k')
+        
+    
+    if not tamanio_nosensibles.empty:
+        ax0.scatter(df_nosensibles['lon'], df_nosensibles['lat'],  marker='o',
+                    s=tamanio_nosensibles, c='teal', zorder=18, linewidth=.4,
+                    edgecolors='k', label="No Percib.")
+    else:
+        ax0.scatter(df_nosensibles['lon'], df_nosensibles['lat'],  marker='',
+                    s=tamanio_nosensibles, c='teal', zorder=18, linewidth=.4,
+                    edgecolors='k')
 
     # Leyenda magnitudes
     pws = np.arange(int(min_mag),int(round(max_mag))+1)
     for pw in pws:
         plt.scatter([], [], s=tamanio_magnitud(pw), c="w",label=str(pw),
                     linewidth=1, edgecolors='k', alpha=0.6)
-    h, l = plt.gca().get_legend_handles_labels()
-    h = h[2:-1] + h[0:2]
-    l = l[2:-1] + l[0:2]
+        
+   ############################# Etiquetas autoajustables #######################
+    ax = plt.gca()
 
-    # leyenda con un espaciado equilibrado
-    lgd = plt.legend(h, l, 
-                     labelspacing=1.2,    # Espacio vertical entre filas
-                     handletextpad=1,   # Distancia entre círculo y texto
-                     borderpad=1,       
-                     prop={'size': 8},    # Tamaño de fuente legible pero pequeño
-                     frameon=True, 
-                     framealpha=0.6, 
-                     edgecolor="k", 
-                     facecolor="w",
-                     bbox_to_anchor=(0.01, 0.99),
-                     loc='upper left')
+    # Obtener handles y labels reales del eje
+    handles, labels = ax.get_legend_handles_labels()
 
-    lgd.set_title('Magnitud',prop={'size':10})
+    # Reordenar las etiquetas y ordenar de acuerdo a si existen o no evento sensibles
+    if tamanio_sensibles.empty:
+        if not tamanio_nosensibles.empty:
+            handles = handles[1:] + handles[:1]
+            labels  = labels[1:] + labels[:1]
+ 
+    if tamanio_nosensibles.empty:
+        if not tamanio_sensibles.empty:
+            handles = handles[1:] + handles[:1]
+            labels  = labels[1:] + labels[:1]
+    
+    if not tamanio_sensibles.empty:
+        if not tamanio_nosensibles.empty:
+            handles = handles[2:] + handles[:2]
+            labels  = labels[2:] + labels[:2]
 
-    if plot_insular:
-        ax0.add_patch(mpatches.Rectangle((-114, -30), 7, 6,
-                      edgecolor = 'k', facecolor = 'none',
-                      fill=True, lw=4))
+    lgd = ax.legend(
+        handles,
+        labels,
+        loc="best", #Localiczacion automatica
+        edgecolor="k", #Color del borde
+        facecolor="w", #Color del fondo   
+        #bbox_to_anchor=(0.42, 1.006), #Ubicacion exacta de la leyenda 
+        ncol=1,                    # se adapta mejor al ancho
+        labelspacing=1, #Vertical space label 
+        handlelength=1.5, #Largo del simbolo
+        handletextpad=1.8, # espacio fig - etiqueta
+        borderpad=1.8,  #Bordes con respecto al centro del marco
+        frameon=True,   #Activa o desactiva el recuadro 
+        framealpha=0.6, # Transparencia 
+        prop={'size': 11},   # configuracion de etiquetas 
+    ) 
+
+    lgd.set_title("Magnitud", prop={'size': 14, 'weight': 'bold'}) #Configuracion de titulo 
+    lgd._legend_box.align = "center"
+
+    #if plot_insular:
+    #    ax0.add_patch(mpatches.Rectangle((-114, -30), 7, 6,
+    #                  edgecolor = 'k', facecolor = 'none',
+    #                  fill=True, lw=4))
     f.savefig(carpeta_fig + "Insular_planta.png", format='png', dpi=300,
               bbox_inches='tight')
 
-# 5. ISLA DE PASCUA ??? v1   
+# 5. ISLA DE PASCUA ??? v1   --------------------------------------------------------------------------------
 plot_pascua1 = False
 for j in range(len(df_catalogo['lon'])):
     if df_catalogo['lon'][j] >= -120 and df_catalogo['lon'][j] <= -80:

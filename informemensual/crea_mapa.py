@@ -5,7 +5,7 @@ import cartopy.feature as cfeature
 import cartopy
 import os
 from matplotlib.image import imread
-
+from pathlib import Path
 
 ciudades_Chile = {"Arica":(-18.478333,-70.321111),
 "Putre":(-18.196389,-69.559167),
@@ -73,26 +73,39 @@ def plotMap(ax, lonmin, lonmax, latmin, latmax, ciudades=True, rios=True):
     ax.set_aspect('equal')
 
     resolution='10m'
-    #fname = os.path.join(cartopy.config["repo_data_dir"], 'NE2_LR_LC_SR_W_DR',
-    #                     'NE2_LR_LC_SR_W_DR.tif')
-    fname = "./NE2_LR_LC_SR_W_DR.tif"
+    
+    # =========================================================================
+    # NUEVA RUTA DINÁMICA (Usa pathlib nativo)
+    # =========================================================================
+    # Detecta de forma automática dónde está guardado este archivo 'crea_mapa.py'
+    DIRECTORIO_SCRIPT = Path(__file__).resolve().parent
+    # Ruta estática al relieve integrada dinámicamente
+    RUTA_RELIEVE = DIRECTORIO_SCRIPT / "NE2_LR_LC_SR_W_DR.tif"
 
-    ax.imshow(imread(fname), origin='upper', transform=ccrs.PlateCarree(),
+    # Al momento de leer la imagen dentro de la función de graficado:
+    if RUTA_RELIEVE.exists():
+        img = imread(str(RUTA_RELIEVE))
+    else:
+        # Alternativa por si se ejecuta localmente en la misma carpeta
+        img = imread("NE2_LR_LC_SR_W_DR.tif")
+
+    # imread de matplotlib necesita el formato de texto clásico (string)
+    ax.imshow(imread(str(RUTA_RELIEVE)), origin='upper', transform=ccrs.PlateCarree(),
               extent=[-180, 180, -90, 90])
+    # =========================================================================
 
-    ax.set_extent([lonmin, lonmax,latmin, latmax])
+    ax.set_extent([lonmin, lonmax, latmin, latmax])
 
     # Límites administrativos
     ax.add_feature(cfeature.NaturalEarthFeature('physical', 'land', resolution,
                     edgecolor='black', facecolor=cfeature.COLORS['land'],
-                    zorder=1))#facecolor='lightgray'))#
+                    zorder=1)) #facecolor='lightgray'))#
     ax.add_feature(cfeature.NaturalEarthFeature('cultural', 'admin_0_countries',
                    resolution, edgecolor='black', facecolor='none'), zorder=2)
     ax.add_feature(cfeature.NaturalEarthFeature('cultural',
                     'admin_1_states_provinces_lines', resolution,
                     edgecolor='gray', facecolor="none", linestyle="-."),
                     alpha=0.5, zorder=4)
-
 
     # Agua
     if rios:
@@ -104,8 +117,6 @@ def plotMap(ax, lonmin, lonmax, latmin, latmax, ciudades=True, rios=True):
                         edgecolor=cfeature.COLORS['water'],
                         facecolor='none'), zorder=4)
     ax.add_feature(cartopy.feature.OCEAN, facecolor='white')
-
-
 
     gl = ax.gridlines(crs = ccrs.PlateCarree(), draw_labels=True,
                       linewidth = 0.8, color = 'gray', alpha = 0.5,

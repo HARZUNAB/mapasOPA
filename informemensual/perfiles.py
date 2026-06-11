@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import numpy as np
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
@@ -10,6 +11,7 @@ import datetime
 from datetime import datetime
 import sys, os
 import locale
+from pathlib import Path
 
 # lineas agregadas para eliminar warnings
 from PIL import Image
@@ -99,15 +101,27 @@ df_catalogo = lee_catalogo(catalogo)
 df_sensibles = df_catalogo.loc[(df_catalogo['sensible'] == True)]
 df_nosensibles = df_catalogo.loc[(df_catalogo['sensible'] == False)]
 
-# Carga catálogo base que sera ploteado como backgroun fijo
-#arch_base = "base_2025.dat"
-arch_base = "base_2021_2026.dat"
-if os.path.exists(arch_base):
-    df_base = lee_catalogo(arch_base)
-    #print(f"✅ Cargado catálogo base para background {arch_base}")
+# =========================================================================
+# RUTAS DINÁMICAS PARA EL CATÁLOGO BASE BACKGROUND
+# =========================================================================
+DIRECTORIO_SCRIPT = Path(__file__).resolve().parent
+CARPETA_GRILLAS = DIRECTORIO_SCRIPT / "grillas"
+
+# Definimos el nombre del archivo base
+NOMBRE_BASE = "base_2025.dat"
+
+# 1. Intentamos buscarlo en el directorio actual desde donde se corre
+arch_base = Path(NOMBRE_BASE)
+
+# 2. Si no está ahí, lo buscamos dinámicamente en la carpeta raíz del script
+if not arch_base.exists():
+    arch_base = DIRECTORIO_SCRIPT / NOMBRE_BASE
+
+# Carga de catálogo base asistida por Path
+if arch_base.exists():
+    df_base = lee_catalogo(str(arch_base))
 else:
-    df_base = pd.DataFrame() # DataFrame vacío si no existe
-    #print(f"⚠️ Aviso: No se encontró {arch_base}")
+    df_base = pd.DataFrame()  # DataFrame vacío si no existe en ningún lado
 
 carpeta_fig = "./figuras/"
 nombre_carpeta = catalogo.split('.')[0]
@@ -181,12 +195,30 @@ for i in range(len(str_rectas)):
     largo = (xmax - xmin) * 111.111
     angulo = 90 - np.degrees(np.arctan(m))
     
-    if not( Path("grillas/slab%s.tmp"%(str_rectas[i] )).is_file()):
-        ejecutable1 = "gmt project %s -C%s/%s -A%s -Fpqrsxyz -W-1.8/1.8 -S -Q -L0/%s -Vn > grillas/slab%s.tmp"%(arch_slab, xmin, y[0], angulo, largo, str_rectas[i])
+    # RUTAS ABSOLUTAS DINÁMICAS PARA GMT
+    # Aseguramos que la carpeta grillas exista donde reside el script
+    CARPETA_GRILLAS = Path(__file__).resolve().parent / "grillas"
+    CARPETA_GRILLAS.mkdir(parents=True, exist_ok=True)
+
+    # Definimos los archivos temporales con rutas absolutas
+    ruta_tmp_slab = CARPETA_GRILLAS / f"slab{str_rectas[i]}.tmp"
+    ruta_tmp_topo = CARPETA_GRILLAS / f"topo{str_rectas[i]}.tmp"
+
+    largo = (xmax - xmin) * 111.111
+    angulo = 90 - np.degrees(np.arctan(m))
+    
+    if not ruta_tmp_slab.is_file():
+        # Usamos str(ruta_tmp_slab) para pasarle a GMT la ubicación exacta y absoluta
+        ejecutable1 = "gmt project %s -C%s/%s -A%s -Fpqrsxyz -W-1.8/1.8 -S -Q -L0/%s -Vn > %s" % (
+            arch_slab, xmin, y[0], angulo, largo, str(ruta_tmp_slab)
+        )
         os.system(ejecutable1)
         
-    if not( Path("grillas/topo%s.tmp"%(str_rectas[i] )).is_file()):
-        ejecutable2 = "gmt project %s -C%s/%s -A%s -Fpqrsxyz -W-1.8/1.8 -S -Q -L0/%s -Vn > grillas/topo%s.tmp"%(arch_topo, xmin, y[0], angulo, largo, str_rectas[i])
+    if not ruta_tmp_topo.is_file():
+        # Usamos str(ruta_tmp_topo) para pasarle a GMT la ubicación exacta y absoluta
+        ejecutable2 = "gmt project %s -C%s/%s -A%s -Fpqrsxyz -W-1.8/1.8 -S -Q -L0/%s -Vn > %s" % (
+            arch_topo, xmin, y[0], angulo, largo, str(ruta_tmp_topo)
+        )
         os.system(ejecutable2)
 
 #-----------------------Plot Chile-------------------------------------------------------------------------------------
@@ -196,13 +228,6 @@ ax = plt.axes(projection = ccrs.PlateCarree())
 
 plotMap(ax, -79, -65.5, -56.5, -16, rios=False, ciudades=False)
 
-"""ax.scatter(df_sensibles['lon'], df_sensibles['lat'],  marker='o',
-           s=tamanio_sensibles, c='tomato',  linewidth=.4,
-           edgecolors='k', label="Percib.")
-ax.scatter(df_nosensibles['lon'], df_nosensibles['lat'],  marker='o',
-           s=tamanio_nosensibles, c='teal', linewidth=.4,
-           edgecolors='k', label="No Percib.")
-"""
 if not tamanio_sensibles.empty:
     ax.scatter(df_sensibles['lon'], df_sensibles['lat'],  marker='o',
                s=tamanio_sensibles, c='tomato',  linewidth=.4,
@@ -226,16 +251,13 @@ for pw in pws:
     plt.scatter([], [], s=tamanio_magnitud(pw), c="w",label=str(pw),
                 linewidth=1, edgecolors='k', alpha=0.6)
 
-
-
 #----------------------------------------------------------------------------------
 
 h, l = plt.gca().get_legend_handles_labels()
 h = h[2:] + h[0:2]
 l = l[2:] + l[0:2]
 
-
-# Ahora puedes usarlo en tu título:
+# Título:
 #titulo_completo = f"SISMICIDAD DE CHILE  {fecha_trans}\nCentro Sismológico Nacional - Universidad de Chile\nPerfiles"
 titulo_completo = f"SISMICIDAD DE CHILE \nCentro Sismológico Nacional - Universidad de Chile\nPerfiles"
 
@@ -266,14 +288,12 @@ lgd = plt.legend(h, l,
                      
 lgd.set_title('Magnitud',prop={'size':10})
 
-
 for i in range(len(str_rectas)):
     ax.plot(lineas[i][0], lineas[i][1],'k', label='perfiles')
     ax.text(lineas[i][0][0]-1.1, lineas[i][1][0] - 0.2, str_rectas[i], zorder=17)
 
 f.savefig(carpeta_fig + "Chileplanta_perfiles.png", format='png', dpi=300,
             bbox_inches='tight')
-
 
 #-----------------------PLot de perfiles -----------------------------
 
@@ -313,6 +333,7 @@ for i in range(len(str_rectas)):
     #print('no percibidos')
     #print(df_nosens)
 
+    """
     # plotea elemento geograficos
     try:
         slab = np.loadtxt('grillas/slab%s.tmp'%(str_rectas[i]), usecols=[2,6])
@@ -322,6 +343,42 @@ for i in range(len(str_rectas)):
         ax.set_xlim(min(slab[:,0]), max(slab[:,0]))
     except:
         pass # Por si falta algún archivo de grilla
+    """
+
+    # =========================================================================
+    # RUTA DINÁMICA DE GRILLAS GMT (.tmp)
+    # =========================================================================
+    # Redefinimos la ruta de la carpeta para que el bucle de ploteo la conozca
+    CARPETA_GRILLAS = Path(__file__).resolve().parent / "grillas"
+
+    # Construye la ruta absoluta hacia los archivos temporales de forma segura
+    ruta_slab_tmp = CARPETA_GRILLAS / f"slab{str_rectas[i]}.tmp"
+    ruta_topo_tmp = CARPETA_GRILLAS / f"topo{str_rectas[i]}.tmp"
+
+    slab = None
+    topo = None
+
+    # Carga de Slab de forma segura si el archivo físico existe
+    if ruta_slab_tmp.exists():
+        try:
+            slab = np.loadtxt(str(ruta_slab_tmp), usecols=[2, 6])
+        except Exception as e:
+            print(f"⚠️ Error al leer las columnas de slab en {ruta_slab_tmp.name}: {e}")
+
+    # Carga de Topografía de forma segura si el archivo físico existe
+    if ruta_topo_tmp.exists():
+        try:
+            topo = np.loadtxt(str(ruta_topo_tmp), usecols=[2, 6])
+        except Exception as e:
+            print(f"⚠️ Error al leer las columnas de topografía en {ruta_topo_tmp.name}: {e}")
+
+    # Grafica las líneas de las grillas solo si se cargaron correctamente en memoria
+    if slab is not None:
+        ax.plot(slab[:, 0], slab[:, 1], 'k', lw=1, zorder=5)
+        ax.set_xlim(min(slab[:, 0]), max(slab[:, 0]))
+        
+    if topo is not None:
+        ax.plot(topo[:, 0], topo[:, 1] / 1000, 'k', lw=1, zorder=5)
 
     # plotea catalogo actual (encima)
     # grafica no percibidos
