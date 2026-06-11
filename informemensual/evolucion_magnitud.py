@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -8,47 +9,32 @@ import os
 import matplotlib.ticker as ticker
 from lee_catalogo import *
 import locale
-#from datetime import datetime
+from pathlib import Path  # <--- AGREGADO
 
 # lineas agregadas para eliminar warnings
 from PIL import Image
-Image.MAX_IMAGE_PIXELS = None  # Esto desactiva el límite de seguridad
+Image.MAX_IMAGE_PIXELS = None  
 import warnings
 import matplotlib
-from PIL import Image
-# Silenciar todos los avisos
 warnings.filterwarnings("ignore")
-Image.MAX_IMAGE_PIXELS = None
+
+
+# =========================================================================
+# CONFIGURACIÓN DE RUTAS DINÁMICAS
+# =========================================================================
+DIRECTORIO_SCRIPT = Path(__file__).resolve().parent
+CARPETA_GRILLAS = DIRECTORIO_SCRIPT / "grillas"
 
 fecha = sys.argv[3]
 fecha_str = str(fecha)
 objeto_fecha = datetime.datetime.strptime(fecha_str, "%Y%m")
-# %B es el nombre completo del mes, %Y es el año de 4 dígitos
-resultado = objeto_fecha.strftime("%B %Y")
 
-# Configura el idioma a español
-# En Linux suele ser 'es_ES.UTF-8'
 try:
     locale.setlocale(locale.LC_TIME, 'es_ES.UTF-8') 
 except:
     locale.setlocale(locale.LC_TIME, 'es-es')
 
 fecha_trans = objeto_fecha.strftime("%B %Y").capitalize()
-
-##############################################################################
-## INFO
-## Este codigo se pone en distintos escenarios dado un cierto catalogo de
-## sismos, y realiza plots de magnitud versus tiempo en base a eso
-## Los escenarios pueden ser:
-## - si la cantidad de días es mayor a 1 menor o igual a 7: es una semana nomas
-##            -> plots diarios y uno semanal
-## - Si es mayor a 7 pero menor a 60:
-##            -> plots por cada semana
-## - Si es mayor a 60
-##            -> plots por cada mes
-## - Si es un dia o menos
-##            -> plots por cada hora
-##############################################################################
 
 catalogo = sys.argv[2]
 N_mapas = int(sys.argv[4])
@@ -67,97 +53,77 @@ fmt = '%Y-%m-%d %H:%M:%S'
 t = [datetime.datetime.strptime(df_catalogo['fecha'][i], fmt) for i in range(len(df_catalogo['fecha']))]
 diferencia_t = max(t) - min(t)
 
-t_sensibles = [datetime.datetime.strptime(fecha, fmt) for fecha in df_sensibles['fecha']]
-t_nosensibles = [datetime.datetime.strptime(fecha, fmt) for fecha in df_nosensibles['fecha']]
-# Condiciones
-
 t_ini = min(t)
-t_ventana = diferencia_t/N_mapas
+t_ventana = diferencia_t / N_mapas
+# Eliminamos el factor 1.1 de aquí para manejar la holgura solo visualmente
 t_fin = t_ini + t_ventana
 
 for i in range(N_mapas):
     f = plt.figure(figsize=(10,5))
     ax = plt.subplot()
-    #ax.set_title( "Mapa %d" %(i+1) )
-    #ax.set_title( "Distribucion de sismos (M>=2.5) %d" %(i+1))
-    # Título dinámico: Nombre del mapa + Fecha (ej: Diciembre 2026)
-    titulo_completo = f"Distribución de sismos (M>=2.5) - Gráfico {i+1}"#\n{fecha_trans}"
-
-    ax.set_title(titulo_completo, 
-                fontsize=10, 
-                fontweight='bold', 
-                pad=20,          # Espacio extra para que no choque con el mapa
-                loc='center')    # Centrado
+    
+    titulo_completo = f"Distribución de sismos (M>=2.5) - Gráfico {i+1}"
+    ax.set_title(titulo_completo, fontsize=10, fontweight='bold', pad=20, loc='center')
 
     ax.set_ylabel('Magnitud')
-    t_f = t_ini.strftime("%Y-%m-%d  %H:%M:%S")
-    t_t = t_fin.strftime("%Y-%m-%d  %H:%M:%S")
-    ax.set_xlabel("Datos desde   %s   hasta   %s   "%(t_f, t_t))
     
-    plt.grid(linestyle='--')
+    # Margen visual simétrico para el eje X (2% de la ventana a cada lado)
+    margen_x = t_ventana * 0.02
+    
+    plt.grid(linestyle='--', alpha=0.7)
     plt.gcf().autofmt_xdate()
 
-    #Festival de IFs
+    # Formateo de fecha según la ventana
     if t_ventana.days < 10:
-        ax.xaxis.set_major_formatter(mdates.DateFormatter("%m-%d %H:00"))
+        ax.xaxis.set_major_formatter(mdates.DateFormatter("%m-%d %H:%M"))
     elif t_ventana.days < 30:
-        ax.xaxis.set_major_formatter(mdates.DateFormatter("%m-%d %H:00"))
-    elif t_ventana.days/30 < 12*5:
-        ax.xaxis.set_major_formatter(mdates.DateFormatter("%m-%d %H:00"))
+        ax.xaxis.set_major_formatter(mdates.DateFormatter("%m-%d %H:%M"))
     else: 
-        ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y"))
+        ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d"))
 
-    # Fija límites exactos
-    ax.set_xlim(t_ini, t_fin)
+    # Configuración de límites X con margen simétrico
+    ax.set_xlim(t_ini - margen_x, t_fin + margen_x)
 
-    # Convierte bordes a formato numérico
     t_ini_num = mdates.date2num(t_ini)
     t_fin_num = mdates.date2num(t_fin)
 
-    # Crea localizadores intermedios automáticos (ej: 6 etiquetas en total)
-    # Usamos MaxNLocator para que busque puntos "bonitos" entre los límites
     from matplotlib.ticker import MaxNLocator
     n_ticks = 8 
     intermedios = MaxNLocator(nbins=n_ticks).tick_values(t_ini_num, t_fin_num)
+    umbral = (t_fin_num - t_ini_num) * 0.02  
+    valid_intermedios = [tick for tick in intermedios if tick > (t_ini_num + umbral) and tick < (t_fin_num - umbral)]
 
-    # Combina y filtrar para que no se amontonen en los bordes
-    umbral = (t_fin_num - t_ini_num) * 0.1  # 10% de margen para no pisar el texto
-    valid_intermedios = [t for t in intermedios if t > (t_ini_num + umbral) and t < (t_fin_num - umbral)]
-
-    # Aplica la lista final
     ax.set_xticks([t_ini_num] + valid_intermedios + [t_fin_num])
-
-    # Formato de etiquetas
     ax.xaxis.set_major_formatter(mdates.DateFormatter("%m-%d\n%H:%M"))
     plt.xticks(rotation=45, ha='right')
  
+    # Plot de sismos dentro del rango real
     for j in range(len(t)):
-        if t[j]>=t_ini and t[j]<t_fin:
-            if  df_catalogo['sensible'][j]:
-                plt.scatter(t[j], df_catalogo['mag'][j], c='tomato')
+        if t[j] >= t_ini and t[j] <= t_fin:
+            if df_catalogo['sensible'][j]:
+                plt.scatter(t[j], df_catalogo['mag'][j], c='tomato', edgecolors='black', linewidth=0.5, zorder=3)
             else:
-                plt.scatter(t[j], df_catalogo['mag'][j], c='teal')
+                plt.scatter(t[j], df_catalogo['mag'][j], c='teal', edgecolors='white', linewidth=0.5, zorder=3)
 
-    ax.set_xlim(t_ini, t_fin)
-    #ax.margins(x=0)
+    # Ajuste del eje Y: 1 unidad extra arriba y abajo
+    mag_min = 2.5
+    mag_max = df_catalogo['mag'].max()
+    ax.set_ylim(bottom=mag_min - 0.5, top=mag_max + 0.5)
 
-    # Fija límite inferior exacto
-    # El límite superior lo dejamos dinámico según el sismo más grande + un margen
-    ax.set_ylim(bottom=2.4, top=df_catalogo['mag'].max() + 0.5)
+    # Etiquetas de tiempo en el xlabel
+    t_f_str = t_ini.strftime("%Y-%m-%d %H:%M:%S")
+    t_t_str = t_fin.strftime("%Y-%m-%d %H:%M:%S")
+    ax.set_xlabel(f"Datos desde {t_f_str} hasta {t_t_str}")
 
-    # Elimina márgenes internos automáticos de Matplotlib
-    ax.margins(x=0)
-
-    nombre_imagen = 'grafico_%d.png' %(i+1)
+    nombre_imagen = 'grafico_%d.png' % (i+1)
     f.savefig(carpeta_fig + nombre_imagen, dpi=300, bbox_inches='tight')
+    
+    # Actualización de ventana: el fin actual es el inicio del siguiente
     t_ini = t_fin
     t_fin = t_ini + t_ventana
         
-    
-    
 plt.close('all')
-
-print("Gráfico distribución sismicidad generado ✅")
+print("Gráfico distribución sismicidad generado con márgenes ampliados ✅")
 
 
 """

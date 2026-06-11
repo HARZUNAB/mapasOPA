@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import datetime
 import sys
 import pytz
@@ -7,7 +8,7 @@ if len(sys.argv) < 3:
     print("Uso: python3 proc_query.py archivo_entrada.csv archivo_salida.dat")
     sys.exit(1)
 
-# LEE Y ORDENAR EN MEMORIA (Usando Python nativo para no alterar strings)
+# 1. LEER Y ORDENAR EN MEMORIA (Usando Python nativo para no alterar strings)
 datos_ordenados = []
 with open(sys.argv[1], 'r') as csv_file:
     csvreader = csv.reader(csv_file)
@@ -16,8 +17,8 @@ with open(sys.argv[1], 'r') as csv_file:
     # Cargamos todas las filas en una lista
     filas = list(csvreader)
     
-    # Ordena la lista basándonos en la primera columna (fecha)
-    # Usa datetime.fromisoformat para que el orden sea cronológico real
+    # Ordenamos la lista basándonos en la primera columna (fecha)
+    # Usamos datetime.fromisoformat para que el orden sea cronológico real
     try:
         filas.sort(key=lambda x: datetime.datetime.fromisoformat(x[0].replace('Z', '+00:00')))
         datos_ordenados = filas
@@ -25,7 +26,7 @@ with open(sys.argv[1], 'r') as csv_file:
         print(f"⚠️ No se pudo ordenar cronológicamente, se usará orden original. Error: {e}")
         datos_ordenados = filas
 
-# PROCESAMIENTO ORIGINAL (Sin cambios en la lógica de escritura)
+# 2. PROCESAMIENTO ORIGINAL (Sin cambios en la lógica de escritura)
 with open(sys.argv[2], 'w') as fh:
     for row in datos_ordenados:
         try:
