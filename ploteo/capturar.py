@@ -27,9 +27,9 @@ def plotear_evento(fecha, lat, lon, prof, mag, event_id):
     plt.style.use('seaborn-v0_8-whitegrid' if 'seaborn-v0_8-whitegrid' in plt.style.available else 'default')
     
     fig = plt.figure(figsize=(14, 6.5))
-    fig.suptitle(f"Monitor de Turno - Evento: {event_id}\nFecha: {fecha} | M {mag} | Profundidad: {prof} km", 
+    fig.suptitle(f"NewPT - Evento: {event_id}\nFecha: {fecha} | {texto_magnitud} | Profundidad: {prof} km", 
                  fontsize=12, fontweight='bold', y=0.96)
-
+    
     size = float(mag) * 60
     RANGO_ANCHURA = 2.5 # Grados alrededor del sismo para encuadrar la ventana
 
@@ -54,107 +54,96 @@ def plotear_evento(fecha, lat, lon, prof, mag, event_id):
             print(f"[Aviso] No se pudo cargar el background sísmico: {e}")
 
     # =========================================================================
-    # 2. SELECCIÓN Y CARGA DE LA SUBDUCCIÓN (MÉTODO HÍBRIDO ACOTRADO)
+    # 2. SELECCIÓN INTELIGENTE Y CARGA DE SUBDUCCIÓN Y TOPOGRAFÍA
     # =========================================================================
-    pto1 = (-72, -19)
-    pto2 = (-68.4, -18)
-    
-    # Rangos de longitud reales de las listas definidos en perfilesOPA.py
-    lista_limites_lon = [
-        (pto1[0], pto2[0] + 1),      # P01
-        (pto1[0], pto2[0] + 1),      # P02
-        (pto1[0], pto2[0] + 2),      # P03
-        (pto1[0], pto2[0] + 2),      # P04
-        (pto1[0] - 1, pto2[0] + 1),  # P05
-        (pto1[0] - 1, pto2[0] + 1),  # P06
-        (pto1[0] - 2, pto2[0] + 1),  # P07
-        (pto1[0] - 2, pto2[0] + 1),  # P08
-        (pto1[0] - 3, pto2[0]),      # P09
-        (pto1[0] - 4, pto2[0] - 1),  # P010
-        (pto1[0] - 4, pto2[0] - 1),  # P011
-        (pto1[0] - 4, pto2[0] - 1),  # P012
-        (pto1[0] - 5, pto2[0] - 2)   # P013
-    ]
+    lon_slab, prof_slab = [], []
+    lon_topo, alt_topo = [], []
+    usando_global = False
+    mejor_perfil_id = None
+    distancia_minima = float('inf')
+    datos_perfil_elegido = []
 
-    m, c = np.polyfit([pto1[0], pto2[0]], [pto1[1], pto2[1]], 1)
-    suma_c = [-1, -3, -5, -6, -8, -10, -12, -14, -16, -18, -20, -22, -24]
-    str_rectas = ["P01", "P02", "P03", "P04", "P05", "P06", "P07", "P08", "P09", "P010", "P011", "P012", "P013"]
+    # 1. Escaneo dinámico de los perfiles locales para encontrar el más cercano
+    for p_id in range(1, 14):
+        arch_test = f"./grillas/slabP{p_id:02d}.tmp"
+        if os.path.exists(arch_test):
+            try:
+                puntos_perfil = []
+                with open(arch_test, 'r') as f:
+                    for linea in f:
+                        if linea.startswith('#') or not linea.strip():
+                            continue
+                        partes = linea.strip().split()
+                        if len(partes) >= 7 and 'nan' not in partes[6].lower():
+                            l_val = float(partes[2])   # Longitud Real
+                            lat_val = float(partes[3])  # Latitud Real
+                            p_val = abs(float(partes[6])) # Profundidad Real
+                            puntos_perfil.append((l_val, lat_val, p_val))
+                
+                if puntos_perfil:
+                    for (l_p, lat_p, p_p) in puntos_perfil:
+                        dist = np.sqrt((lon - l_p)**2 + (lat - lat_p)**2)
+                        if dist < distancia_minima:
+                            distancia_minima = dist
+                            mejor_perfil_id = p_id
+                            datos_perfil_elegido = puntos_perfil
+            except Exception:
+                pass
 
-    distancias_a_perfiles = []
-    
-    for i in range(len(str_rectas)):
-        # Verificar si la longitud del sismo está dentro del segmento del perfil (con margen de 1.5 grados)
-        lon_min = lista_limites_lon[i][0] - 1.5
-        lon_max = lista_limites_lon[i][1] + 1.5
+    # 2. Si hay un perfil local óptimo, cargamos Slab y Topo
+    if mejor_perfil_id and distancia_minima < 1.5:
+        str_perfil = f"P{mejor_perfil_id:02d}"
+        print(f"[SLAB/TOPO] Perfil óptimo detectado: {str_perfil} (Dist: {distancia_minima:.2f}°)")
         
-        if lon_min <= lon <= lon_max:
-            a_pend = m
-            b_int = c + suma_c[i]
-            dist = np.abs(a_pend * lon - lat + b_int) / np.sqrt(a_pend**2 + 1)
-            distancias_a_perfiles.append((dist, i))
-        else:
-            # Si el sismo queda fuera del rango longitudinal físico del perfil, le asignamos distancia infinita
-            distancias_a_perfiles.append((float('inf'), i))
-
-    # Seleccionar el perfil válido más cercano
-    distancias_validas = [d[0] for d in distancias_a_perfiles]
-    idx_mejor_perfil = np.argmin(distancias_validas)
-    
-    # RESPALDO EXTRA: Si por alguna razón extrema todos dieron infinito, usamos la latitud clásica
-    if distancias_validas[idx_mejor_perfil] == float('inf'):
-        latitudes_perfiles = {1:-19.0, 2:-19.8, 3:-20.5, 4:-21.2, 5:-21.8, 6:-22.5, 7:-23.2, 8:-23.8, 9:-24.5, 10:-25.2, 11:-25.8, 12:-26.5, 13:-27.2}
-        idx_mejor_perfil = min(latitudes_perfiles, key=lambda k: abs(latitudes_perfiles[k] - lat)) - 1
-
-    str_perfil = str_rectas[idx_mejor_perfil]
-    arch_slab_tmp = f"./grillas/slab{str_perfil}.tmp"
-    lon_slab, prof_slab = [], []
-    usando_global = False
-
-    print(f"[DEBUG SLAB] Sismo en ({lat:.2f}, {lon:.2f}). Perfil óptimo asignado: {str_perfil}")
-
-    # Intentar cargar el perfil precalculado (.tmp) asignado
-    if os.path.exists(arch_slab_tmp):
-        try:
-            with open(arch_slab_tmp, 'r') as f:
-                for linea in f:
-                    if linea.startswith('#') or not linea.strip():
-                        continue
-                    partes = linea.strip().split()
-                    
-                    if len(partes) >= 7:
-                        l_val = float(partes[2]) # Columna 2
-                        if (lon - (RANGO_ANCHURA + 1.0) <= l_val <= lon + (RANGO_ANCHURA + 1.0)):
-                            lon_slab.append(l_val)
-                            prof_slab.append(abs(float(partes[6]))) # Columna 6
-            if lon_slab:
-                print(f"[SLAB] ¡Éxito! Graficando usando perfil precalculado: {str_perfil}")
-            else:
-                print(f"[Aviso] El archivo {arch_slab_tmp} existe pero no tiene puntos en el rango longitudinal del sismo.")
-        except Exception as e:
-            print(f"[Aviso] Error leyendo archivo de perfil {arch_slab_tmp}: {e}")
-    else:
-        print(f"[Aviso] El archivo de perfil NO EXISTE: {arch_slab_tmp}")
-
-    # RESPALDO AUTOMÁTICO DESDE SLAB2 GLOBAL (.XYZ)
-    if not lon_slab:
-        arch_slab_xyz = "./grillas/sam_slab2_dep_02.23.18.xyz"
-        if os.path.exists(arch_slab_xyz):
-            try:
-                print(f"[SLAB] Recurriendo a respaldo global (.xyz) para evitar gráfico vacío...")
-                lon_slab_perfil = np.linspace(lon - RANGO_ANCHURA, lon + RANGO_ANCHURA, 100)
-                puntos_slab = {}
-                ANCHO_LAT = 0.5
+        # Filtrar y guardar el Slab en rango extendido
+        for (l_val, lat_val, p_val) in datos_perfil_elegido:
+            if (lon - 4.5 <= l_val <= lon + 4.5):
+                lon_slab.append(l_val)
+                prof_slab.append(p_val)
                 
-                with open(arch_slab_xyz, 'r') as f:
+        if lon_slab:
+            lon_slab, prof_slab = zip(*sorted(zip(lon_slab, prof_slab)))
+            lon_slab, prof_slab = list(lon_slab), list(prof_slab)
+
+        # Cargar archivo de Topografía correspondiente
+        arch_topo_tmp = f"./grillas/topo{str_perfil}.tmp"
+        if os.path.exists(arch_topo_tmp):
+            try:
+                with open(arch_topo_tmp, 'r') as f:
                     for linea in f:
                         if linea.startswith('#') or not linea.strip():
                             continue
                         partes = linea.strip().split()
-                        if len(partes) >= 3:
-                            s_lon = float(partes[0])
-                            if s_lon > 180:
-                                s_lon -= 360
-                                
+                        if len(partes) >= 7 and 'nan' not in partes[6].lower():
+                            l_val = float(partes[2])
+                            # Columna 6 de topo está en metros; convertimos a km (mantenemos el signo para relieve/fosa)
+                            alt_val = float(partes[6]) / 1000.0 
+                            
+                            if (lon - 4.5 <= l_val <= lon + 4.5):
+                                lon_topo.append(l_val)
+                                alt_topo.append(alt_val)
+                if lon_topo:
+                    lon_topo, alt_topo = zip(*sorted(zip(lon_topo, alt_topo)))
+                    lon_topo, alt_topo = list(lon_topo), list(alt_topo)
+                    print(f"[TOPO] ¡Éxito! Perfil topográfico cargado para {str_perfil}")
+            except Exception as e:
+                print(f"[Aviso] No se pudo cargar la topografía local: {e}")
+    else:
+        # 3. RESPALDO GLOBAL (Solo Slab2 XYZ en caso de estar fuera de rango)
+        str_perfil = "Slab2_Global"
+        arch_slab_xyz = "./grillas/sam_slab2_dep_02.23.18.xyz"
+        if os.path.exists(arch_slab_xyz):
+            try:
+                print(f"[SLAB] Fuera de cobertura local. Generando corte directo desde grilla global...")
+                puntos_slab = {}
+                ANCHO_LAT = 0.40
+                with open(arch_slab_xyz, 'r') as f:
+                    for linea in f:
+                        if linea.startswith('#') or not linea.strip():
+                            continue
+                        partes = linea.strip().split(',')
+                        if len(partes) >= 3 and 'nan' not in partes[2].lower():
+                            s_lon = float(partes[0]) - 360 if float(partes[0]) > 180 else float(partes[0])
                             s_lat = float(partes[1])
                             s_prof = abs(float(partes[2]))
                             
@@ -163,116 +152,18 @@ def plotear_evento(fecha, lat, lon, prof, mag, event_id):
                                 if lon_bin not in puntos_slab:
                                     puntos_slab[lon_bin] = []
                                 puntos_slab[lon_bin].append(s_prof)
-                
                 if puntos_slab:
                     lons_ordenadas = sorted(puntos_slab.keys())
                     profs_promedio = [np.mean(puntos_slab[ln]) for ln in lons_ordenadas]
+                    lon_slab_perfil = np.linspace(lon - RANGO_ANCHURA, lon + RANGO_ANCHURA, 100)
                     prof_interp = np.interp(lon_slab_perfil, lons_ordenadas, profs_promedio, left=np.nan, right=np.nan)
                     
                     mask = ~np.isnan(prof_interp)
                     lon_slab = list(lon_slab_perfil[mask])
                     prof_slab = list(prof_interp[mask])
                     usando_global = True
-                    print(f"[SLAB] Línea de subducción calculada desde grilla global.")
             except Exception as e:
-                print(f"[Aviso] No se pudo procesar el Slab global: {e}")
-
-    """
-    # =========================================================================
-    # 2. SELECCIÓN Y CARGA DE LA SUBDUCCIÓN (MÉTODO MATEMÁTICO REAL DE PERFILES OPA)
-    # =========================================================================
-    # Replicamos la geometría exacta de perfilesOPA.py
-    pto1 = (-72, -19)
-    pto2 = (-68.4, -18)
-    m, c = np.polyfit([pto1[0], pto2[0]], [pto1[1], pto2[1]], 1)
-    suma_c = [-1, -3, -5, -6, -8, -10, -12, -14, -16, -18, -20, -22, -24]
-    str_rectas = ["P01", "P02", "P03", "P04", "P05", "P06", "P07", "P08", "P09", "P010", "P011", "P012", "P013"]
-
-    # Calcular a qué recta pertenece el sismo por distancia perpendicular mínima
-    distancias_a_perfiles = []
-    for i in range(len(str_rectas)):
-        a_pend = m
-        b_int = c + suma_c[i]
-        # Distancia perpendicular: |ax - y + b| / sqrt(a^2 + 1)
-        dist = np.abs(a_pend * lon - lat + b_int) / np.sqrt(a_pend**2 + 1)
-        distancias_a_perfiles.append(dist)
-
-    # El índice del perfil con menor distancia matemática real
-    idx_mejor_perfil = np.argmin(distancias_a_perfiles)
-    str_perfil = str_rectas[idx_mejor_perfil]
-    
-    arch_slab_tmp = f"./grillas/slab{str_perfil}.tmp"
-    lon_slab, prof_slab = [], []
-    usando_global = False
-
-    print(f"[DEBUG SLAB] Sismo en ({lat:.2f}, {lon:.2f}). Perfil matemático asignado: {str_perfil}")
-
-    # Intentar cargar el perfil precalculado (.tmp) asignado
-    if os.path.exists(arch_slab_tmp):
-        try:
-            with open(arch_slab_tmp, 'r') as f:
-                for linea in f:
-                    if linea.startswith('#') or not linea.strip():
-                        continue
-                    partes = linea.strip().split()
-                    
-                    if len(partes) >= 7:
-                        l_val = float(partes[2]) # Columna 2 (Longitud proyectada en el perfil)
-                        # Como el perfil local está acotado, ampliamos un poco la tolerancia de captura si es necesario
-                        if (lon - (RANGO_ANCHURA + 1.0) <= l_val <= lon + (RANGO_ANCHURA + 1.0)):
-                            lon_slab.append(l_val)
-                            prof_slab.append(abs(float(partes[6]))) # Columna 6 (Profundidad)
-            if lon_slab:
-                print(f"[SLAB] ¡Éxito! Graficando usando perfil precalculado: {str_perfil}")
-            else:
-                print(f"[Aviso] El archivo {arch_slab_tmp} existe, pero sus puntos quedan fuera del rango longitudinal del sismo.")
-        except Exception as e:
-            print(f"[Aviso] Error leyendo archivo de perfil {arch_slab_tmp}: {e}")
-    else:
-        print(f"[Aviso] El archivo de perfil NO EXISTE: {arch_slab_tmp}")
-
-    # RESPALDO AUTOMÁTICO: Si no se encontraron puntos válidos en el .tmp local, recurre a Slab2 global
-    if not lon_slab:
-        arch_slab_xyz = "./grillas/sam_slab2_dep_02.23.18.xyz"
-        if os.path.exists(arch_slab_xyz):
-            try:
-                print(f"[SLAB] Recurriendo a respaldo: Escaneando Slab2 global (.xyz)...")
-                lon_slab_perfil = np.linspace(lon - RANGO_ANCHURA, lon + RANGO_ANCHURA, 100)
-                puntos_slab = {}
-                ANCHO_LAT = 0.5
-                
-                with open(arch_slab_xyz, 'r') as f:
-                    for linea in f:
-                        if linea.startswith('#') or not linea.strip():
-                            continue
-                        partes = linea.strip().split()
-                        if len(partes) >= 3:
-                            s_lon = float(partes[0])
-                            if s_lon > 180:
-                                s_lon -= 360
-                                
-                            s_lat = float(partes[1])
-                            s_prof = abs(float(partes[2]))
-                            
-                            if (lat - ANCHO_LAT <= s_lat <= lat + ANCHO_LAT) and (lon - RANGO_ANCHURA <= s_lon <= lon + RANGO_ANCHURA):
-                                lon_bin = round(s_lon, 1)
-                                if lon_bin not in puntos_slab:
-                                    puntos_slab[lon_bin] = []
-                                puntos_slab[lon_bin].append(s_prof)
-                
-                if puntos_slab:
-                    lons_ordenadas = sorted(puntos_slab.keys())
-                    profs_promedio = [np.mean(puntos_slab[ln]) for ln in lons_ordenadas]
-                    prof_interp = np.interp(lon_slab_perfil, lons_ordenadas, profs_promedio, left=np.nan, right=np.nan)
-                    
-                    mask = ~np.isnan(prof_interp)
-                    lon_slab = list(lon_slab_perfil[mask])
-                    prof_slab = list(prof_interp[mask])
-                    usando_global = True
-                    print(f"[SLAB] Línea de subducción calculada desde grilla global (.xyz).")
-            except Exception as e:
-                print(f"[Aviso] No se pudo procesar el Slab global: {e}")
-    """
+                print(f"[Aviso] Falló el procesamiento de respaldo global: {e}")
 
     # =========================================================================
     # 3. CONSTRUCCIÓN GRÁFICA - PLOT 1: VISTA EN PLANTA
@@ -292,53 +183,70 @@ def plotear_evento(fecha, lat, lon, prof, mag, event_id):
     ax_planta.set_extent([lon - RANGO_ANCHURA, lon + RANGO_ANCHURA, lat - RANGO_ANCHURA, lat + RANGO_ANCHURA], crs=ccrs.PlateCarree())
     gl = ax_planta.gridlines(draw_labels=True, linestyle=':', alpha=0.6, color='gray', zorder=4)
     gl.top_labels, gl.right_labels = False, False
-    ax_planta.set_title("Vista en Planta (Contexto Local)", fontsize=11, fontweight='bold', pad=10)
+    #ax_planta.set_title("Vista en Planta (Contexto Local)", fontsize=11, fontweight='bold', pad=10)
+    ax_planta.set_title("Vista en Planta", fontsize=11, fontweight='bold', pad=10)
 
     # =========================================================================
     # 4. CONSTRUCCIÓN GRÁFICA - PLOT 2: VISTA EN PERFIL (W - E)
     # =========================================================================
     ax_perfil = fig.add_subplot(1, 2, 2)
     
+    # 1. Graficar Sismicidad Histórica de Fondo
     if lon_b:
         ax_perfil.scatter(lon_b, prof_b, color='gray', alpha=0.3, s=6, marker='.', zorder=1, label="Sismicidad Histórica")
 
-    # Graficar la línea de contacto corregida usando str_perfil
+    # 2. Graficar la línea de la subducción (Contacto de Placas)
     if lon_slab and prof_slab:
-        label_linea = "Contacto Placas (Slab2 Global)" if usando_global else f"Contacto Placas (Perfil {str_perfil})"
-        ax_perfil.plot(lon_slab, prof_slab, color='black', linestyle='-', linewidth=2.2, 
+        label_linea = "Contacto (Slab2 Global)" if usando_global else f"Contacto Placas ({str_perfil})"
+        ax_perfil.plot(lon_slab, prof_slab, color='black', linestyle='-', lw=2.2, 
                        zorder=3, label=label_linea)
+
+    # 3. Graficar la línea de la topografía/batimetría superficial
+    if lon_topo and alt_topo:
+        ax_perfil.plot(lon_topo, alt_topo, color='black', linestyle='-', lw=1.2, 
+                       zorder=5, label="Topografía/Batimetría")
+
+    # 4. Graficar el Sismo de Turno (Hipocentro Real)
+    ax_perfil.scatter(lon, prof, s=size, color='#ff3333', alpha=0.9, edgecolors='black', linewidths=1.5, zorder=10, label="Hipocentro")
     
-    """
-    # Graficar la línea de contacto corregida
-    if lon_slab and prof_slab:
-        label_linea = "Contacto Placas (Slab2 Global)" if usando_global else f"Contacto Placas (Perfil P{perfil_id:02d})"
-        ax_perfil.plot(lon_slab, prof_slab, color='black', linestyle='-', linewidth=2.2, 
-                       zorder=3, label=label_linea)
-    """
-    ax_perfil.scatter(lon, prof, s=size, color='#ff3333', alpha=0.9, edgecolors='black', linewidth=1.5, zorder=5, label="Hipocentro Real")
-    
-    #ax_perfil.set_title("Perfil Corto Perpendicular (W - E)", fontsize=11, fontweight='bold', pad=10)
-    
-    # Forzar el despliegue del perfil asignado matemáticamente en el título
+    # 5. Configurar Título Único Dinámico
     if lon_slab:
-        tipo_origen = "Slab2 Global" if usando_global else "Local"
-        titulo_perfil = f"Perfil Corto Perpendicular W - E ({str_perfil} - {tipo_origen})"
+        #tipo_origen = "Slab2 Global" if usando_global else "Local"
+        tipo_origen = "Slab2 Global" if usando_global else ""
+        #titulo_perfil = f"Perfil Perpendicular ({str_perfil} - {tipo_origen})"
+        titulo_perfil = f"Perfil Perpendicular ({str_perfil})"
     else:
-        titulo_perfil = f"Perfil Corto Perpendicular W - E ({str_perfil} - Sin Datos)"
+        titulo_perfil = f"Perfil Perpendicular ({str_perfil} - Sin Datos)"
         
     ax_perfil.set_title(titulo_perfil, fontsize=11, fontweight='bold', pad=10)
     
-    ax_perfil.set_xlabel("Longitud", fontsize=10, labelpad=8)
-    ax_perfil.set_ylabel("Profundidad (km)", fontsize=10, labelpad=8)
+    # 6. Configurar Ejes y Límites (Asegurar que la topografía sobre cero sea visible)
+    ax_perfil.set_xlabel("Longitud", fontsize=9, fontweight='bold', labelpad=8)
+    ax_perfil.set_ylabel("Profundidad (km)", fontsize=9, fontweight='bold', labelpad=8)
+    ax_perfil.tick_params(axis='both', labelsize=8)
     
     ax_perfil.set_xlim(lon - RANGO_ANCHURA, lon + RANGO_ANCHURA)
     prof_max_grafico = max(200, float(prof) + 50)
-    ax_perfil.set_ylim(bottom=prof_max_grafico, top=-5) 
     
-    ax_perfil.grid(True, linestyle=':', alpha=0.6, color='gray')
-    ax_perfil.legend(loc="upper left", frameon=True, facecolor='white')
+    # Un colchón de -10km hacia arriba en profundidad invertida para ver los Andes
+    ax_perfil.set_ylim(bottom=prof_max_grafico, top=-10) 
+    
+    # Suavizar la grilla interna
+    ax_perfil.grid(True, linestyle=':', alpha=0.4, color='gray', zorder=0)
 
-    plt.tight_layout(rect=[0, 0, 1, 0.93])
+    # 7. CONFIGURACIÓN DE LEYENDA EXTERIOR HORIZONTAL (Parámetros corregidos para evitar conflictos)
+    ax_perfil.legend(
+        loc='upper center', 
+        bbox_to_anchor=(0.5, -0.15),  # Mueve la caja hacia abajo, fuera del marco del perfil
+        ncol=3,                       # Distribuye los elementos horizontalmente en 3 columnas
+        fontsize=8,                   # Letra limpia y pequeña que no estorba
+        frameon=True, 
+        facecolor='#f9f9f9', 
+        edgecolor='gray'              # Removido linewidth conflictivo de aquí
+    )
+
+    # Ajustar márgenes globales contemplando el espacio de la leyenda externa
+    plt.tight_layout(rect=[0, 0, 1, 0.95])
     plt.show()
     print("[GRAFICADOR] Ventana cerrada por el operador. Volviendo al modo escucha...\n")
 
@@ -346,9 +254,9 @@ def plotear_evento(fecha, lat, lon, prof, mag, event_id):
 # LOOP PRINCIPAL: ESCUCHA AUTOMÁTICA DEL PORTAPAPELES
 # =========================================================================
 if __name__ == "__main__":
-    print("=== MONITOR SEISCOMP + MAPA BASE GEOGRÁFICO ===")
-    print("Escuchando el portapapeles... Copia soluciones en SeisComP.")
-    print("Cada nuevo evento abrirá automáticamente su planta con mapa y perfil.")
+    print("=== CAPTURA DE DATOS DE SEISCOMP ===")
+    print("Escuchando el portapapeles... Copia solucion desde scolv.")
+    print("Al copiar solución se ploteará en planta y perfil.")
     print("Para cerrar el programa, presiona Ctrl + C en esta terminal.\n")
     
     try:
@@ -376,7 +284,9 @@ if __name__ == "__main__":
                     if len(partes) >= 12:
                         fecha = partes[0].strip()
                         mag = float(partes[3].strip())
-                        
+                        tipo_mag = partes[4]
+                        texto_magnitud = f"{partes[3]} {tipo_mag}"
+
                         raw_lat = partes[8].strip()
                         lat = float(raw_lat.split()[0])
                         if 's' in raw_lat.lower():
@@ -401,4 +311,4 @@ if __name__ == "__main__":
             time.sleep(0.5)
             
     except KeyboardInterrupt:
-        print("\n[INFO] Monitor cerrado por el operador. ¡Buen turno!")
+        print("\n[INFO] NewPT cerrado por el operador")
