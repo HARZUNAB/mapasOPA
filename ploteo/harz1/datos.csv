@@ -1,0 +1,433 @@
+time,latitude,longitude,depth [km],magnitude,magnitude_type,region_name,felt
+2026-06-01T01:03:05Z,-32.77, -71.83,  22.2, 2.5,MLv,28.48 km al O de Quintero,f
+2026-06-01T01:41:38Z,-24.16, -66.87, 202.8, 2.6,MLv,56.72 km al O de San Antonio de los Cobres,f
+2026-06-01T01:48:52Z,-30.30, -70.74,  81.7, 3.3,MLv,30.0 km al S de Vicuña,f
+2026-06-01T02:25:06Z,-24.07, -67.21, 256.1, 3.2,MLv,87.31 km al SE de Socaire,f
+2026-06-01T05:11:13Z,-32.91, -70.15, 109.6, 2.5,MLv,42.17 km al E de Los Andes,f
+2026-06-01T05:25:05Z,-23.48, -69.07,  90.1, 3.7,MLv,70.49 km al SE de Sierra Gorda,f
+2026-06-01T06:14:13Z,-20.64, -69.33,  91.2, 3.2,MLv,16.71 km al S de Pica,f
+2026-06-01T07:35:24Z,-30.81, -69.77, 106.4, 2.6,MLv,112.44 km al SE de Paihuano,f
+2026-06-01T08:32:21Z,-32.66, -71.91,  29.3, 2.9,MLv,38.4 km al O de Quintero,f
+2026-06-01T08:53:09Z,-20.83, -70.12,  26.9, 3.0,MLv,8.81 km al E de Patache,f
+2026-06-01T09:50:44Z,-27.94, -70.95,  44.8, 2.8,MLv,25.14 km al NE de Carrizal Bajo,f
+2026-06-01T11:12:05Z,-32.76, -71.86,  25.7, 3.9,MLv,30.9 km al O de Quintero,f
+2026-06-01T12:22:24Z,-33.02, -71.60,   1.7, 2.5,MLv,2.98 km al NE de Valparaíso,f
+2026-06-01T14:31:42Z,-32.70, -71.78,  28.0, 2.7,MLv,25.6 km al O de Quintero,f
+2026-06-01T14:39:24Z,-32.76, -71.81,  22.2, 2.7,MLv,27.04 km al O de Quintero,f
+2026-06-01T16:05:03Z,-22.11, -68.79, 122.4, 2.7,MLv,42.31 km al N de Calama,f
+2026-06-01T16:50:01Z,-21.77, -68.69, 129.4, 3.0,MLv,75.94 km al SO de Ollagüe,f
+2026-06-01T17:21:51Z,-21.62, -68.52, 132.1, 2.6,MLv,52.1 km al SO de Ollagüe,f
+2026-06-01T18:07:48Z,-21.54, -69.54,  97.5, 3.3,MLv,13.66 km al N de Quillagua,f
+2026-06-01T18:17:29Z,-23.04, -67.02, 235.8, 3.1,MLv,108.34 km al NE de Socaire,f
+2026-06-01T19:02:19Z,-32.80, -71.76,  27.3, 3.0,MLv,22.08 km al O de Quintero,f
+2026-06-01T20:20:13Z,-32.79, -71.75,  29.1, 3.4,MLv,21.49 km al O de Quintero,f
+2026-06-01T21:01:26Z,-28.75, -71.42,  26.1, 2.6,MLv,37.38 km al SO de Huasco,f
+2026-06-01T22:33:21Z,-32.72, -71.83,  26.1, 3.0,MLv,28.94 km al O de Quintero,f
+2026-06-01T23:16:00Z,-20.73, -68.90, 100.2, 2.5,MLv,27.31 km al O de Mina Collahuasi,f
+2026-06-02T00:51:51Z,-20.50, -69.07,  96.6, 2.5,MLv,26.65 km al E de Pica,f
+2026-06-02T02:17:34Z,-22.42, -68.85, 110.7, 3.5,MLv,10.49 km al NE de Calama,f
+2026-06-02T02:20:46Z,-22.85, -67.41, 267.9, 3.1,MLv,81.63 km al E de San Pedro de Atacama,f
+2026-06-02T03:22:58Z,-22.12, -68.70, 120.2, 2.5,MLv,45.24 km al NE de Calama,f
+2026-06-02T04:27:54Z,-33.66, -71.12,  69.5, 2.8,MLv,9.5 km al E de Melipilla,f
+2026-06-02T04:40:06Z,-23.83, -67.20, 230.4, 3.0,MLv,75.51 km al E de Socaire,f
+2026-06-02T05:46:36Z,-32.72, -71.71,  30.2, 2.7,MLv,18.3 km al O de Quintero,f
+2026-06-02T06:21:52Z,-23.90, -69.14,  92.0, 2.9,MLv,42.39 km al N de Mina La Escondida,f
+2026-06-02T08:30:54Z,-35.77, -71.30, 106.2, 2.5,MLv,28.17 km al E de Linares,f
+2026-06-02T09:53:50Z,-32.04, -71.91,  47.5, 4.6,Mw,37.16 km al O de Pichidangui,f
+2026-06-02T11:30:15Z,-23.79, -67.36, 228.2, 2.9,MLv,59.01 km al E de Socaire,f
+2026-06-02T12:31:14Z,-22.14, -69.20,  76.9, 2.6,MLv,46.53 km al NO de Calama,f
+2026-06-02T13:42:12Z,-23.34, -67.81, 154.3, 2.9,MLv,28.65 km al N de Socaire,f
+2026-06-02T14:31:24Z,-28.56, -71.37,  54.8, 3.0,MLv,18.34 km al SO de Huasco,f
+2026-06-02T14:45:07Z,-21.62, -68.59, 132.2, 2.7,MLv,55.85 km al SO de Ollagüe,f
+2026-06-02T16:56:43Z,-21.09, -68.63, 129.1, 2.5,MLv,28.87 km al S de Mina Collahuasi,f
+2026-06-02T18:09:08Z,-22.91, -67.89, 181.8, 3.0,MLv,31.98 km al E de San Pedro de Atacama,f
+2026-06-02T18:14:37Z,-18.03, -69.36, 151.7, 2.9,MLv,27.9 km al NE de Putre,f
+2026-06-02T18:48:14Z,-25.65, -69.88,  66.5, 2.5,MLv,66.49 km al E de Taltal,f
+2026-06-02T19:16:56Z,-21.78, -68.88, 108.2, 3.0,MLv,69.25 km al E de Quillagua,f
+2026-06-02T19:52:46Z,-32.75, -71.68,  30.6, 2.9,MLv,15.07 km al O de Quintero,f
+2026-06-02T20:02:20Z,-32.81, -71.78,  29.1, 2.7,MLv,24.03 km al O de Quintero,f
+2026-06-02T20:12:25Z,-31.21, -71.72,  25.1, 2.5,MLv,32.08 km al NO de Canela Baja,f
+2026-06-02T20:16:07Z,-22.20, -68.67, 108.6, 3.3,MLv,39.74 km al NE de Calama,f
+2026-06-02T22:00:22Z,-33.90, -70.50,  99.5, 3.0,MLv,32.38 km al SO de San José de Maipo,f
+2026-06-03T00:23:18Z,-21.30, -68.55, 132.5, 2.9,MLv,31.89 km al O de Ollagüe,f
+2026-06-03T00:58:14Z,-30.79, -71.58,  18.6, 2.6,MLv,17.34 km al SE de Parque Fray Jorge,f
+2026-06-03T01:40:52Z,-32.76, -71.71,  27.5, 3.3,MLv,17.78 km al O de Quintero,f
+2026-06-03T02:12:00Z,-30.67, -71.67,  30.4, 3.0,MLv,1.9 km al SE de Parque Fray Jorge,f
+2026-06-03T03:17:00Z,-29.18, -70.01, 115.7, 2.6,MLv,65.87 km al SE de Alto del Carmen,f
+2026-06-03T04:32:25Z,-32.59, -70.46,  86.2, 2.8,MLv,30.25 km al NE de Los Andes,f
+2026-06-03T04:33:16Z,-32.73, -71.73,  17.6, 2.9,MLv,20.06 km al O de Quintero,f
+2026-06-03T05:02:31Z,-21.11, -68.63, 140.2, 2.9,MLv,31.59 km al S de Mina Collahuasi,f
+2026-06-03T05:15:54Z,-28.42, -70.70,  56.1, 2.5,MLv,17.79 km al NE de Vallenar,f
+2026-06-03T06:47:38Z,-25.90, -70.47,  50.0, 2.6,MLv,52.11 km al N de Chañaral,f
+2026-06-03T08:41:13Z,-22.31, -68.70, 104.0, 2.6,MLv,30.05 km al NE de Calama,f
+2026-06-03T08:44:18Z,-23.20, -67.06, 237.3, 3.3,MLv,95.77 km al NE de Socaire,f
+2026-06-03T09:16:44Z,-33.87, -72.12,  29.2, 3.6,MLv,28.15 km al O de Navidad,f
+2026-06-03T09:28:34Z,-32.75, -71.71,  31.4, 3.0,MLv,17.46 km al O de Quintero,f
+2026-06-03T10:50:53Z,-32.77, -71.65,  26.2, 3.1,MLv,11.87 km al O de Quintero,f
+2026-06-03T12:40:03Z,-32.70, -71.72,  20.0, 3.0,MLv,20.42 km al O de Quintero,f
+2026-06-03T14:10:32Z,-21.57, -68.46, 145.6, 4.2,MLv,43.66 km al SO de Ollagüe,f
+2026-06-03T16:08:02Z,-24.14, -67.10, 176.7, 3.2,MLv,79.71 km al O de San Antonio de los Cobres,f
+2026-06-03T17:22:12Z,-20.91, -68.91, 101.9, 2.8,MLv,28.32 km al O de Mina Collahuasi,f
+2026-06-03T17:27:40Z,-32.80, -71.74,  25.8, 2.5,MLv,19.87 km al O de Quintero,f
+2026-06-03T19:26:51Z,-30.18, -71.40,  47.0, 2.8,MLv,12.38 km al NE de Tongoy,f
+2026-06-03T21:07:09Z,-22.10, -68.67, 125.0, 3.2,MLv,48.75 km al NE de Calama,f
+2026-06-03T21:34:35Z,-33.85, -72.13,  19.0, 2.8,MLv,29.72 km al O de Navidad,f
+2026-06-03T21:43:10Z,-33.88, -72.11,  19.5, 3.3,MLv,26.63 km al O de Navidad,f
+2026-06-03T22:52:31Z,-33.90, -72.07,  21.1, 3.0,MLv,23.16 km al O de Navidad,f
+2026-06-03T22:56:40Z,-33.90, -72.12,  27.3, 3.8,MLv,27.4 km al O de Navidad,f
+2026-06-03T23:25:07Z,-33.91, -72.07,  18.0, 3.2,MLv,22.11 km al O de Navidad,f
+2026-06-04T01:44:57Z,-33.85, -72.08,  30.3, 3.3,MLv,25.67 km al O de Navidad,f
+2026-06-04T01:41:33Z,-33.82, -72.06,  27.4, 3.2,MLv,26.4 km al NO de Navidad,f
+2026-06-04T04:22:14Z,-33.87, -72.11,  29.0, 3.1,MLv,27.63 km al O de Navidad,f
+2026-06-04T04:23:22Z,-20.32, -70.44,  38.9, 2.9,MLv,32.43 km al O de Iquique,f
+2026-06-04T05:55:12Z,-30.66, -71.41,  35.7, 2.6,MLv,20.62 km al O de Ovalle,f
+2026-06-04T06:07:18Z,-21.40, -71.68,  10.0, 3.4,MLv,167.09 km al O de Patache,f
+2026-06-04T08:43:31Z,-21.14, -68.71, 120.3, 3.0,MLv,35.14 km al S de Mina Collahuasi,f
+2026-06-04T10:48:33Z,-21.28, -70.05,  37.4, 2.8,MLv,55.12 km al S de Patache,f
+2026-06-04T11:07:06Z,-21.09, -68.75, 113.8, 2.6,MLv,31.19 km al S de Mina Collahuasi,f
+2026-06-04T11:13:52Z,-21.11, -68.56, 131.6, 3.0,MLv,33.37 km al S de Mina Collahuasi,f
+2026-06-04T11:58:49Z,-32.78, -71.67,  30.8, 3.3,MLv,13.3 km al O de Quintero,f
+2026-06-04T12:59:44Z,-21.20, -68.04, 173.4, 3.1,MLv,22.21 km al E de Ollagüe,f
+2026-06-04T13:18:26Z,-22.69, -66.83, 268.7, 3.0,MLv,143.03 km al E de San Pedro de Atacama,f
+2026-06-04T21:02:08Z,-30.19, -71.84,  50.6, 3.0,MLv,34.47 km al O de Tongoy,f
+2026-06-05T02:03:47Z,-18.32, -69.33, 127.8, 3.1,MLv,28.02 km al SE de Putre,f
+2026-06-05T03:42:36Z,-23.86, -67.17, 223.6, 3.1,MLv,79.08 km al E de Socaire,f
+2026-06-05T04:28:20Z,-22.36, -68.71, 107.6, 2.5,MLv,25.3 km al NE de Calama,f
+2026-06-05T04:44:09Z,-32.76, -71.68,  29.8, 2.5,MLv,14.63 km al O de Quintero,f
+2026-06-05T05:38:24Z,-22.36, -68.67, 107.6, 3.7,MLv,29.26 km al NE de Calama,f
+2026-06-05T13:39:51Z,-32.29, -71.09,  69.3, 3.5,MLv,15.31 km al O de Petorca,f
+2026-06-05T15:03:20Z,-24.24, -67.84, 140.5, 3.0,MLv,73.06 km al S de Socaire,f
+2026-06-05T17:26:55Z,-21.54, -68.35, 135.7, 3.0,MLv,36.83 km al S de Ollagüe,f
+2026-06-05T17:51:04Z,-19.23, -70.18,  50.5, 3.0,MLv,8.16 km al S de Cuya,f
+2026-06-05T18:35:38Z,-22.25, -68.69, 103.9, 3.1,MLv,34.58 km al NE de Calama,f
+2026-06-05T18:46:59Z,-22.93, -69.82,  12.8, 2.6,MLv,45.19 km al N de Baquedano,f
+2026-06-05T20:36:19Z,-21.41, -71.46,  17.9, 2.7,MLv,146.55 km al SO de Patache,f
+2026-06-05T21:44:52Z,-21.84, -68.61, 127.4, 2.5,MLv,77.32 km al NE de Calama,f
+2026-06-06T01:33:36Z,-22.29, -68.71, 112.7, 2.7,MLv,30.06 km al NE de Calama,f
+2026-06-06T03:12:50Z,-28.80, -71.39,  22.1, 2.7,MLv,40.76 km al SO de Huasco,f
+2026-06-06T03:56:10Z,-32.87, -71.88,  21.7, 2.5,MLv,31.16 km al NO de Valparaíso,f
+2026-06-06T05:33:16Z,-28.52, -72.77,  42.5, 3.1,MLv,150.62 km al NO de Punta de Choros,f
+2026-06-06T06:04:01Z,-21.22, -68.67, 111.2, 2.9,MLv,43.17 km al O de Ollagüe,f
+2026-06-06T06:52:29Z,-33.99, -71.94,  28.0, 2.8,MLv,11.0 km al O de Navidad,f
+2026-06-06T08:22:20Z,-17.76, -69.63, 140.0, 2.7,MLv,24.38 km al SO de Visviri,f
+2026-06-06T08:28:06Z,-21.23, -68.70, 118.9, 2.5,MLv,44.7 km al S de Mina Collahuasi,f
+2026-06-06T09:06:54Z,-32.81, -71.78,  28.3, 3.4,MLv,24.12 km al O de Quintero,f
+2026-06-06T10:57:19Z,-34.20, -73.17,  10.0, 3.4,MLv,108.57 km al O de Pichilemu,f
+2026-06-06T11:14:42Z,-22.25, -68.82, 104.3, 2.9,MLv,27.13 km al NE de Calama,f
+2026-06-06T11:58:02Z,-23.49, -67.60, 186.9, 2.8,MLv,30.97 km al E de Socaire,f
+2026-06-06T15:16:47Z,-23.87, -70.21,  44.0, 3.1,MLv,31.22 km al SE de Antofagasta,f
+2026-06-06T16:06:18Z,-21.05, -68.84, 109.6, 2.5,MLv,31.11 km al SO de Mina Collahuasi,f
+2026-06-06T16:40:52Z,-21.63, -68.63, 120.0, 2.8,MLv,59.38 km al SO de Ollagüe,f
+2026-06-06T16:44:16Z,-21.83, -69.25,  81.7, 3.2,MLv,35.04 km al SE de Quillagua,f
+2026-06-06T20:18:59Z,-24.08, -67.46, 181.4, 3.5,MLv,70.38 km al SE de Socaire,f
+2026-06-06T23:02:17Z,-33.40, -71.79,  29.1, 3.5,MLv,12.64 km al NO de El Tabo,f
+2026-06-06T23:55:56Z,-20.89, -69.19,  99.2, 2.6,MLv,47.2 km al S de Pica,f
+2026-06-07T02:04:07Z,-27.21, -71.86,  26.4, 2.6,MLv,103.58 km al O de Caldera,f
+2026-06-07T03:46:33Z,-21.41, -71.61,  10.0, 3.1,MLv,160.31 km al SO de Patache,f
+2026-06-07T06:00:17Z,-23.07, -68.86, 101.7, 2.7,MLv,51.22 km al E de Sierra Gorda,f
+2026-06-07T09:20:32Z,-21.16, -68.91, 104.3, 3.3,MLv,45.66 km al SO de Mina Collahuasi,f
+2026-06-07T10:40:45Z,-22.07, -67.95, 217.3, 2.8,MLv,97.8 km al N de San Pedro de Atacama,f
+2026-06-07T13:57:18Z,-24.29, -67.19, 182.8, 4.7,Mw,88.24 km al O de San Antonio de los Cobres,f
+2026-06-07T14:18:14Z,-22.34, -68.76, 107.2, 3.1,MLv,23.25 km al NE de Calama,f
+2026-06-07T15:09:33Z,-17.44, -69.39, 161.5, 3.2,MLv,19.72 km al NE de Visviri,f
+2026-06-07T17:18:12Z,-22.27, -68.76, 119.2, 2.5,MLv,28.28 km al NE de Calama,f
+2026-06-07T18:41:48Z,-22.20, -67.83, 200.3, 2.9,MLv,88.35 km al NE de San Pedro de Atacama,f
+2026-06-07T19:19:35Z,-22.23, -68.67, 109.1, 3.2,MLv,37.42 km al NE de Calama,f
+2026-06-07T19:40:59Z,-26.00, -71.10,  35.7, 4.6,Mw,61.66 km al NO de Chañaral,t
+2026-06-07T21:35:50Z,-22.43, -68.69, 108.3, 3.0,MLv,24.62 km al E de Calama,f
+2026-06-07T22:22:29Z,-18.52, -69.29, 115.4, 3.1,MLv,45.61 km al SE de Putre,f
+2026-06-07T23:28:18Z,-23.74, -67.11, 226.1, 3.7,MLv,80.9 km al E de Socaire,f
+2026-06-08T02:55:43Z,-21.80, -68.61, 120.0, 2.5,MLv,73.6 km al SO de Ollagüe,f
+2026-06-08T03:14:25Z,-21.13, -68.75,  85.5, 2.5,MLv,34.57 km al S de Mina Collahuasi,f
+2026-06-08T04:15:34Z,-21.90, -68.47, 127.8, 2.5,MLv,78.12 km al S de Ollagüe,f
+2026-06-08T04:47:03Z,-21.08, -69.14,  97.4, 2.9,MLv,57.85 km al SO de Mina Collahuasi,f
+2026-06-08T05:31:06Z,-33.51, -71.92,  23.5, 2.8,MLv,23.59 km al O de El Tabo,f
+2026-06-08T05:44:37Z,-29.77, -71.57,  60.7, 2.7,MLv,33.91 km al O de La Serena,f
+2026-06-08T09:47:44Z,-17.72, -69.61, 158.1, 3.1,MLv,19.69 km al SO de Visviri,f
+2026-06-08T11:23:47Z,-33.53, -71.91,  25.1, 2.7,MLv,23.82 km al O de El Tabo,f
+2026-06-08T12:15:35Z,-22.11, -68.74,  95.1, 2.9,MLv,44.67 km al NE de Calama,f
+2026-06-08T12:35:06Z,-24.19, -70.35,  46.3, 2.6,MLv,18.85 km al E de Caleta El Cobre,f
+2026-06-08T12:38:44Z,-21.16, -68.96, 112.8, 2.8,MLv,48.4 km al SO de Mina Collahuasi,f
+2026-06-08T13:38:33Z,-21.53, -68.65, 128.2, 2.6,MLv,52.94 km al SO de Ollagüe,f
+2026-06-08T17:47:07Z,-21.71, -68.46, 124.3, 3.0,MLv,58.5 km al SO de Ollagüe,f
+2026-06-08T20:22:46Z,-21.16, -68.54, 130.3, 2.5,MLv,30.92 km al O de Ollagüe,f
+2026-06-08T23:47:01Z,-21.25, -68.56, 125.0, 2.6,MLv,31.79 km al O de Ollagüe,f
+2026-06-09T01:30:43Z,-24.21, -67.40, 196.1, 3.7,MLv,85.29 km al SE de Socaire,f
+2026-06-09T04:55:25Z,-21.29, -68.77, 122.5, 2.5,MLv,52.62 km al S de Mina Collahuasi,f
+2026-06-09T05:38:07Z,-20.14, -68.91, 115.4, 2.8,MLv,58.45 km al NE de Pica,f
+2026-06-09T05:54:43Z,-31.58, -70.88,  68.4, 2.6,MLv,23.61 km al NE de Salamanca,f
+2026-06-09T06:07:50Z,-17.96, -69.64, 129.2, 3.0,MLv,27.22 km al N de Putre,f
+2026-06-09T07:34:34Z,-36.33, -71.86,  72.1, 3.0,MLv,37.01 km al NO de San Fabián,f
+2026-06-09T08:29:14Z,-22.24, -68.52, 104.6, 2.7,MLv,49.19 km al NE de Calama,f
+2026-06-09T14:47:50Z,-21.69, -68.52, 130.0, 2.7,MLv,59.03 km al SO de Ollagüe,f
+2026-06-09T18:34:47Z,-23.96, -70.41,  32.6, 3.1,MLv,34.39 km al S de Antofagasta,f
+2026-06-09T19:18:48Z,-22.34, -67.91, 187.7, 3.1,MLv,71.21 km al NE de San Pedro de Atacama,f
+2026-06-09T19:28:51Z,-32.87, -71.38,  67.0, 2.5,MLv,12.83 km al O de Quillota,f
+2026-06-09T20:13:25Z,-23.00, -66.96, 248.9, 3.1,MLv,115.55 km al NE de Socaire,f
+2026-06-09T21:09:32Z,-21.38, -71.64,  37.4, 3.4,MLv,161.92 km al O de Patache,f
+2026-06-09T21:20:12Z,-30.73, -71.37,  46.7, 4.2,Mw,14.88 km al NO de Punitaqui,t
+2026-06-09T22:05:04Z,-32.80, -71.79,  29.0, 2.6,MLv,24.75 km al O de Quintero,f
+2026-06-09T22:42:41Z,-29.27, -68.93, 102.6, 3.1,MLv,161.62 km al E de Alto del Carmen,f
+2026-06-09T22:40:14Z,-27.17, -71.00,  28.6, 2.9,MLv,21.43 km al SO de Caldera,f
+2026-06-10T00:54:12Z,-22.31, -67.75, 211.6, 3.0,MLv,81.91 km al NE de San Pedro de Atacama,f
+2026-06-10T04:01:14Z,-22.14, -68.77, 115.0, 2.8,MLv,40.33 km al NE de Calama,f
+2026-06-10T05:20:51Z,-32.77, -71.81,  28.9, 3.4,MLv,26.84 km al O de Quintero,f
+2026-06-10T06:13:28Z,-21.48, -68.53, 125.0, 2.9,MLv,39.91 km al SO de Ollagüe,f
+2026-06-10T06:28:37Z,-32.76, -71.85,  25.3, 3.5,MLv,30.23 km al O de Quintero,f
+2026-06-10T07:10:15Z,-22.70, -67.49, 230.1, 3.5,MLv,77.08 km al E de San Pedro de Atacama,f
+2026-06-10T09:51:43Z,-20.87, -69.24,  98.9, 2.6,MLv,42.67 km al S de Pica,f
+2026-06-10T10:58:11Z,-36.70, -73.34,  52.8, 2.9,MLv,29.82 km al NO de Concepción,f
+2026-06-10T12:30:35Z,-23.21, -68.90, 109.8, 3.6,MLv,55.35 km al SE de Sierra Gorda,f
+2026-06-10T12:33:44Z,-33.53, -70.40, 102.6, 2.5,MLv,13.41 km al N de San José de Maipo,f
+2026-06-10T16:31:19Z,-37.44, -72.43,  75.8, 3.4,MLv,8.28 km al NO de Los Ángeles,f
+2026-06-10T18:50:04Z,-22.36, -68.65,  95.5, 2.6,MLv,31.72 km al E de Calama,f
+2026-06-10T19:08:29Z,-19.32, -70.26,  42.2, 3.6,MLv,19.34 km al SO de Cuya,f
+2026-06-10T19:40:45Z,-23.48, -67.26, 231.6, 3.2,MLv,65.55 km al E de Socaire,f
+2026-06-10T21:08:18Z,-23.73, -67.25, 238.4, 4.5,Mw,66.99 km al E de Socaire,f
+2026-06-10T22:56:03Z,-20.49, -69.92,  18.5, 2.7,MLv,29.57 km al SO de Pozo Almonte,f
+2026-06-10T23:14:45Z,-21.29, -67.54, 221.1, 2.6,MLv,74.67 km al E de Ollagüe,f
+2026-06-10T23:58:18Z,-35.51, -71.36,  88.8, 2.5,MLv,29.36 km al E de Talca,f
+2026-06-01T00:02:59Z,-22.28, -68.61,  96.9, 2.6,MLv,38.69 km al NE de Calama,f
+2026-06-01T00:15:08Z,-32.76, -71.70,  27.5, 3.0,MLv,16.49 km al O de Quintero,f
+2026-06-01T00:47:38Z,-32.82, -71.77,  28.8, 2.8,MLv,23.4 km al O de Quintero,f
+2026-06-01T01:28:51Z,-23.93, -66.90, 200.5, 3.0,MLv,67.7 km al NO de San Antonio de los Cobres,f
+2026-06-01T01:43:44Z,-32.80, -71.79,  26.8, 3.2,MLv,24.92 km al O de Quintero,f
+2026-06-01T01:44:29Z,-32.81, -71.79,  26.6, 3.1,MLv,25.39 km al O de Quintero,f
+2026-06-01T02:27:51Z,-27.30, -71.17,  20.8, 2.5,MLv,43.19 km al SO de Caldera,f
+2026-06-01T02:59:31Z,-31.62, -71.98,  21.3, 2.9,MLv,54.43 km al NO de Los Vilos,f
+2026-06-01T03:50:23Z,-21.29, -68.03, 195.1, 2.9,MLv,24.8 km al E de Ollagüe,f
+2026-06-01T05:43:31Z,-32.76, -71.80,  24.9, 2.5,MLv,25.65 km al O de Quintero,f
+2026-06-01T05:53:18Z,-32.06, -70.15, 124.9, 2.8,MLv,48.99 km al SE de Mina Los Pelambres,f
+2026-06-01T09:02:50Z,-18.58, -71.11,  20.0, 2.7,MLv,83.57 km al O de Arica,f
+2026-06-01T10:03:46Z,-21.45, -68.49, 126.0, 2.5,MLv,35.13 km al SO de Ollagüe,f
+2026-06-01T10:57:34Z,-21.75, -68.61, 102.9, 2.9,MLv,69.42 km al SO de Ollagüe,f
+2026-06-01T10:58:20Z,-19.93, -69.22,  69.5, 2.8,MLv,63.73 km al N de Pica,f
+2026-06-01T12:47:54Z,-21.92, -67.79, 206.4, 2.9,MLv,90.63 km al SE de Ollagüe,f
+2026-06-01T14:05:30Z,-24.01, -67.44, 222.6, 3.2,MLv,65.66 km al SE de Socaire,f
+2026-06-01T16:03:39Z,-30.01, -71.57,  31.8, 2.7,MLv,28.12 km al N de Tongoy,f
+2026-06-01T16:25:34Z,-22.61, -68.60, 120.0, 2.6,MLv,37.41 km al SE de Calama,f
+2026-06-01T19:51:13Z,-18.90, -69.62,  88.6, 3.2,MLv,50.72 km al NO de Camiña,f
+2026-06-02T09:23:35Z,-21.86, -68.65, 127.9, 2.8,MLv,73.35 km al NE de Calama,f
+2026-06-02T10:12:24Z,-29.80, -71.59,  31.8, 2.5,MLv,34.92 km al O de La Serena,f
+2026-06-02T10:37:53Z,-30.90, -71.65,   7.6, 2.5,MLv,26.55 km al S de Parque Fray Jorge,f
+2026-06-02T17:32:35Z,-22.40, -68.86, 118.3, 2.6,MLv,10.5 km al NE de Calama,f
+2026-06-02T19:46:11Z,-37.77, -74.84,  10.0, 3.0,ML,105.9 km al O de Lebu,f
+2026-06-02T20:24:13Z,-20.03, -70.33,  44.6, 3.4,MLv,27.37 km al NO de Iquique,f
+2026-06-03T01:43:16Z,-20.70, -69.34, 103.9, 3.0,MLv,22.99 km al S de Pica,f
+2026-06-03T02:38:53Z,-21.76, -68.57, 129.6, 2.6,MLv,68.28 km al SO de Ollagüe,f
+2026-06-03T06:06:11Z,-24.00, -67.09, 198.0, 3.8,MLv,81.76 km al O de San Antonio de los Cobres,f
+2026-06-03T07:31:38Z,-20.73, -69.17, 105.7, 3.1,MLv,31.43 km al SE de Pica,f
+2026-06-03T07:50:32Z,-20.93, -68.96, 101.0, 3.1,MLv,33.3 km al O de Mina Collahuasi,f
+2026-06-03T08:18:00Z,-30.12, -71.53,  34.9, 2.7,MLv,15.74 km al N de Tongoy,f
+2026-06-03T11:53:49Z,-32.81, -71.78,  30.3, 3.3,MLv,24.03 km al O de Quintero,f
+2026-06-03T12:47:10Z,-22.29, -68.74, 101.2, 2.9,MLv,27.77 km al NE de Calama,f
+2026-06-03T15:03:42Z,-21.13, -68.60, 132.8, 2.5,MLv,34.01 km al S de Mina Collahuasi,f
+2026-06-03T15:05:55Z,-36.70, -71.72,  98.1, 3.3,MLv,21.46 km al SO de San Fabián,f
+2026-06-03T17:05:56Z,-22.44, -68.68,  30.2, 2.5,MLv,26.33 km al E de Calama,f
+2026-06-03T20:04:24Z,-28.83, -71.40,  32.3, 3.2,MLv,43.58 km al SO de Huasco,f
+2026-06-03T20:52:48Z,-21.13, -68.99, 103.0, 3.1,MLv,47.9 km al SO de Mina Collahuasi,f
+2026-06-03T21:18:09Z,-33.85, -72.13,  17.9, 3.4,MLv,29.88 km al O de Navidad,f
+2026-06-03T21:50:33Z,-33.91, -72.08,  23.5, 3.3,MLv,23.77 km al O de Navidad,f
+2026-06-03T22:21:46Z,-33.92, -72.02,  23.5, 2.9,MLv,17.8 km al O de Navidad,f
+2026-06-03T22:39:28Z,-33.91, -72.13,  26.0, 3.3,MLv,27.99 km al O de Navidad,f
+2026-06-03T22:54:43Z,-33.87, -72.07,  19.7, 4.0,MLv,24.42 km al O de Navidad,t
+2026-06-03T23:01:58Z,-20.81, -69.14, 107.8, 2.6,MLv,40.42 km al SE de Pica,f
+2026-06-03T23:18:02Z,-28.49, -70.56,  69.3, 2.7,MLv,20.97 km al NE de Vallenar,f
+2026-06-03T23:27:42Z,-33.87, -72.09,  15.3, 2.6,MLv,26.08 km al O de Navidad,f
+2026-06-04T00:14:46Z,-33.79, -72.13,  26.7, 2.7,MLv,33.09 km al NO de Navidad,f
+2026-06-04T01:12:22Z,-22.42, -68.69, 106.3, 2.9,MLv,24.73 km al E de Calama,f
+2026-06-04T14:28:56Z,-22.40, -68.91, 114.3, 3.2,MLv,7.67 km al N de Calama,f
+2026-06-04T16:52:57Z,-21.38, -71.62,  36.2, 2.8,MLv,160.11 km al O de Patache,f
+2026-06-04T17:19:52Z,-17.43, -69.72, 165.6, 3.1,MLv,31.61 km al NO de Visviri,f
+2026-06-04T21:59:24Z,-20.62, -68.92,  98.7, 4.3,MLv,35.7 km al NO de Mina Collahuasi,f
+2026-06-04T22:21:53Z,-27.24, -71.33,  26.4, 2.8,MLv,53.76 km al O de Caldera,f
+2026-06-04T23:10:09Z,-21.18, -69.08, 107.6, 2.5,MLv,58.63 km al SO de Mina Collahuasi,f
+2026-06-05T06:33:26Z,-21.06, -68.86, 102.0, 3.0,MLv,33.32 km al SO de Mina Collahuasi,f
+2026-06-05T08:09:18Z,-23.35, -67.99, 155.3, 2.9,MLv,28.32 km al NO de Socaire,f
+2026-06-05T10:42:37Z,-22.18, -68.75, 110.8, 2.7,MLv,36.93 km al NE de Calama,f
+2026-06-05T14:20:28Z,-20.38, -68.94, 112.1, 3.0,MLv,42.84 km al E de Pica,f
+2026-06-05T14:59:10Z,-21.32, -68.75, 122.5, 2.6,MLv,52.38 km al O de Ollagüe,f
+2026-06-05T15:00:57Z,-26.65, -70.71,  67.4, 2.7,MLv,35.18 km al S de Chañaral,f
+2026-06-05T16:55:28Z,-21.28, -68.01, 171.7, 2.6,MLv,26.11 km al E de Ollagüe,f
+2026-06-05T18:55:00Z,-33.72, -71.85,  34.8, 2.8,MLv,25.94 km al N de Navidad,f
+2026-06-05T19:32:58Z,-30.13, -71.59,  29.8, 3.2,MLv,17.03 km al NO de Tongoy,f
+2026-06-05T21:15:39Z,-19.67, -69.92,  62.7, 3.1,MLv,32.07 km al E de Pisagua,f
+2026-06-06T04:01:32Z,-21.96, -67.60, 220.0, 3.3,MLv,106.36 km al SE de Ollagüe,f
+2026-06-06T06:02:18Z,-32.78, -71.68,  30.1, 3.6,MLv,14.59 km al O de Quintero,t
+2026-06-06T06:22:06Z,-39.16, -73.41,  12.0, 2.7,MLv,21.13 km al O de Toltén,f
+2026-06-06T12:40:42Z,-19.53, -70.14,  16.4, 2.6,MLv,11.33 km al NE de Pisagua,f
+2026-06-06T16:38:31Z,-22.74, -69.30,   7.9, 2.7,MLv,16.46 km al N de Sierra Gorda,f
+2026-06-06T16:46:57Z,-24.04, -67.44, 206.1, 2.9,MLv,67.58 km al SE de Socaire,f
+2026-06-06T17:29:47Z,-20.31, -69.14,  94.9, 2.5,MLv,28.16 km al NE de Pica,f
+2026-06-06T18:59:17Z,-24.11, -67.06, 189.4, 3.2,MLv,76.41 km al O de San Antonio de los Cobres,f
+2026-06-06T23:40:12Z,-32.52, -71.52,   9.9, 2.6,MLv,27.94 km al N de Quintero,f
+2026-06-07T07:52:08Z,-23.11, -68.67,  89.6, 2.9,MLv,52.39 km al SO de San Pedro de Atacama,f
+2026-06-07T08:08:39Z,-20.49, -69.24, 103.2, 3.2,MLv,9.48 km al E de Pica,f
+2026-06-07T10:21:07Z,-22.02, -67.61, 207.9, 3.3,MLv,110.48 km al SE de Ollagüe,f
+2026-06-07T11:28:27Z,-27.40, -71.54,   8.3, 3.0,MLv,79.96 km al SO de Caldera,f
+2026-06-07T12:15:02Z,-23.97, -67.69, 268.2, 3.1,MLv,47.33 km al SE de Socaire,f
+2026-06-07T13:31:51Z,-23.90, -70.46,  41.9, 3.3,MLv,28.67 km al S de Antofagasta,f
+2026-06-07T14:37:23Z,-21.74, -68.99,  95.8, 2.8,MLv,56.99 km al E de Quillagua,f
+2026-06-07T15:03:25Z,-28.72, -71.41,  30.2, 2.8,MLv,33.59 km al SO de Huasco,f
+2026-06-07T16:03:02Z,-23.07, -67.06, 270.7, 3.3,MLv,102.19 km al NE de Socaire,f
+2026-06-07T20:07:53Z,-24.04, -68.62,  96.4, 3.1,MLv,50.7 km al NE de Mina La Escondida,f
+2026-06-07T20:42:40Z,-19.07, -69.57,  97.0, 2.5,MLv,30.98 km al NO de Camiña,f
+2026-06-07T21:57:59Z,-23.90, -67.05, 198.3, 3.5,MLv,82.8 km al NO de San Antonio de los Cobres,f
+2026-06-07T22:27:08Z,-28.74, -72.96,  23.9, 2.9,MLv,156.36 km al O de Punta de Choros,f
+2026-06-08T01:16:06Z,-18.97, -69.38, 104.2, 3.0,MLv,38.95 km al N de Camiña,f
+2026-06-08T02:04:43Z,-28.56, -71.35,  32.1, 3.5,MLv,16.41 km al SO de Huasco,f
+2026-06-08T03:16:19Z,-34.11, -72.02,  43.3, 2.8,MLv,24.47 km al SO de Navidad,f
+2026-06-08T04:41:15Z,-19.29, -69.42,  77.7, 2.6,MLv,2.84 km al N de Camiña,f
+2026-06-08T05:28:42Z,-33.64, -72.26,  31.3, 2.6,MLv,52.74 km al NO de Navidad,f
+2026-06-08T06:13:52Z,-32.26, -71.74,  27.8, 3.9,MLv,24.47 km al SO de Pichidangui,f
+2026-06-08T08:36:07Z,-24.04, -67.93, 225.4, 2.8,MLv,49.88 km al S de Socaire,f
+2026-06-08T09:51:06Z,-24.22, -67.16, 181.3, 2.5,MLv,84.91 km al O de San Antonio de los Cobres,f
+2026-06-08T12:44:06Z,-21.77, -68.49, 124.3, 2.7,MLv,65.3 km al SO de Ollagüe,f
+2026-06-08T17:43:44Z,-23.23, -67.06, 228.2, 3.1,MLv,94.15 km al NE de Socaire,f
+2026-06-08T22:38:35Z,-22.36, -68.88, 114.4, 2.8,MLv,12.9 km al NE de Calama,f
+2026-06-09T00:25:27Z,-22.63, -68.57, 117.9, 3.1,MLv,40.54 km al SE de Calama,f
+2026-06-09T01:36:33Z,-21.00, -68.76, 116.4, 3.1,MLv,22.13 km al SO de Mina Collahuasi,f
+2026-06-09T02:09:36Z,-19.00, -69.32,  92.5, 2.6,MLv,36.21 km al N de Camiña,f
+2026-06-09T04:20:31Z,-18.28, -69.39, 113.4, 2.5,MLv,20.5 km al SE de Putre,f
+2026-06-09T04:46:20Z,-23.37, -67.24, 263.2, 2.8,MLv,70.18 km al E de Socaire,f
+2026-06-09T05:50:04Z,-22.13, -68.39,  98.2, 2.7,MLv,67.44 km al NE de Calama,f
+2026-06-09T10:04:09Z,-21.67, -68.62, 125.8, 2.7,MLv,62.32 km al SO de Ollagüe,f
+2026-06-09T11:16:02Z,-36.30, -73.54,  21.7, 3.1,MLv,69.33 km al O de Cobquecura,f
+2026-06-09T12:24:03Z,-20.84, -69.22, 111.9, 2.8,MLv,39.95 km al S de Pica,f
+2026-06-09T13:46:39Z,-20.65, -68.96,  98.8, 2.8,MLv,37.25 km al NO de Mina Collahuasi,f
+2026-06-09T20:42:14Z,-21.26, -68.77, 124.1, 2.6,MLv,49.19 km al S de Mina Collahuasi,f
+2026-06-09T21:06:09Z,-32.80, -71.79,  31.3, 3.8,MLv,25.09 km al O de Quintero,t
+2026-06-09T21:55:46Z,-23.92, -67.22, 190.1, 3.7,MLv,77.21 km al SE de Socaire,f
+2026-06-09T22:01:43Z,-21.10, -68.88, 123.8, 2.6,MLv,38.13 km al SO de Mina Collahuasi,f
+2026-06-09T23:01:46Z,-27.18, -70.99,  28.4, 3.1,MLv,21.4 km al SO de Caldera,f
+2026-06-09T23:04:47Z,-23.84, -67.49, 268.4, 3.0,MLv,49.49 km al SE de Socaire,f
+2026-06-09T23:45:50Z,-31.88, -70.56, 102.3, 2.6,MLv,7.21 km al SE de Mina Los Pelambres,f
+2026-06-10T01:11:52Z,-32.80, -71.81,  27.4, 3.0,MLv,26.48 km al O de Quintero,f
+2026-06-10T01:08:24Z,-24.23, -67.52, 201.2, 2.9,MLv,80.17 km al SE de Socaire,f
+2026-06-10T03:18:40Z,-23.01, -66.82, 243.4, 3.4,MLv,126.18 km al NE de Socaire,f
+2026-06-10T08:55:03Z,-33.35, -72.40,  28.2, 2.6,MLv,69.27 km al O de El Tabo,f
+2026-06-10T09:37:29Z,-21.08, -69.07, 110.3, 3.0,MLv,51.22 km al SO de Mina Collahuasi,f
+2026-06-10T10:38:14Z,-24.14, -67.29, 168.4, 3.1,MLv,86.39 km al SE de Socaire,f
+2026-06-10T17:04:45Z,-21.14, -68.19, 199.3, 2.6,MLv,11.41 km al NE de Ollagüe,f
+2026-06-10T21:55:14Z,-19.25, -69.35, 101.3, 3.0,MLv,10.11 km al NE de Camiña,f
+2026-06-10T22:15:44Z,-21.43, -69.47,  11.6, 3.0,MLv,26.82 km al N de Quillagua,f
+2026-06-10T23:43:19Z,-22.77, -68.26, 115.4, 3.0,MLv,17.23 km al N de San Pedro de Atacama,f
+2026-06-01T00:53:09Z,-32.80, -71.75,  30.0, 2.5,MLv,21.11 km al O de Quintero,f
+2026-06-01T03:01:05Z,-31.59, -71.90,  32.5, 2.5,MLv,46.95 km al SO de Canela Baja,f
+2026-06-01T03:46:54Z,-32.78, -71.83,  24.8, 2.5,MLv,28.69 km al O de Quintero,f
+2026-06-01T04:03:59Z,-32.72, -71.78,  26.1, 3.0,MLv,24.66 km al O de Quintero,f
+2026-06-01T05:15:03Z,-30.73, -71.69,  28.3, 2.8,MLv,7.0 km al S de Parque Fray Jorge,f
+2026-06-01T07:07:18Z,-32.74, -71.73,  29.0, 3.0,MLv,19.38 km al O de Quintero,f
+2026-06-01T07:22:35Z,-32.78, -71.80,  24.2, 2.5,MLv,25.58 km al O de Quintero,f
+2026-06-01T08:21:18Z,-28.20, -71.38,  14.4, 2.6,MLv,26.13 km al SO de Carrizal Bajo,f
+2026-06-01T09:10:54Z,-21.48, -70.24,  35.9, 2.5,MLv,68.28 km al N de Tocopilla,f
+2026-06-01T10:12:35Z,-35.52, -71.42,  32.9, 2.7,MLv,24.79 km al E de Talca,f
+2026-06-01T10:13:38Z,-21.38, -69.86,  95.4, 2.9,MLv,45.77 km al NO de Quillagua,f
+2026-06-01T11:01:21Z,-22.77, -70.28,  52.6, 2.6,MLv,40.92 km al NE de Mejillones,f
+2026-06-01T11:45:14Z,-32.74, -71.88,  25.2, 3.2,MLv,33.63 km al O de Quintero,f
+2026-06-01T13:41:44Z,-23.93, -67.25, 208.9, 3.0,MLv,75.04 km al SE de Socaire,f
+2026-06-01T16:30:22Z,-28.40, -70.94,  53.0, 3.1,MLv,26.01 km al NO de Vallenar,f
+2026-06-01T18:38:24Z,-19.28, -69.31, 107.0, 3.4,MLv,13.1 km al E de Camiña,f
+2026-06-02T01:25:08Z,-32.76, -71.84,  25.8, 3.4,MLv,29.91 km al O de Quintero,f
+2026-06-02T01:31:44Z,-18.88, -69.90,  91.6, 2.5,MLv,42.48 km al NE de Cuya,f
+2026-06-02T02:06:37Z,-32.78, -71.76,  21.2, 2.9,MLv,22.39 km al O de Quintero,f
+2026-06-02T03:36:23Z,-19.36, -70.92,  43.3, 3.1,MLv,78.3 km al O de Pisagua,f
+2026-06-02T06:13:41Z,-29.41, -70.83,  65.8, 4.5,Mw,37.38 km al E de La Higuera,t
+2026-06-02T08:31:58Z,-21.07, -68.73, 113.1, 2.6,MLv,28.42 km al S de Mina Collahuasi,f
+2026-06-02T08:54:56Z,-30.59, -71.84,  44.0, 2.9,MLv,17.53 km al NO de Parque Fray Jorge,f
+2026-06-02T14:11:03Z,-31.81, -71.84,  15.6, 2.6,MLv,32.93 km al O de Los Vilos,f
+2026-06-02T17:15:27Z,-24.04, -67.44, 218.3, 2.8,MLv,67.58 km al SE de Socaire,f
+2026-06-02T17:54:24Z,-20.48, -68.85, 109.6, 2.6,MLv,43.81 km al NO de Mina Collahuasi,f
+2026-06-02T19:01:32Z,-32.74, -71.73,  29.3, 3.2,MLv,19.21 km al O de Quintero,f
+2026-06-02T19:17:42Z,-27.96, -71.90,  48.5, 3.3,MLv,74.41 km al O de Carrizal Bajo,f
+2026-06-03T01:00:26Z,-17.32, -69.88, 153.7, 2.6,MLv,52.61 km al NO de Visviri,f
+2026-06-03T03:05:18Z,-20.99, -69.74,  53.1, 2.8,MLv,52.34 km al E de Patache,f
+2026-06-03T05:37:00Z,-22.37, -68.76, 109.6, 3.5,MLv,20.64 km al NE de Calama,f
+2026-06-03T05:43:08Z,-28.48, -69.65, 108.1, 2.6,MLv,86.81 km al E de Alto del Carmen,f
+2026-06-03T07:59:46Z,-21.75, -68.68, 121.3, 2.7,MLv,73.31 km al SO de Ollagüe,f
+2026-06-03T09:20:22Z,-19.35, -70.38,  20.5, 2.6,MLv,29.79 km al SO de Cuya,f
+2026-06-03T09:32:44Z,-32.79, -71.76,  28.9, 3.3,MLv,21.65 km al O de Quintero,f
+2026-06-03T12:50:56Z,-32.81, -71.77,  28.7, 3.8,MLv,23.47 km al O de Quintero,f
+2026-06-03T18:23:06Z,-22.78, -68.83,  80.8, 2.7,MLv,35.72 km al S de Calama,f
+2026-06-03T19:55:43Z,-33.88, -72.05,  21.0, 2.6,MLv,22.1 km al O de Navidad,f
+2026-06-03T19:58:04Z,-33.83, -72.09,  24.7, 2.6,MLv,27.47 km al NO de Navidad,f
+2026-06-03T20:07:08Z,-24.10, -67.40, 212.2, 3.3,MLv,75.97 km al SE de Socaire,f
+2026-06-03T22:36:06Z,-33.87, -72.10,  19.8, 4.4,MLv,26.75 km al O de Navidad,t
+2026-06-03T22:44:20Z,-33.89, -72.06,  20.5, 2.8,MLv,22.25 km al O de Navidad,f
+2026-06-03T23:34:30Z,-33.90, -72.07,  16.7, 2.8,MLv,22.38 km al O de Navidad,f
+2026-06-03T23:39:29Z,-33.90, -72.07,  20.3, 3.0,MLv,22.99 km al O de Navidad,f
+2026-06-03T23:42:14Z,-33.92, -72.15,  22.7, 2.8,MLv,29.3 km al O de Navidad,f
+2026-06-04T00:45:45Z,-21.72, -70.27,  29.8, 2.5,MLv,42.43 km al N de Tocopilla,f
+2026-06-04T00:47:37Z,-23.67, -68.79,  67.9, 2.9,MLv,72.26 km al NE de Mina La Escondida,f
+2026-06-04T01:02:20Z,-20.49, -69.36,  90.5, 2.6,MLv,3.56 km al O de Pica,f
+2026-06-04T01:40:55Z,-33.85, -72.11,  28.4, 3.3,MLv,28.57 km al O de Navidad,f
+2026-06-04T02:51:06Z,-28.40, -70.65,  56.9, 2.6,MLv,22.24 km al NE de Vallenar,f
+2026-06-04T05:58:42Z,-27.31, -71.49,  27.9, 4.2,MLv,71.47 km al O de Caldera,f
+2026-06-04T06:54:52Z,-32.77, -71.82,  28.0, 3.8,MLv,27.94 km al O de Quintero,f
+2026-06-04T14:40:52Z,-35.26, -71.17,  79.5, 2.5,MLv,30.85 km al S de Curicó,f
+2026-06-04T16:08:58Z,-22.56, -68.72, 120.7, 2.5,MLv,23.36 km al SE de Calama,f
+2026-06-04T21:41:41Z,-21.39, -71.50,  10.0, 2.7,MLv,149.51 km al SO de Patache,f
+2026-06-05T01:48:40Z,-28.45, -70.70,  50.6, 2.6,MLv,14.98 km al NE de Vallenar,f
+2026-06-05T02:49:36Z,-22.24, -68.71, 121.3, 2.5,MLv,34.89 km al NE de Calama,f
+2026-06-05T03:12:52Z,-24.04, -67.57, 214.0, 3.1,MLv,60.13 km al SE de Socaire,f
+2026-06-05T04:14:33Z,-30.72, -71.32,  51.7, 3.4,MLv,13.56 km al NO de Punitaqui,f
+2026-06-05T04:47:52Z,-23.81, -67.28, 228.2, 3.3,MLv,66.19 km al E de Socaire,f
+2026-06-05T04:59:22Z,-28.54, -71.16,  41.6, 2.5,MLv,10.27 km al SE de Huasco,f
+2026-06-05T05:32:55Z,-21.93, -67.68, 232.7, 2.9,MLv,98.08 km al SE de Ollagüe,f
+2026-06-05T07:07:58Z,-23.99, -69.64,  75.9, 2.6,MLv,66.24 km al NO de Mina La Escondida,f
+2026-06-05T09:17:55Z,-21.15, -68.69, 109.0, 3.3,MLv,36.64 km al S de Mina Collahuasi,f
+2026-06-05T09:55:02Z,-22.01, -69.59,  73.8, 2.6,MLv,37.93 km al N de María Elena,f
+2026-06-05T10:18:04Z,-21.93, -68.63, 126.0, 2.5,MLv,67.19 km al NE de Calama,f
+2026-06-05T11:22:12Z,-17.86, -69.76, 135.3, 2.5,MLv,41.5 km al SO de Visviri,f
+2026-06-05T11:47:54Z,-23.79, -67.34, 248.0, 4.0,MLv,60.33 km al E de Socaire,f
+2026-06-05T12:46:20Z,-23.46, -67.09, 228.7, 3.2,MLv,82.53 km al E de Socaire,f
+2026-06-05T12:55:30Z,-21.94, -68.83, 111.6, 2.8,MLv,60.07 km al N de Calama,f
+2026-06-05T13:15:22Z,-24.10, -67.23, 159.8, 2.8,MLv,88.0 km al SE de Socaire,f
+2026-06-05T14:07:20Z,-21.68, -68.55, 122.2, 2.5,MLv,59.62 km al SO de Ollagüe,f
+2026-06-05T16:44:05Z,-22.37, -68.80, 108.1, 2.7,MLv,16.86 km al NE de Calama,f
+2026-06-05T17:48:28Z,-20.88, -69.36,  94.3, 2.6,MLv,43.84 km al S de Pica,f
+2026-06-05T18:15:07Z,-17.75, -69.64, 172.5, 3.0,MLv,24.43 km al SO de Visviri,f
+2026-06-05T18:22:28Z,-24.17, -69.14,  19.3, 2.9,MLv,13.91 km al NO de Mina La Escondida,f
+2026-06-05T22:13:36Z,-19.13, -70.46,  26.8, 3.5,MLv,29.28 km al O de Cuya,f
+2026-06-06T02:48:37Z,-22.25, -68.72, 109.7, 2.5,MLv,32.62 km al NE de Calama,f
+2026-06-06T07:55:56Z,-24.13, -67.53, 204.0, 3.9,MLv,70.44 km al SE de Socaire,f
+2026-06-06T10:28:35Z,-34.83, -72.55,   8.8, 2.6,MLv,51.17 km al O de Vichuquén,f
+2026-06-06T10:36:22Z,-19.93, -69.30,  93.3, 2.9,MLv,62.85 km al N de Pica,f
+2026-06-06T15:05:23Z,-35.27, -71.34,  83.7, 2.9,MLv,32.78 km al S de Curicó,f
+2026-06-06T19:51:38Z,-22.46, -67.99, 204.9, 2.5,MLv,55.87 km al NE de San Pedro de Atacama,f
+2026-06-06T21:24:32Z,-30.54, -71.47,  48.0, 2.9,MLv,24.32 km al NE de Parque Fray Jorge,f
+2026-06-06T23:13:53Z,-27.70, -71.15,  43.9, 2.8,MLv,42.24 km al N de Carrizal Bajo,f
+2026-06-07T01:15:52Z,-21.58, -68.57, 123.8, 3.4,MLv,51.86 km al SO de Ollagüe,f
+2026-06-07T02:42:43Z,-21.81, -68.44, 129.6, 2.6,MLv,67.6 km al S de Ollagüe,f
+2026-06-07T04:18:22Z,-21.63, -68.56, 125.8, 3.3,MLv,55.42 km al SO de Ollagüe,f
+2026-06-07T06:35:39Z,-20.99, -68.37, 125.9, 2.7,MLv,28.59 km al NO de Ollagüe,f
+2026-06-07T07:56:51Z,-39.46, -73.73,  35.8, 2.7,MLv,57.46 km al NO de Valdivia,f
+2026-06-07T08:35:14Z,-24.12, -67.42, 196.3, 3.5,MLv,75.76 km al SE de Socaire,f
+2026-06-07T11:34:02Z,-32.87, -71.96,  17.5, 2.9,MLv,37.61 km al NO de Valparaíso,f
+2026-06-07T14:02:21Z,-23.90, -67.21, 233.1, 3.3,MLv,77.92 km al SE de Socaire,f
+2026-06-07T15:24:17Z,-23.16, -68.23, 125.8, 2.9,MLv,27.31 km al S de San Pedro de Atacama,f
+2026-06-08T00:14:53Z,-23.97, -67.34, 226.4, 2.9,MLv,70.17 km al SE de Socaire,f
+2026-06-08T00:21:19Z,-21.22, -68.87, 114.6, 2.7,MLv,48.35 km al SO de Mina Collahuasi,f
+2026-06-08T05:31:35Z,-33.53, -71.94,  23.0, 2.7,MLv,26.49 km al O de El Tabo,f
+2026-06-08T09:40:15Z,-36.20, -71.89,  83.7, 2.5,MLv,46.58 km al SE de Cauquenes,f
+2026-06-09T02:14:21Z,-21.29, -68.47, 124.7, 2.5,MLv,23.23 km al O de Ollagüe,f
+2026-06-09T03:27:42Z,-19.23, -69.43,  86.4, 2.6,MLv,9.42 km al N de Camiña,f
+2026-06-09T03:37:38Z,-21.18, -68.85, 103.9, 2.9,MLv,44.2 km al SO de Mina Collahuasi,f
+2026-06-09T05:02:41Z,-36.20, -73.57,  26.2, 2.8,MLv,70.33 km al O de Cobquecura,f
+2026-06-09T06:39:23Z,-21.57, -67.91, 168.9, 2.9,MLv,51.93 km al SE de Ollagüe,f
+2026-06-09T07:32:58Z,-20.03, -69.18, 108.3, 3.1,MLv,53.59 km al N de Pica,f
+2026-06-09T14:23:20Z,-34.71, -71.79,  44.2, 2.5,MLv,27.13 km al NE de Vichuquén,f
+2026-06-09T16:43:00Z,-21.90, -68.70, 124.1, 3.7,MLv,67.25 km al N de Calama,f
+2026-06-09T19:46:57Z,-21.15, -68.63, 130.8, 3.5,MLv,35.79 km al S de Mina Collahuasi,f
+2026-06-09T20:30:31Z,-21.43, -71.39,  10.0, 3.0,MLv,140.72 km al SO de Patache,f
+2026-06-09T21:24:39Z,-32.84, -71.79,  28.4, 3.8,MLv,25.39 km al O de Quintero,f
+2026-06-09T23:57:27Z,-18.66, -71.29,  19.5, 3.3,MLv,103.97 km al O de Arica,f
+2026-06-10T02:05:08Z,-21.14, -69.01, 115.1, 2.7,MLv,50.27 km al SO de Mina Collahuasi,f
+2026-06-10T02:21:51Z,-32.61, -69.66, 126.5, 3.5,MLv,83.52 km al O de Mendoza,f
+2026-06-10T03:02:20Z,-32.81, -71.79,  27.5, 3.0,MLv,25.2 km al O de Quintero,f
+2026-06-10T04:56:02Z,-18.86, -71.47,  10.0, 2.5,MLv,128.08 km al O de Arica,f
+2026-06-10T05:05:39Z,-24.03, -67.16, 186.7, 3.2,MLv,87.9 km al O de San Antonio de los Cobres,f
+2026-06-10T09:48:05Z,-21.48, -68.62, 147.2, 2.6,MLv,47.41 km al SO de Ollagüe,f
+2026-06-10T16:54:05Z,-20.70, -68.90,  95.0, 2.7,MLv,28.65 km al NO de Mina Collahuasi,f
+2026-06-10T19:59:54Z,-21.43, -69.49,  12.1, 3.6,MLv,25.92 km al N de Quillagua,f
+2026-06-10T22:14:09Z,-20.82, -68.87, 111.0, 3.1,MLv,21.92 km al O de Mina Collahuasi,f
