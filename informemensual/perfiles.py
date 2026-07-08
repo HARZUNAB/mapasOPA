@@ -82,6 +82,23 @@ def proyectar_prof(recta, longitudes, latitudes, profundidades, error_lon=[], er
     return long_project, lat_project, prof_project,
 
 def proyectar_dicc(recta, diccionario, distmin=1):
+    if diccionario.empty:
+        return diccionario.copy()
+        
+    a, b = recta
+    # Fuerza arrays nativos unidimensionales para evitar desajustes de Pandas
+    x_sismos = diccionario['lon'].to_numpy()
+    y_sismos = diccionario['lat'].to_numpy()
+    
+    # Ecuación de distancia punto-recta absoluta
+    dist = np.abs(a * x_sismos - y_sismos + b) / np.sqrt(a**2 + 1)
+    
+    # Máscara booleana rápida
+    condicion = (dist <= distmin) & (diccionario['lon'] >= -90)
+    return diccionario[condicion].copy()
+
+"""
+def proyectar_dicc(recta, diccionario, distmin=1):
     # recta = tupla con pendiente y coef posicion
     # a x + b = y
     a, b = recta
@@ -95,6 +112,7 @@ def proyectar_dicc(recta, diccionario, distmin=1):
             #out_dicc = out_dicc.append(row, ignore_index=True)
             out_dicc = pd.concat([out_dicc, pd.DataFrame([row])], ignore_index=True)
     return out_dicc
+"""
 
 catalogo = sys.argv[2] # ----- Aparece 2 y no 1. ??
 df_catalogo = lee_catalogo(catalogo)
@@ -181,14 +199,14 @@ for i in range(len(str_rectas)):
     rectas.append(recta)
 
     ### aca proyectar datos base ###
-    df = proyectar_dicc(recta, df_catalogo)
+    df = proyectar_dicc(recta, df_catalogo, distmin=1.0) # Catálogo actual estricto
     dfs_rectas.append(df)
 
     # Proyecta catálogo base usando la misma recta
     if not df_base.empty:
-        df_b = proyectar_dicc(recta, df_base)
-        # Guarda dataframes en una lista nueva para usarlos luego
-        dfs_base.append(df_b) 
+        # 🔍 MODIFICA ESTA LÍNEA (Agrega el distmin=2.5):
+        df_b = proyectar_dicc(recta, df_base, distmin=2.5)
+        dfs_base.append(df_b)
     else:
         dfs_base.append(pd.DataFrame())
 
@@ -196,11 +214,11 @@ for i in range(len(str_rectas)):
     angulo = 90 - np.degrees(np.arctan(m))
     
     # RUTAS ABSOLUTAS DINÁMICAS PARA GMT
-    # Aseguramos que la carpeta grillas exista donde reside el script
+    # Asegura que la carpeta grillas exista donde reside el script
     CARPETA_GRILLAS = Path(__file__).resolve().parent / "grillas"
     CARPETA_GRILLAS.mkdir(parents=True, exist_ok=True)
 
-    # Definimos los archivos temporales con rutas absolutas
+    # Define los archivos temporales con rutas absolutas
     ruta_tmp_slab = CARPETA_GRILLAS / f"slab{str_rectas[i]}.tmp"
     ruta_tmp_topo = CARPETA_GRILLAS / f"topo{str_rectas[i]}.tmp"
 
@@ -348,7 +366,7 @@ for i in range(len(str_rectas)):
     # =========================================================================
     # RUTA DINÁMICA DE GRILLAS GMT (.tmp)
     # =========================================================================
-    # Redefinimos la ruta de la carpeta para que el bucle de ploteo la conozca
+    # Redefine la ruta de la carpeta para que el bucle de ploteo la conozca
     CARPETA_GRILLAS = Path(__file__).resolve().parent / "grillas"
 
     # Construye la ruta absoluta hacia los archivos temporales de forma segura

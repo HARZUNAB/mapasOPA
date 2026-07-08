@@ -1,0 +1,19 @@
+#instala la librería que usa Python para comunicarse con el sistema gráfico:
+#sudo apt install python3-pip
+#pip3 install pyperclip
+instalar pyperclip directamente desde los repositorios oficiales de tu sistema operativo con apt
+sudo apt update && sudo apt install python3-pyperclip
+crear o copiar archivo capturar.py
+chmod +x capturar.py
+4. Lanzarlo en Background
+Aquí tienes dos opciones para correrlo según lo que te sea más cómodo:
+
+Opción A (La más recomendada): Abre una ventana de la terminal, ejecútalo con python3 capturar.py y simplemente minimiza esa ventana. Así podrás ver en tiempo real los mensajes de [✓ CAPTURADO] cada vez que copies un evento.
+
+Opción B (Background total): Si no quieres ver ninguna ventana abierta, ejecútalo con un & al final para que corra invisible en el sistema:
+
+Bash
+
+
+python3 capturar.py &
+(Si usas esta opción, cuando quieras apagarlo al terminar tu turno, simplemente ejecutas pkill -f capturar.py en la terminal).
