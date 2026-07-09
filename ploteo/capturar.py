@@ -74,10 +74,16 @@ def plotear_evento(fecha, lat, lon, prof, mag, event_id):
                         if linea.startswith('#') or not linea.strip():
                             continue
                         partes = linea.strip().split()
-                        if len(partes) >= 7 and 'nan' not in partes[6].lower():
+                        if len(partes) >= 7:
                             l_val = float(partes[2])   # Longitud Real
                             lat_val = float(partes[3])  # Latitud Real
-                            p_val = abs(float(partes[6])) # Profundidad Real
+                            
+                            # Si es NaN, significa que está en la superficie/fosa (0 km de profundidad)
+                            if 'nan' in partes[6].lower():
+                                p_val = 0.0
+                            else:
+                                p_val = abs(float(partes[6])) # Profundidad Real
+                                
                             puntos_perfil.append((l_val, lat_val, p_val))
                 
                 if puntos_perfil:
@@ -95,9 +101,9 @@ def plotear_evento(fecha, lat, lon, prof, mag, event_id):
         str_perfil = f"P{mejor_perfil_id:02d}"
         print(f"[SLAB/TOPO] Perfil óptimo detectado: {str_perfil} (Dist: {distancia_minima:.2f}°)")
         
-        # Filtrar y guardar el Slab en rango extendido
+        # Filtrar y guardar el Slab descartando NaNs para evitar el escalón
         for (l_val, lat_val, p_val) in datos_perfil_elegido:
-            if (lon - 4.5 <= l_val <= lon + 4.5):
+            if (lon - 4.5 <= l_val <= lon + 4.5) and p_val is not None and p_val != 0.0:
                 lon_slab.append(l_val)
                 prof_slab.append(p_val)
                 
@@ -116,8 +122,7 @@ def plotear_evento(fecha, lat, lon, prof, mag, event_id):
                         partes = linea.strip().split()
                         if len(partes) >= 7 and 'nan' not in partes[6].lower():
                             l_val = float(partes[2])
-                            # Columna 6 de topo está en metros; convertimos a km (mantenemos el signo para relieve/fosa)
-                            alt_val = float(partes[6]) / 1000.0 
+                            alt_val = float(partes[6]) / 1000.0
                             
                             if (lon - 4.5 <= l_val <= lon + 4.5):
                                 lon_topo.append(l_val)
@@ -125,9 +130,9 @@ def plotear_evento(fecha, lat, lon, prof, mag, event_id):
                 if lon_topo:
                     lon_topo, alt_topo = zip(*sorted(zip(lon_topo, alt_topo)))
                     lon_topo, alt_topo = list(lon_topo), list(alt_topo)
-                    print(f"[TOPO] ¡Éxito! Perfil topográfico cargado para {str_perfil}")
             except Exception as e:
                 print(f"[Aviso] No se pudo cargar la topografía local: {e}")
+        
     else:
         # 3. RESPALDO GLOBAL (Solo Slab2 XYZ en caso de estar fuera de rango)
         str_perfil = "Slab2_Global"
@@ -220,15 +225,20 @@ def plotear_evento(fecha, lat, lon, prof, mag, event_id):
         
     ax_perfil.set_title(titulo_perfil, fontsize=11, fontweight='bold', pad=10)
     
-    # 6. Configurar Ejes y Límites (Asegurar que la topografía sobre cero sea visible)
+    # 6. Configurar Ejes y Límites (Encuadre natural de la curva)
     ax_perfil.set_xlabel("Longitud", fontsize=9, fontweight='bold', labelpad=8)
     ax_perfil.set_ylabel("Profundidad (km)", fontsize=9, fontweight='bold', labelpad=8)
     ax_perfil.tick_params(axis='both', labelsize=8)
     
-    ax_perfil.set_xlim(lon - RANGO_ANCHURA, lon + RANGO_ANCHURA)
-    prof_max_grafico = max(200, float(prof) + 50)
+    # El gráfico se encuadra donde empieza la sismicidad y el modelo real del slab
+    if lon_slab:
+        limite_izquierdo = lon_slab[0]
+    else:
+        limite_izquierdo = lon - RANGO_ANCHURA
+        
+    ax_perfil.set_xlim(limite_izquierdo, lon + RANGO_ANCHURA)
     
-    # Un colchón de -10km hacia arriba en profundidad invertida para ver los Andes
+    prof_max_grafico = max(200, float(prof) + 50)
     ax_perfil.set_ylim(bottom=prof_max_grafico, top=-10) 
     
     # Suavizar la grilla interna
