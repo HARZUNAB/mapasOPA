@@ -1,0 +1,219 @@
+id_evento,ot_utc,magnitud,tipo_magnitud,fases,rms,azgap,latitud,longitud,profundidad_km,agencia,autor,region
+csn_sc62026nmwoh,2026-07-12 00:00:10,2.0,M,9,0.76,226,-19.4216,-70.7557,10.0,CSN,scautoloc2@prod-pub-seiscomp6,Near Coast of Northern Chile
+csn_sc62026nmwre,2026-07-12 00:03:31,3.1,M,11,0.34,231,-24.1830,-67.6377,222.1,CSN,scautoloc2@prod-pub-seiscomp6,Chile-Argentina Border Region
+csn_sc62026nmxlg,2026-07-12 00:26:55,,,6,0.89,217,-37.0605,-87.3761,10.0,CSN,scautoloc2@prod-pub-seiscomp6,Southeast Central Pacific Ocean
+csn_sc62026nmxud,2026-07-12 00:44:35,2.4,M,25,0.35,175,-21.8368,-68.6857,119.7,CSN,tark,Chile-Bolivia Border Region
+csn_sc62026nmyny,2026-07-12 01:00:07,3.7,MLv,46,0.80,220,-20.6329,-68.0336,251.3,CSN,Caro,Chile-Bolivia Border Region
+csn_sc62026nmyrh,2026-07-12 01:04:15,2.1,M,8,0.57,137,-22.5500,-69.9885,10.0,CSN,scautoloc2@prod-pub-seiscomp6,Northern Chile
+csn_sc62026nmzcg,2026-07-12 01:21:35,,,17,1.24,340,-43.0927,-48.4279,10.0,CSN,scautoloc2@prod-pub-seiscomp6,South Atlantic Ocean
+csn_sc62026nmzmd,2026-07-12 01:28:32,2.1,M,10,0.73,127,-29.6787,-70.6672,31.1,CSN,scautoloc2@prod-pub-seiscomp6,Central Chile
+csn_sc62026nmzrg,2026-07-12 01:34:35,2.4,MLv,14,0.31,257,-21.2714,-68.5488,135.1,CSN,sali,Chile-Bolivia Border Region
+csn_sc62026nmzwd,2026-07-12 01:43:35,3.1,M,7,0.82,236,-22.4314,-72.2099,338.9,CSN,scautoloc2@prod-pub-seiscomp6,Off Coast of Northern Chile
+csn_sc62026nnael,2026-07-12 01:49:49,2.7,MLv,19,0.30,238,-20.3577,-68.2227,173.9,CSN,sali,Chile-Bolivia Border Region
+csn_sc62026nnaii,2026-07-12 01:54:24,3.7,M,25,0.45,220,-28.3027,-68.1892,221.6,CSN,scautoloc2@prod-pub-seiscomp6,"La Rioja Province, Argentina"
+csn_sc62026nnbyn,2026-07-12 02:44:13,2.2,MLv,9,0.16,268,-21.2860,-68.4019,138.1,CSN,sali,Chile-Bolivia Border Region
+csn_sc62026nncez,2026-07-12 02:51:08,3.0,M,6,1.12,221,-23.9407,-68.0275,195.7,CSN,scautoloc2@prod-pub-seiscomp6,Northern Chile
+csn_sc62026nncgk,2026-07-12 02:52:47,2.8,MLv,38,0.33,68,-34.9574,-71.7091,51.8,CSN,sali,Near Coast of Central Chile
+csn_sc62026nncoz,2026-07-12 03:02:45,2.4,MLv,19,0.33,124,-21.0968,-69.0003,118.2,CSN,sali,Northern Chile
+csn_sc62026nndai,2026-07-12 03:16:01,3.8,MLv,16,0.25,129,-24.0692,-67.0898,180.4,CSN,sali,Chile-Argentina Border Region
+csn_sc62026nndle,2026-07-12 03:28:41,2.1,M,7,1.20,120,-20.1284,-69.4232,10.0,CSN,scautoloc2@prod-pub-seiscomp6,Northern Chile
+csn_sc62026nndwo,2026-07-12 03:41:55,2.2,M,17,0.79,136,-20.6782,-69.1737,49.3,CSN,scautoloc2@prod-pub-seiscomp6,Northern Chile
+csn_sc62026nnehb,2026-07-12 03:56:03,2.8,MLv,16,0.34,110,-22.8197,-68.8163,94.1,CSN,sali,Northern Chile
+csn_sc62026nnesq,2026-07-12 04:07:40,,,7,0.97,323,-37.0722,-54.5911,10.0,CSN,scautoloc2@prod-pub-seiscomp6,South Atlantic Ocean
+csn_sc62026nnevi,2026-07-12 04:10:48,2.0,MLv,21,0.25,131,-32.6663,-71.0970,66.9,CSN,sali,Near Coast of Central Chile
+csn_sc62026nnexa,2026-07-12 04:12:46,3.1,MLv,19,0.35,202,-36.2632,-73.1211,20.7,CSN,sali,Near Coast of Central Chile
+csn_sc62026nnezs,2026-07-12 04:15:55,3.3,M,24,0.60,146,-17.0231,-72.1422,10.0,CSN,scautoloc2@prod-pub-seiscomp6,Near Coast of Peru
+csn_sc62026nnffl,2026-07-12 04:22:37,2.2,M,10,0.52,129,-21.1557,-68.8634,97.1,CSN,scautoloc2@prod-pub-seiscomp6,Chile-Bolivia Border Region
+csn_sc62026nnflb,2026-07-12 04:29:08,,,5,0.70,342,-10.9667,-60.7696,10.0,CSN,scautoloc2@prod-pub-seiscomp6,Brazil
+csn_sc62026nnfqz,2026-07-12 04:36:03,,,8,1.45,354,-33.5078,-47.5349,10.0,CSN,scautoloc2@prod-pub-seiscomp6,South Atlantic Ocean
+csn_sc62026nnghw,2026-07-12 04:55:44,2.5,MLv,17,0.32,157,-21.0177,-68.9551,115.1,CSN,sali,Chile-Bolivia Border Region
+csn_sc62026nngnz,2026-07-12 05:02:59,,,9,0.52,312,-15.3925,-61.8244,10.0,CSN,scautoloc2@prod-pub-seiscomp6,Central Bolivia
+csn_sc62026nnhnt,2026-07-12 05:32:53,2.5,MLv,11,0.32,243,-19.2078,-68.3711,213.4,CSN,sali,Chile-Bolivia Border Region
+csn_sc62026nnhvb,2026-07-12 05:41:25,2.5,MLv,27,0.30,205,-34.4231,-72.0342,25.7,CSN,sali,Near Coast of Central Chile
+csn_sc62026nnidu,2026-07-12 05:51:37,1.6,M,21,0.28,49,-33.5944,-70.7491,60.0,CSN,scautoloc3@prod-pub-seiscomp6,Chile-Argentina Border Region
+csn_sc62026nniid,2026-07-12 05:56:42,2.6,MLv,18,0.32,236,-20.6287,-68.1211,182.9,CSN,sali,Chile-Bolivia Border Region
+csn_sc62026nnity,2026-07-12 06:10:27,3.4,MLv,20,0.35,229,-23.4338,-67.2616,263.2,CSN,sali,Chile-Argentina Border Region
+csn_sc62026nnjab,2026-07-12 06:17:32,,,6,0.60,301,-29.0144,-75.1092,580.1,CSN,scautoloc2@prod-pub-seiscomp6,Off Coast of Central Chile
+csn_sc62026nnkur,2026-07-12 07:11:50,1.6,MLv,7,0.29,119,-18.7320,-69.9532,68.5,CSN,Caro,Northern Chile
+csn_sc62026nnmqk,2026-07-12 08:07:33,2.1,M,10,0.34,212,-27.4850,-71.2568,29.8,CSN,Caro,Near Coast of Northern Chile
+csn_sc62026nnmpl,2026-07-12 08:09:35,1.6,MLv,21,0.22,210,-33.7568,-70.0211,6.0,CSN,Caro,Chile-Argentina Border Region
+csn_sc62026nnmyu,2026-07-12 08:22:41,3.3,MLv,29,0.38,186,-28.6939,-69.5922,99.9,CSN,Caro,Chile-Argentina Border Region
+csn_sc62026nnnji,2026-07-12 08:29:24,2.9,M,18,0.45,245,-21.0375,-67.8050,189.7,CSN,Caro,Chile-Bolivia Border Region
+csn_sc62026nnnui,2026-07-12 08:42:22,3.5,MLv,20,0.52,138,-24.0313,-67.1407,207.4,CSN,Caro,Chile-Argentina Border Region
+csn_sc62026nnoae,2026-07-12 08:49:15,1.4,M,21,0.27,173,-33.4793,-70.0383,3.5,CSN,Caro,Chile-Argentina Border Region
+csn_sc62026nnoeq,2026-07-12 08:54:26,3.2,M,10,0.66,177,-25.8200,-69.2698,83.7,CSN,scautoloc2@prod-pub-seiscomp6,Northern Chile
+csn_sc62026nnoqh,2026-07-12 09:08:00,2.5,MLv,15,0.40,122,-22.6304,-68.6368,95.0,CSN,Caro,Northern Chile
+csn_sc62026nnosu,2026-07-12 09:10:55,1.8,M,26,0.23,50,-33.8002,-70.8594,77.0,CSN,Caro,Chile-Argentina Border Region
+csn_sc62026nnpfh,2026-07-12 09:25:28,2.4,MLv,39,0.28,69,-33.4177,-70.3394,91.5,CSN,Caro,Chile-Argentina Border Region
+csn_sc62026nnphs,2026-07-12 09:28:20,,,5,0.76,332,-29.8864,-87.4250,91.5,CSN,scautoloc2@prod-pub-seiscomp6,Southeast Central Pacific Ocean
+csn_sc62026nnpve,2026-07-12 09:43:59,2.3,M,12,0.23,150,-27.3861,-69.7810,99.9,CSN,Caro,Northern Chile
+csn_sc62026nnqfm,2026-07-12 09:56:01,,,6,0.87,300,-31.4252,-62.4873,10.0,CSN,scautoloc2@prod-pub-seiscomp6,"Cordoba Province, Argentina"
+csn_sc62026nnqhz,2026-07-12 09:58:40,2.7,M,10,0.82,197,-21.0835,-68.9689,160.2,CSN,Caro,Chile-Bolivia Border Region
+csn_sc62026nnqnd,2026-07-12 10:10:00,3.0,MLv,18,0.31,207,-28.0352,-71.5028,37.6,CSN,Caro,Near Coast of Central Chile
+csn_sc62026nnqvz,2026-07-12 10:15:14,2.3,M,19,1.04,236,-32.6130,-72.0395,25.5,CSN,Caro,Off Coast of Central Chile
+csn_sc62026nnqxp,2026-07-12 10:17:09,3.2,M,16,0.31,190,-25.3893,-69.0963,111.6,CSN,Caro,Northern Chile
+csn_sc62026nnrwj,2026-07-12 10:46:00,2.8,M,5,0.44,327,-21.5539,-68.0286,268.0,CSN,scautoloc2@prod-pub-seiscomp6,Chile-Bolivia Border Region
+csn_sc62026nnrzx,2026-07-12 10:49:19,,,13,0.89,333,-36.4776,-48.4800,10.0,CSN,scautoloc2@prod-pub-seiscomp6,South Atlantic Ocean
+csn_sc62026nnsan,2026-07-12 10:50:51,,,6,1.60,296,-25.2094,-82.6654,10.0,CSN,scautoloc2@prod-pub-seiscomp6,Southeast Central Pacific Ocean
+csn_sc62026nnsep,2026-07-12 10:55:35,3.4,MLv,20,0.19,206,-28.3398,-69.1463,103.3,CSN,Caro,Chile-Argentina Border Region
+csn_sc62026nnsnb,2026-07-12 11:05:28,2.0,M,13,0.70,193,-20.8451,-69.0944,47.3,CSN,scautoloc2@prod-pub-seiscomp6,Northern Chile
+csn_sc62026nntbt,2026-07-12 11:22:36,,,7,1.66,332,-17.1430,-88.5382,10.0,CSN,scautoloc2@prod-pub-seiscomp6,Southeast Central Pacific Ocean
+csn_sc62026nntby,2026-07-12 11:22:48,2.1,M,8,0.92,165,-29.7535,-71.1270,10.0,CSN,scautoloc2@prod-pub-seiscomp6,Near Coast of Central Chile
+csn_sc62026nntwi,2026-07-12 11:46:49,2.2,M,9,0.86,189,-31.5853,-71.2106,151.0,CSN,Caro,Near Coast of Central Chile
+csn_sc62026nnuel,2026-07-12 11:56:03,2.5,MLv,21,0.24,201,-29.9086,-71.6834,32.1,CSN,Caro,Near Coast of Central Chile
+csn_sc62026nnuik,2026-07-12 12:00:40,1.9,M,10,0.44,157,-20.3661,-69.2547,52.9,CSN,scautoloc2@prod-pub-seiscomp6,Northern Chile
+csn_sc62026nnuoc,2026-07-12 12:07:15,3.0,M,17,0.50,229,-16.5544,-71.7755,105.2,CSN,Caro,Southern Peru
+csn_sc62026nnurw,2026-07-12 12:11:40,2.9,MLv,25,0.45,133,-21.1165,-68.9383,108.7,CSN,Caro,Chile-Bolivia Border Region
+csn_sc62026nnvbq,2026-07-12 12:23:01,3.9,MLv,62,0.36,101,-32.1135,-71.1377,67.3,CSN,Caro,Near Coast of Central Chile
+csn_sc62026nnvpt,2026-07-12 12:39:32,,,8,0.82,321,-27.0573,-91.2470,10.0,CSN,scautoloc2@prod-pub-seiscomp6,Southeast Central Pacific Ocean
+csn_sc62026nnvtd,2026-07-12 12:43:34,2.8,M,29,0.28,166,-32.2510,-71.4881,49.6,CSN,Caro,Near Coast of Central Chile
+csn_sc62026nnwcw,2026-07-12 12:54:58,3.3,MLv,15,0.30,303,-23.9410,-67.2327,226.1,CSN,Caro,Chile-Argentina Border Region
+csn_sc62026nnwfu,2026-07-12 12:58:11,3.6,M,33,0.45,197,-28.7730,-69.2153,158.1,CSN,scautoloc2@prod-pub-seiscomp6,Chile-Argentina Border Region
+csn_sc62026nnwrp,2026-07-12 13:12:15,3.1,MLv,53,0.21,202,-32.6631,-69.9663,113.4,CSN,tark,"Mendoza Province, Argentina"
+csn_sc62026nnwpr,2026-07-12 13:12:15,3.1,MLv,21,0.22,254,-32.6241,-69.9173,109.1,CSN,tark,"Mendoza Province, Argentina"
+csn_sc62026nnwta,2026-07-12 13:13:38,3.1,MLv,13,0.32,323,-24.0370,-67.3387,215.3,CSN,tark,Chile-Argentina Border Region
+csn_sc62026nnxki,2026-07-12 13:33:49,2.2,M,9,0.51,226,-20.3965,-69.0241,76.5,CSN,scautoloc2@prod-pub-seiscomp6,Northern Chile
+csn_sc62026nnxyg,2026-07-12 13:50:00,,,16,1.27,346,-40.5336,-77.2753,10.0,CSN,scautoloc2@prod-pub-seiscomp6,Off Coast of Southern Chile
+csn_sc62026nnybw,2026-07-12 13:54:16,2.5,MLv,21,0.26,85,-22.0359,-69.8060,66.1,CSN,tark,Northern Chile
+csn_sc62026nnygj,2026-07-12 13:59:31,2.3,M,8,0.64,87,-20.2012,-69.3438,103.8,CSN,scautoloc2@prod-pub-seiscomp6,Northern Chile
+csn_sc62026nnyyn,2026-07-12 14:20:38,2.4,M,12,0.36,213,-20.8087,-68.9339,95.7,CSN,tark,Chile-Bolivia Border Region
+csn_sc62026nnzfn,2026-07-12 14:29:14,,,14,1.15,333,0.6972,-67.6611,10.0,CSN,scautoloc2@prod-pub-seiscomp6,Western Brazil
+csn_sc62026nnzml,2026-07-12 14:36:47,2.1,M,36,0.32,214,-32.6132,-71.7966,26.4,CSN,cris,Near Coast of Central Chile
+csn_sc62026nnzql,2026-07-12 14:41:33,2.6,MLv,18,0.32,160,-35.5123,-71.3481,93.0,CSN,tark,Central Chile
+csn_sc62026nnzsn,2026-07-12 14:44:00,2.1,MLv,7,0.22,220,-24.6188,-69.1974,93.0,CSN,tark,Northern Chile
+csn_sc62026nnzuq,2026-07-12 14:46:28,2.3,MLv,23,0.31,206,-21.5868,-70.4012,20.0,CSN,tark,Near Coast of Northern Chile
+csn_sc62026noagp,2026-07-12 15:00:25,2.0,M,9,0.77,107,-21.4707,-68.9075,36.9,CSN,scautoloc2@prod-pub-seiscomp6,Chile-Bolivia Border Region
+csn_sc62026noasq,2026-07-12 15:14:26,2.4,MLv,12,0.38,261,-22.5175,-67.8934,164.9,CSN,tark,Chile-Bolivia Border Region
+csn_sc62026noavg,2026-07-12 15:17:29,1.8,MLv,35,0.27,56,-33.5709,-70.5689,78.6,CSN,tark,Chile-Argentina Border Region
+csn_sc62026nobgi,2026-07-12 15:30:25,2.9,MLv,12,0.34,268,-23.9523,-67.4558,211.5,CSN,tark,Chile-Argentina Border Region
+csn_sc62026nobcm,2026-07-12 15:34:00,2.1,M,9,0.97,174,-18.0448,-69.8542,75.9,CSN,scautoloc2@prod-pub-seiscomp6,Northern Chile
+csn_sc62026nobjv,2026-07-12 15:34:30,2.2,M,10,0.19,246,-28.0304,-71.3517,32.4,CSN,tark,Near Coast of Central Chile
+csn_sc62026nocgw,2026-07-12 16:02:32,2.5,MLv,11,0.36,211,-28.7768,-71.3729,30.4,CSN,tark,Near Coast of Central Chile
+csn_sc62026nodip,2026-07-12 16:37:38,2.4,M,13,0.93,162,-20.9582,-68.8439,10.0,CSN,scautoloc2@prod-pub-seiscomp6,Chile-Bolivia Border Region
+csn_sc62026nodvh,2026-07-12 16:48:27,2.7,M,22,1.01,167,-22.7901,-69.4500,5.0,CSN,scautoloc2@prod-pub-seiscomp6,Northern Chile
+csn_sc62026noebi,2026-07-12 16:55:29,2.2,M,5,0.93,250,-20.6752,-68.6670,10.0,CSN,scautoloc2@prod-pub-seiscomp6,Chile-Bolivia Border Region
+csn_sc62026noefl,2026-07-12 17:00:17,2.1,M,13,0.39,82,-20.8331,-69.8164,5.0,CSN,scautoloc2@prod-pub-seiscomp6,Northern Chile
+csn_sc62026noejh,2026-07-12 17:04:46,2.2,M,9,0.48,130,-21.0803,-69.0121,89.8,CSN,scautoloc2@prod-pub-seiscomp6,Northern Chile
+csn_sc62026noemf,2026-07-12 17:08:10,,,5,1.23,200,-25.2004,-71.4484,188.3,CSN,scautoloc2@prod-pub-seiscomp6,Off Coast of Northern Chile
+csn_sc62026noene,2026-07-12 17:09:17,2.1,M,10,1.32,123,-19.9126,-69.8489,10.0,CSN,scautoloc2@prod-pub-seiscomp6,Northern Chile
+csn_sc62026nofaw,2026-07-12 17:25:15,,,7,0.60,313,-48.5075,-130.7176,10.0,CSN,scautoloc2@prod-pub-seiscomp6,South Pacific Ocean
+csn_sc62026nofgc,2026-07-12 17:31:21,,,6,0.86,215,-36.6788,-81.6275,10.0,CSN,scautoloc2@prod-pub-seiscomp6,Southeast Central Pacific Ocean
+csn_sc62026nofoi,2026-07-12 17:40:52,2.3,MLv,26,0.35,207,-32.2155,-70.0169,113.7,CSN,Thor,Chile-Argentina Border Region
+csn_sc62026nofxu,2026-07-12 17:51:58,3.0,MLv,44,0.44,162,-20.6519,-68.8772,101.3,CSN,Thor,Chile-Bolivia Border Region
+csn_sc62026nofzj,2026-07-12 17:53:49,2.5,M,9,0.73,112,-26.5539,-70.3430,10.0,CSN,scautoloc2@prod-pub-seiscomp6,Near Coast of Northern Chile
+csn_sc62026nogda,2026-07-12 17:58:05,2.2,M,13,0.90,157,-22.6970,-70.1653,10.0,CSN,scautoloc2@prod-pub-seiscomp6,Near Coast of Northern Chile
+csn_sc62026nogdv,2026-07-12 17:59:01,,,10,1.28,326,-29.8500,-68.4463,10.0,CSN,scautoloc2@prod-pub-seiscomp6,"San Juan Province, Argentina"
+csn_sc62026nogec,2026-07-12 17:59:36,2.0,MLv,9,0.10,119,-21.0502,-69.7391,6.6,CSN,Thor,Northern Chile
+csn_sc62026nogeq,2026-07-12 18:00:37,2.1,MLv,12,0.42,229,-22.5655,-69.8241,-7.1,CSN,Thor,Northern Chile
+csn_sc62026nogji,2026-07-12 18:05:26,2.6,M,4,0.45,193,-19.8914,-69.0229,10.0,CSN,scautoloc2@prod-pub-seiscomp6,Northern Chile
+csn_sc62026nohji,2026-07-12 18:35:44,2.4,M,12,0.96,141,-22.9187,-69.4890,10.5,CSN,scautoloc2@prod-pub-seiscomp6,Northern Chile
+csn_sc62026nohrd,2026-07-12 18:44:49,3.1,M,13,0.37,237,-31.1788,-68.1778,204.8,CSN,scautoloc2@prod-pub-seiscomp6,"San Juan Province, Argentina"
+csn_sc62026nohui,2026-07-12 18:48:34,4.1,MLv,49,0.43,254,-23.6924,-67.2949,234.7,CSN,Thor,Chile-Argentina Border Region
+csn_sc62026noiez,2026-07-12 19:00:59,2.1,M,12,0.86,151,-20.9858,-68.9115,10.0,CSN,scautoloc2@prod-pub-seiscomp6,Chile-Bolivia Border Region
+csn_sc62026noikw,2026-07-12 19:07:50,3.4,M,13,0.45,256,-28.1211,-67.7983,213.1,CSN,scautoloc2@prod-pub-seiscomp6,"La Rioja Province, Argentina"
+csn_sc62026noitv,2026-07-12 19:18:19,1.8,M,15,0.65,198,-33.2467,-70.2856,5.0,CSN,scautoloc3@prod-pub-seiscomp6,Chile-Argentina Border Region
+csn_sc62026noizr,2026-07-12 19:25:09,2.0,M,22,0.98,221,-33.1451,-70.2632,5.0,CSN,scautoloc3@prod-pub-seiscomp6,Chile-Argentina Border Region
+csn_sc62026noiyu,2026-07-12 19:25:23,2.1,MLv,18,0.31,201,-22.1644,-68.7023,106.5,CSN,tark,Northern Chile
+csn_sc62026nojng,2026-07-12 19:40:58,3.5,M,26,0.63,225,-16.5905,-71.8352,86.6,CSN,scautoloc2@prod-pub-seiscomp6,Southern Peru
+csn_sc62026nojqm,2026-07-12 19:44:42,2.9,M,7,1.28,250,-23.8176,-67.1131,10.0,CSN,scautoloc2@prod-pub-seiscomp6,Chile-Argentina Border Region
+csn_sc62026nokcy,2026-07-12 20:01:12,2.3,MLv,15,0.45,139,-29.5655,-71.1712,41.4,CSN,Thor,Near Coast of Central Chile
+csn_sc62026nokiu,2026-07-12 20:05:57,2.6,MLv,33,0.44,123,-21.0982,-69.0115,120.0,CSN,Thor,Northern Chile
+csn_sc62026nokqz,2026-07-12 20:15:35,2.3,MLv,19,0.34,241,-21.2578,-68.5262,125.1,CSN,Thor,Chile-Bolivia Border Region
+csn_sc62026nokwk,2026-07-12 20:21:54,3.2,MLv,105,0.43,67,-34.0619,-70.8731,72.5,CSN,Thor,Chile-Argentina Border Region
+csn_sc62026noljh,2026-07-12 20:36:54,2.6,M,12,0.93,173,-28.0599,-69.7263,10.0,CSN,scautoloc2@prod-pub-seiscomp6,Chile-Argentina Border Region
+csn_sc62026nomgu,2026-07-12 21:04:19,2.6,M,18,1.16,158,-24.1940,-69.3965,10.0,CSN,scautoloc2@prod-pub-seiscomp6,Northern Chile
+csn_sc62026nomli,2026-07-12 21:09:33,2.6,M,15,1.18,206,-23.3117,-68.9919,10.0,CSN,scautoloc2@prod-pub-seiscomp6,Northern Chile
+csn_sc62026nomlh,2026-07-12 21:11:38,2.1,M,15,0.29,124,-22.7406,-68.9365,75.2,CSN,cris,Northern Chile
+csn_sc62026nomtf,2026-07-12 21:18:46,2.6,M,16,0.89,183,-22.4465,-69.1908,10.0,CSN,scautoloc2@prod-pub-seiscomp6,Northern Chile
+csn_sc62026nomtu,2026-07-12 21:19:28,2.5,MLv,15,0.27,221,-31.8115,-71.8656,25.8,CSN,cris,Near Coast of Central Chile
+csn_sc62026nomxu,2026-07-12 21:23:29,,,15,1.04,351,-0.2491,-86.1899,10.0,CSN,scautoloc2@prod-pub-seiscomp6,Galapagos Islands Region
+csn_sc62026nomzj,2026-07-12 21:26:00,2.8,MLv,32,0.49,204,-21.3171,-68.4941,135.9,CSN,cris,Chile-Bolivia Border Region
+csn_sc62026nonbp,2026-07-12 21:28:33,2.4,MLv,26,0.31,120,-18.6550,-70.1217,58.9,CSN,cris,Near Coast of Northern Chile
+csn_sc62026nonfw,2026-07-12 21:33:27,2.4,MLv,16,0.42,116,-23.1868,-69.1313,96.7,CSN,cris,Northern Chile
+csn_sc62026nonhk,2026-07-12 21:35:21,2.5,M,14,1.27,172,-22.9879,-69.4786,10.0,CSN,scautoloc2@prod-pub-seiscomp6,Northern Chile
+csn_sc62026nonhd,2026-07-12 21:35:51,2.8,M,16,0.42,238,-31.3451,-68.8141,140.0,CSN,cris,"San Juan Province, Argentina"
+csn_sc62026nonqv,2026-07-12 21:46:18,2.4,M,17,1.00,183,-22.4160,-69.1904,10.0,CSN,scautoloc2@prod-pub-seiscomp6,Northern Chile
+csn_sc62026nonvv,2026-07-12 21:52:10,2.1,M,14,0.19,222,-29.9937,-71.1339,80.9,CSN,cris,Near Coast of Central Chile
+csn_sc62026nooeb,2026-07-12 22:01:46,1.2,M,32,0.30,48,-33.4836,-70.7097,80.7,CSN,cris,Chile-Argentina Border Region
+csn_sc62026noold,2026-07-12 22:09:59,2.4,M,13,1.42,127,-23.3456,-69.6242,10.0,CSN,scautoloc2@prod-pub-seiscomp6,Northern Chile
+csn_sc62026noonf,2026-07-12 22:12:24,2.2,M,8,0.43,167,-22.8348,-69.3991,5.0,CSN,scautoloc2@prod-pub-seiscomp6,Northern Chile
+csn_sc62026nooqd,2026-07-12 22:15:42,4.0,MLv,51,0.53,125,-21.2535,-68.7638,132.0,CSN,cris,Chile-Bolivia Border Region
+csn_sc62026nooze,2026-07-12 22:26:21,2.4,M,13,0.83,150,-20.8929,-68.9750,10.0,CSN,scautoloc2@prod-pub-seiscomp6,Chile-Bolivia Border Region
+csn_sc62026nopbn,2026-07-12 22:29:05,2.2,M,8,1.46,181,-20.7950,-69.4715,10.0,CSN,scautoloc2@prod-pub-seiscomp6,Northern Chile
+csn_sc62026nopsr,2026-07-12 22:49:13,2.9,M,11,0.73,232,-22.7454,-67.4305,330.2,CSN,scautoloc2@prod-pub-seiscomp6,Chile-Bolivia Border Region
+csn_sc62026nopsb,2026-07-12 22:53:08,2.4,M,24,0.44,226,-20.4980,-68.8429,113.1,CSN,cris,Chile-Bolivia Border Region
+csn_sc62026noqkg,2026-07-12 23:09:31,2.2,M,25,0.43,129,-20.9146,-69.1418,113.4,CSN,cris,Northern Chile
+csn_sc62026noqmi,2026-07-12 23:11:58,2.2,M,15,0.31,208,-22.2520,-68.7303,112.0,CSN,cris,Northern Chile
+csn_sc62026nordu,2026-07-12 23:27:59,,,13,1.23,315,-9.2350,-50.1059,10.0,CSN,scautoloc2@prod-pub-seiscomp6,Brazil
+csn_sc62026nordy,2026-07-12 23:32:32,2.4,M,18,0.35,192,-20.1336,-69.1595,95.5,CSN,cris,Northern Chile
+csn_sc62026norhg,2026-07-12 23:36:23,2.4,M,25,0.49,207,-19.9020,-68.8372,123.1,CSN,cris,Chile-Bolivia Border Region
+csn_sc62026norkl,2026-07-12 23:40:04,3.2,MLv,27,0.41,107,-22.9792,-69.0074,94.6,CSN,cris,Northern Chile
+csn_sc62026normt,2026-07-12 23:42:43,2.7,MLv,33,0.63,142,-20.8143,-69.0331,110.8,CSN,cris,Northern Chile
+csn_sc62026nosde,2026-07-13 00:09:26,2.7,MLv,25,0.44,189,-21.6786,-68.5502,146.8,CSN,cris,Chile-Bolivia Border Region
+csn_sc62026nosrg,2026-07-13 00:18:57,2.2,M,21,0.46,134,-19.7919,-69.3861,90.1,CSN,cris,Northern Chile
+csn_sc62026nosud,2026-07-13 00:21:37,1.9,M,21,0.45,256,-32.6865,-71.7435,29.6,CSN,cris,Near Coast of Central Chile
+csn_sc62026notjr,2026-07-13 00:39:46,2.7,MLv,24,0.46,168,-22.0994,-68.8546,104.6,CSN,cris,Northern Chile
+csn_sc62026notov,2026-07-13 00:45:51,2.6,MLv,31,0.41,169,-21.1420,-68.6128,135.1,CSN,cris,Chile-Bolivia Border Region
+csn_sc62026notrh,2026-07-13 00:48:40,3.0,M,35,0.37,230,-31.4231,-68.8900,154.4,CSN,cris,"San Juan Province, Argentina"
+csn_sc62026noudl,2026-07-13 01:02:52,2.5,M,14,0.34,138,-21.1578,-68.8608,102.9,CSN,scautoloc2@prod-pub-seiscomp6,Chile-Bolivia Border Region
+csn_sc62026nougc,2026-07-13 01:05:56,3.2,MLv,26,0.31,154,-18.9587,-69.1903,107.7,CSN,sali,Northern Chile
+csn_sc62026noulk,2026-07-13 01:12:05,4.7,MLv,29,0.31,153,-23.9612,-66.7201,224.3,CSN,sali,"Jujuy Province, Argentina"
+csn_sc62026nouml,2026-07-13 01:13:21,4.2,M,13,2.00,191,-23.1762,-68.9409,30.0,CSN,scautoloc@prod-pub-seiscomp6,Northern Chile
+csn_sc62026nouoi,2026-07-13 01:15:05,3.2,MLv,19,0.26,174,-30.9068,-71.5820,30.7,CSN,sali,Near Coast of Central Chile
+csn_sc62026novvg,2026-07-13 01:53:56,,,7,1.17,297,-28.6292,-76.8886,10.0,CSN,scautoloc2@prod-pub-seiscomp6,Off Coast of Central Chile
+csn_sc62026nowbd,2026-07-13 02:04:31,2.4,M,9,0.25,239,-21.7200,-68.5273,129.6,CSN,sali,Chile-Bolivia Border Region
+csn_sc62026nowvf,2026-07-13 02:24:13,,,7,1.68,275,-25.8217,-64.6211,217.5,CSN,scautoloc2@prod-pub-seiscomp6,"Salta Province, Argentina"
+csn_sc62026noyje,2026-07-13 03:10:46,,,5,0.62,322,-21.0581,-92.2533,10.0,CSN,scautoloc2@prod-pub-seiscomp6,Southeast Central Pacific Ocean
+csn_sc62026noymb,2026-07-13 03:14:08,,,8,0.97,306,-15.0558,-65.7445,10.0,CSN,scautoloc2@prod-pub-seiscomp6,Central Bolivia
+csn_sc62026noyud,2026-07-13 03:23:46,2.8,MLv,9,0.20,277,-31.5292,-68.9494,146.8,CSN,sali,"San Juan Province, Argentina"
+csn_sc62026noztw,2026-07-13 03:53:36,1.9,M,12,0.59,129,-34.7923,-70.9863,36.9,CSN,scautoloc3@prod-pub-seiscomp6,Chile-Argentina Border Region
+csn_sc62026nozvg,2026-07-13 03:55:09,2.7,MLv,21,0.32,89,-18.9897,-69.5755,8.6,CSN,sali,Northern Chile
+csn_sc62026npagn,2026-07-13 04:08:17,2.3,M,8,0.64,231,-30.6099,-69.7404,10.0,CSN,scautoloc2@prod-pub-seiscomp6,Chile-Argentina Border Region
+csn_sc62026nparm,2026-07-13 04:21:06,2.9,MLv,26,0.29,124,-21.1476,-69.0056,115.7,CSN,sali,Northern Chile
+csn_sc62026npbqz,2026-07-13 04:51:59,1.7,M,9,0.15,147,-18.8091,-69.5302,100.4,CSN,sali,Northern Chile
+csn_sc62026npcnb,2026-07-13 05:16:31,3.2,MLv,15,0.29,190,-24.2714,-68.8762,95.1,CSN,sali,Chile-Argentina Border Region
+csn_sc62026npcsa,2026-07-13 05:22:21,2.9,MLv,11,0.30,269,-24.2944,-67.4919,203.3,CSN,sali,Chile-Argentina Border Region
+csn_sc62026npdgg,2026-07-13 05:38:54,3.5,M,26,0.34,240,-32.0267,-69.0703,198.8,CSN,scautoloc2@prod-pub-seiscomp6,"Mendoza Province, Argentina"
+csn_sc62026npdls,2026-07-13 05:45:16,,,7,2.36,310,-33.8254,-93.1942,10.0,CSN,scautoloc2@prod-pub-seiscomp6,Southeast Central Pacific Ocean
+csn_sc62026npdti,2026-07-13 05:54:09,2.1,M,11,0.54,186,-20.9637,-70.2094,20.6,CSN,scautoloc2@prod-pub-seiscomp6,Near Coast of Northern Chile
+csn_sc62026npeir,2026-07-13 06:12:06,2.7,M,11,0.59,217,-31.4065,-69.4899,107.6,CSN,scautoloc2@prod-pub-seiscomp6,"San Juan Province, Argentina"
+csn_sc62026npfdw,2026-07-13 06:38:38,2.7,MLv,12,0.21,319,-36.2079,-70.9385,157.3,CSN,sali,Chile-Argentina Border Region
+csn_sc62026npfgo,2026-07-13 06:39:55,2.8,MLv,19,0.29,205,-21.0572,-68.4535,142.0,CSN,sali,Chile-Bolivia Border Region
+csn_sc62026npfpv,2026-07-13 06:49:53,,,31,0.61,256,-30.8068,-65.9648,320.5,CSN,scautoloc2@prod-pub-seiscomp6,"Cordoba Province, Argentina"
+csn_sc62026npfpy,2026-07-13 06:50:54,1.7,M,12,0.63,277,-32.9265,-70.1107,40.9,CSN,scautoloc3@prod-pub-seiscomp6,Chile-Argentina Border Region
+csn_sc62026npfxj,2026-07-13 06:59:28,2.2,M,15,0.29,89,-20.1516,-69.3571,60.6,CSN,scautoloc2@prod-pub-seiscomp6,Northern Chile
+csn_sc62026npgch,2026-07-13 07:05:12,2.3,M,18,0.49,108,-20.5271,-69.3774,45.3,CSN,scautoloc2@prod-pub-seiscomp6,Northern Chile
+csn_sc62026npgfq,2026-07-13 07:09:08,1.7,M,14,0.84,151,-33.2433,-71.4167,27.4,CSN,scautoloc3@prod-pub-seiscomp6,Near Coast of Central Chile
+csn_sc62026npgna,2026-07-13 07:17:47,3.0,M,17,0.47,223,-31.5635,-69.3129,172.8,CSN,scautoloc2@prod-pub-seiscomp6,"San Juan Province, Argentina"
+csn_sc62026npguk,2026-07-13 07:26:19,,,9,2.28,328,-26.9984,-43.4920,26.4,CSN,scautoloc2@prod-pub-seiscomp6,South Atlantic Ocean
+csn_sc62026npgrl,2026-07-13 07:26:54,2.2,M,18,0.71,111,-30.5489,-71.4167,26.4,CSN,scautoloc2@prod-pub-seiscomp6,Near Coast of Central Chile
+csn_sc62026nphie,2026-07-13 07:42:27,1.7,M,10,0.31,221,-28.7864,-71.4373,16.3,CSN,yole,Near Coast of Central Chile
+csn_sc62026nphui,2026-07-13 07:56:33,2.0,M,22,0.44,310,-32.6865,-71.7378,10.0,CSN,scautoloc3@prod-pub-seiscomp6,Near Coast of Central Chile
+csn_sc62026nphvw,2026-07-13 07:58:19,2.0,M,13,0.17,282,-32.7279,-70.1938,66.5,CSN,scautoloc3@prod-pub-seiscomp6,Chile-Argentina Border Region
+csn_sc62026npilh,2026-07-13 08:16:18,,,7,0.94,346,-40.6892,-36.4182,10.0,CSN,scautoloc2@prod-pub-seiscomp6,South Atlantic Ocean
+csn_sc62026npirc,2026-07-13 08:23:05,,,8,0.77,359,40.2270,-62.9397,10.0,CSN,scautoloc2@prod-pub-seiscomp6,North Atlantic Ocean
+csn_sc62026npivc,2026-07-13 08:27:44,,,7,1.02,324,-25.4209,-96.0767,10.0,CSN,scautoloc2@prod-pub-seiscomp6,Southeast Central Pacific Ocean
+csn_sc62026npjxs,2026-07-13 09:01:07,,,7,0.93,327,-15.0693,-55.7312,5.0,CSN,scautoloc2@prod-pub-seiscomp6,Brazil
+csn_sc62026npkes,2026-07-13 09:09:17,,,10,1.91,330,-32.7268,-54.8554,30.0,CSN,scautoloc@prod-pub-seiscomp6,Uruguay
+csn_sc62026npkln,2026-07-13 09:19:06,3.7,MLv,29,0.36,178,-20.5968,-68.9252,95.0,CSN,yole,Chile-Bolivia Border Region
+csn_sc62026npldu,2026-07-13 09:38:27,2.4,MLv,22,0.29,307,-32.2210,-71.2554,71.6,CSN,yole,Near Coast of Central Chile
+csn_sc62026nplju,2026-07-13 09:45:29,2.5,MLv,33,0.29,306,-32.6319,-71.7569,21.8,CSN,yole,Near Coast of Central Chile
+csn_sc62026nplkx,2026-07-13 09:46:38,2.9,M,12,0.23,286,-21.3142,-67.1028,240.1,CSN,yole,Chile-Bolivia Border Region
+csn_sc62026npmeb,2026-07-13 10:09:08,3.2,MLv,8,0.27,342,-24.0596,-67.2167,188.9,CSN,yole,Chile-Argentina Border Region
+csn_sc62026npmns,2026-07-13 10:20:19,2.7,MLv,30,0.40,149,-20.3158,-69.2609,100.4,CSN,yole,Northern Chile
+csn_sc62026npmrl,2026-07-13 10:24:43,2.9,M,14,0.89,186,-23.2027,-68.5634,107.6,CSN,scautoloc2@prod-pub-seiscomp6,Northern Chile
+csn_sc62026npmxh,2026-07-13 10:31:40,3.0,M,20,0.24,327,-31.6789,-69.9715,134.9,CSN,yole,"San Juan Province, Argentina"
+csn_sc62026npnto,2026-07-13 10:57:28,2.7,M,13,0.50,290,-20.9866,-67.8895,182.9,CSN,yole,Southern Bolivia
+csn_sc62026npoqv,2026-07-13 11:24:37,2.2,M,11,0.63,254,-35.2118,-71.3364,26.4,CSN,scautoloc3@prod-pub-seiscomp6,Central Chile
+csn_sc62026npqar,2026-07-13 12:06:24,2.3,M,8,0.67,306,-33.9475,-72.7865,10.0,CSN,scautoloc3@prod-pub-seiscomp6,Off Coast of Central Chile
+csn_sc62026npqaz,2026-07-13 12:06:46,,,7,3.35,341,-33.3517,-85.8232,10.0,CSN,scautoloc2@prod-pub-seiscomp6,Southeast Central Pacific Ocean
+csn_sc62026npqkh,2026-07-13 12:17:37,2.7,M,11,0.31,318,-23.7602,-67.2135,237.8,CSN,yole,Chile-Argentina Border Region
+csn_sc62026npqqr,2026-07-13 12:25:04,1.7,M,8,0.70,160,-21.2540,-69.8959,26.7,CSN,scautoloc2@prod-pub-seiscomp6,Northern Chile
+csn_sc62026nprbl,2026-07-13 12:37:12,,,13,1.17,322,-28.5053,-49.8189,10.0,CSN,scautoloc2@prod-pub-seiscomp6,Brazil
+csn_sc62026nprer,2026-07-13 12:41:22,3.1,M,8,0.84,220,-20.5206,-68.6482,101.1,CSN,scautoloc2@prod-pub-seiscomp6,Chile-Bolivia Border Region
+csn_sc62026nprkd,2026-07-13 12:47:43,2.0,M,9,2.56,152,-29.4314,-70.9817,10.0,CSN,scautoloc2@prod-pub-seiscomp6,Central Chile
+csn_sc62026nprqx,2026-07-13 12:55:37,2.5,MLv,8,0.14,319,-23.3817,-68.8576,95.8,CSN,yole,Northern Chile
+csn_sc62026npshm,2026-07-13 13:14:58,3.2,MLv,15,0.22,316,-24.0313,-67.4047,191.7,CSN,mary,Chile-Argentina Border Region
+csn_sc62026nptsb,2026-07-13 13:57:35,1.5,MLv,13,0.28,106,-21.6405,-69.6189,52.1,CSN,mary,Northern Chile
+csn_sc62026npvoa,2026-07-13 14:53:31,,,5,0.94,186,-26.2066,-104.1165,10.0,CSN,scautoloc2@prod-pub-seiscomp6,Easter Island Region
+csn_sc62026npvxt,2026-07-13 15:04:49,2.3,MLv,15,0.32,248,-19.6676,-70.6900,33.6,CSN,mary,Near Coast of Northern Chile

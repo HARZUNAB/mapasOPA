@@ -8,38 +8,8 @@ import pyperclip
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
-import matplotlib.patheffects
-import csv # Asegúrate de importar esto al inicio
-from math import radians, cos, sin, asin, sqrt
-import math
-
 
 OUTPUT_FILE = "datos_seiscomp.csv"
-# Obtener el directorio donde reside este script (capturar.py)
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-ARCHIVO_TMP = os.path.join(BASE_DIR, "evento_data.txt")
-
-def calcular_distancia(lon1, lat1, lon2, lat2):
-    # Radio de la Tierra en km
-    R = 6371.0
-    dLat = radians(lat2 - lat1)
-    dLon = radians(lon2 - lon1)
-    a = sin(dLat/2)**2 + cos(radians(lat1)) * cos(radians(lat2)) * sin(dLon/2)**2
-    c = 2 * asin(sqrt(a))
-    return R * c
-
-def obtener_rumbo(lon1, lat1, lon2, lat2):
-    # Calcula el ángulo (bearing) entre dos puntos
-    dLon = math.radians(lon2 - lon1)
-    y = math.sin(dLon) * math.cos(math.radians(lat2))
-    x = math.cos(math.radians(lat1)) * math.sin(math.radians(lat2)) - \
-        math.sin(math.radians(lat1)) * math.cos(math.radians(lat2)) * math.cos(dLon)
-    
-    brng = (math.degrees(math.atan2(y, x)) + 360) % 360
-    
-    # Mapeo de ángulos a puntos cardinales
-    direcciones = ["N", "NE", "E", "SE", "S", "SW", "W", "NW", "N"]
-    return direcciones[round(brng / 45)]
 
 def inicializar_csv():
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
@@ -208,8 +178,11 @@ def plotear_evento(fecha, lat, lon, prof, mag, event_id, texto_magnitud):
     if os.path.exists(arch_tif):
         try:
             from PIL import Image
+            # Desactivar la advertencia de bomba de descompresión para imágenes grandes
             Image.MAX_IMAGE_PIXELS = None  
+            
             img = Image.open(arch_tif)
+            # Renderizado limpio sin 'regrid_shape' para evitar el error de AxesImage
             ax_planta.imshow(img, origin='upper', 
                              extent=[-180, 180, -90, 90], transform=ccrs.PlateCarree())
         except Exception as e:
@@ -232,42 +205,6 @@ def plotear_evento(fecha, lat, lon, prof, mag, event_id, texto_magnitud):
     ax_planta.scatter(lon, lat, s=size, color='#ff3333', alpha=0.95, edgecolors='black', 
                       linewidth=1.2, zorder=5, transform=ccrs.PlateCarree(), label="Epicentro Actual")
     
-    # Cargar localidades, calcular la más cercana y graficar
-    distancia_min = float('inf')
-    localidad_cercana = "N/A"
-
-    if os.path.exists("localidades.csv"):
-        with open("localidades.csv", mode='r', encoding='utf-8') as f:
-            reader = csv.DictReader(f)
-            for row in reader:
-                nombre = row['Nombre']
-                lon_loc = float(row['Lon'])
-                lat_loc = float(row['Lat'])
-                
-                # Calcular distancia para referencia
-                d = calcular_distancia(lon, lat, lon_loc, lat_loc)
-                if d < distancia_min:
-                    distancia_min = d
-                    localidad_cercana = nombre
-                    rumbo = obtener_rumbo(float(row['Lon']), float(row['Lat']), lon, lat)
-                
-                # Dibujar en mapa si está en rango visual
-                if (lon - RANGO_ANCHURA <= lon_loc <= lon + RANGO_ANCHURA) and \
-                   (lat - RANGO_ANCHURA <= lat_loc <= lat + RANGO_ANCHURA):
-                    ax_planta.plot(lon_loc, lat_loc, 'o', color='black', markersize=3, 
-                                   transform=ccrs.PlateCarree(), zorder=6)
-                    ax_planta.text(lon_loc + 0.05, lat_loc + 0.05, nombre, 
-                                   fontsize=7, fontweight='bold', color='black',
-                                   path_effects=[matplotlib.patheffects.withSimplePatchShadow()],
-                                   transform=ccrs.PlateCarree(), zorder=7)
-
-        # 3. Dibujar la referencia con el nuevo formato
-        texto_ref = f"{distancia_min:.0f} km al {rumbo} de {localidad_cercana}"
-        ax_planta.text(0.02, 0.02, texto_ref, transform=ax_planta.transAxes, 
-                       fontsize=8, fontweight='bold', color='white',
-                       bbox=dict(facecolor='black', alpha=0.7, edgecolor='none', pad=4),
-                       zorder=10)
-
     # Rejilla de coordenadas dinámica
     gl = ax_planta.gridlines(draw_labels=True, linestyle='--', alpha=0.5, color='#444444', zorder=4)
     gl.top_labels, gl.right_labels = False, False
@@ -332,60 +269,64 @@ def plotear_evento(fecha, lat, lon, prof, mag, event_id, texto_magnitud):
     print("[GRAFICADOR] Ventana cerrada por el operador. Volviendo al modo escucha...\n")
 
 # =========================================================================
-# LOOP PRINCIPAL (EJECUCIÓN ÚNICA)
+# LOOP PRINCIPAL
 # =========================================================================
 if __name__ == "__main__":
-    #print("=== PROCESANDO EVENTO DESDE ARCHIVO ===")
+    print("=== CAPTURA DE DATOS DE SEISCOMP ===")
+    print("Escuchando el portapapeles... Copia solucion desde scolv.")
+    print("Al copiar solución se ploteará en planta y perfil.")
+    print("Para cerrar el programa, presiona Ctrl + C en esta terminal.\n")
     
-    # Verificamos si el archivo existe al momento de la ejecución
-    if os.path.exists(ARCHIVO_TMP):
-        try:
-            with open(ARCHIVO_TMP, 'r') as f:
-                texto_actual = f.readline().strip()
+    try:
+        pyperclip.copy("")
+    except Exception as e:
+        print(f"[Error] No se pudo inicializar pyperclip: {e}")
+        sys.exit(1)
+
+    ultimo_texto = ""
+    
+    try:
+        while True:
+            try:
+                texto_actual = pyperclip.paste().strip()
+            except Exception:
+                time.sleep(0.5)
+                continue
+                
+            if texto_actual and texto_actual != ultimo_texto and "csn_" in texto_actual:
+                ultimo_texto = texto_actual
+                print("[EVENTO DETECTADO] Procesando parámetros del portapapeles...")
+                
+                try:
+                    partes = texto_actual.split(';')
+                    if len(partes) >= 12:
+                        fecha = partes[0].strip()
+                        mag = float(partes[3].strip())
+                        tipo_mag = partes[4]
+                        texto_magnitud = f"{partes[3]} {tipo_mag}"
+
+                        raw_lat = partes[8].strip()
+                        lat = float(raw_lat.split()[0])
+                        if 's' in raw_lat.lower():
+                            lat = -abs(lat)
+                            
+                        raw_lon = partes[9].strip()
+                        lon = float(raw_lon.split()[0])
+                        if 'w' in raw_lon.lower() or 'o' in raw_lon.lower():
+                            lon = -abs(lon)
+                            
+                        raw_prof = partes[10].strip()
+                        prof = float(raw_prof.replace('km', '').strip())
+                        
+                        event_id = partes[-1].strip()
+                        
+                        plotear_evento(fecha, lat, lon, prof, mag, event_id, texto_magnitud)
+                    else:
+                        print("[Error] El formato de la línea copiada no tiene las columnas esperadas.")
+                except Exception as ex:
+                    print(f"[Error] Falló el parseo de la línea de SeisComP: {ex}")
             
-            if texto_actual and "csn_" in texto_actual:
-                print("[EVENTO SELECCIONADO] Procesando parámetros...")
-                
-                partes = texto_actual.split(';')
-                if len(partes) >= 12:
-                    fecha = partes[0].strip()
-                    mag = float(partes[3].strip())
-                    tipo_mag = partes[4]
-                    texto_magnitud = f"{partes[3]} {tipo_mag}"
-
-                    raw_lat = partes[8].strip()
-                    lat = float(raw_lat.split()[0])
-                    if 's' in raw_lat.lower():
-                        lat = -abs(lat)
-                        
-                    raw_lon = partes[9].strip()
-                    lon = float(raw_lon.split()[0])
-                    if 'w' in raw_lon.lower() or 'o' in raw_lon.lower():
-                        lon = -abs(lon)
-                        
-                    raw_prof = partes[10].strip()
-                    prof = float(raw_prof.replace('km', '').strip())
-                    
-                    event_id = partes[-1].strip()
-                    
-                    # Llamada a la función de ploteo
-                    plotear_evento(fecha, lat, lon, prof, mag, event_id, texto_magnitud)
-                    
-                    # Borrar el archivo tras completar el trabajo
-                    try:
-                        os.remove(ARCHIVO_TMP)
-                        print("[INFO] Archivo temporal eliminado. Cerrando programa.")
-                    except OSError as e:
-                        print(f"[Error] No se pudo eliminar el archivo temporal: {e}")
-                else:
-                    print("[Error] El formato de la línea en el archivo no es válido.")
-            else:
-                print("[Error] El archivo no contiene un evento válido (csn_).")
-                
-        except Exception as ex:
-            print(f"[Error] Falló la lectura o el parseo del archivo: {ex}")
-    else:
-        print(f"[ERROR] No se encontró el archivo: {ARCHIVO_TMP}. Asegúrate de ejecutar newpt.sh")
-
-    # Al llegar aquí, el script termina naturalmente al cerrar la ventana de matplotlib
-
+            time.sleep(0.5)
+            
+    except KeyboardInterrupt:
+        print("\n[INFO] NewPT cerrado por el operador")

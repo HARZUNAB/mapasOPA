@@ -13,11 +13,7 @@ import csv # Asegúrate de importar esto al inicio
 from math import radians, cos, sin, asin, sqrt
 import math
 
-
 OUTPUT_FILE = "datos_seiscomp.csv"
-# Obtener el directorio donde reside este script (capturar.py)
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-ARCHIVO_TMP = os.path.join(BASE_DIR, "evento_data.txt")
 
 def calcular_distancia(lon1, lat1, lon2, lat2):
     # Radio de la Tierra en km
@@ -332,60 +328,64 @@ def plotear_evento(fecha, lat, lon, prof, mag, event_id, texto_magnitud):
     print("[GRAFICADOR] Ventana cerrada por el operador. Volviendo al modo escucha...\n")
 
 # =========================================================================
-# LOOP PRINCIPAL (EJECUCIÓN ÚNICA)
+# LOOP PRINCIPAL
 # =========================================================================
 if __name__ == "__main__":
-    #print("=== PROCESANDO EVENTO DESDE ARCHIVO ===")
+    print("=== CAPTURA DE DATOS DE SEISCOMP ===")
+    print("Escuchando el portapapeles... Copia solucion desde scolv.")
+    print("Al copiar solución se ploteará en planta y perfil.")
+    print("Para cerrar el programa, presiona Ctrl + C en esta terminal.\n")
     
-    # Verificamos si el archivo existe al momento de la ejecución
-    if os.path.exists(ARCHIVO_TMP):
-        try:
-            with open(ARCHIVO_TMP, 'r') as f:
-                texto_actual = f.readline().strip()
+    try:
+        pyperclip.copy("")
+    except Exception as e:
+        print(f"[Error] No se pudo inicializar pyperclip: {e}")
+        sys.exit(1)
+
+    ultimo_texto = ""
+    
+    try:
+        while True:
+            try:
+                texto_actual = pyperclip.paste().strip()
+            except Exception:
+                time.sleep(0.5)
+                continue
+                
+            if texto_actual and texto_actual != ultimo_texto and "csn_" in texto_actual:
+                ultimo_texto = texto_actual
+                print("[EVENTO DETECTADO] Procesando parámetros del portapapeles...")
+                
+                try:
+                    partes = texto_actual.split(';')
+                    if len(partes) >= 12:
+                        fecha = partes[0].strip()
+                        mag = float(partes[3].strip())
+                        tipo_mag = partes[4]
+                        texto_magnitud = f"{partes[3]} {tipo_mag}"
+
+                        raw_lat = partes[8].strip()
+                        lat = float(raw_lat.split()[0])
+                        if 's' in raw_lat.lower():
+                            lat = -abs(lat)
+                            
+                        raw_lon = partes[9].strip()
+                        lon = float(raw_lon.split()[0])
+                        if 'w' in raw_lon.lower() or 'o' in raw_lon.lower():
+                            lon = -abs(lon)
+                            
+                        raw_prof = partes[10].strip()
+                        prof = float(raw_prof.replace('km', '').strip())
+                        
+                        event_id = partes[-1].strip()
+                        
+                        plotear_evento(fecha, lat, lon, prof, mag, event_id, texto_magnitud)
+                    else:
+                        print("[Error] El formato de la línea copiada no tiene las columnas esperadas.")
+                except Exception as ex:
+                    print(f"[Error] Falló el parseo de la línea de SeisComP: {ex}")
             
-            if texto_actual and "csn_" in texto_actual:
-                print("[EVENTO SELECCIONADO] Procesando parámetros...")
-                
-                partes = texto_actual.split(';')
-                if len(partes) >= 12:
-                    fecha = partes[0].strip()
-                    mag = float(partes[3].strip())
-                    tipo_mag = partes[4]
-                    texto_magnitud = f"{partes[3]} {tipo_mag}"
-
-                    raw_lat = partes[8].strip()
-                    lat = float(raw_lat.split()[0])
-                    if 's' in raw_lat.lower():
-                        lat = -abs(lat)
-                        
-                    raw_lon = partes[9].strip()
-                    lon = float(raw_lon.split()[0])
-                    if 'w' in raw_lon.lower() or 'o' in raw_lon.lower():
-                        lon = -abs(lon)
-                        
-                    raw_prof = partes[10].strip()
-                    prof = float(raw_prof.replace('km', '').strip())
-                    
-                    event_id = partes[-1].strip()
-                    
-                    # Llamada a la función de ploteo
-                    plotear_evento(fecha, lat, lon, prof, mag, event_id, texto_magnitud)
-                    
-                    # Borrar el archivo tras completar el trabajo
-                    try:
-                        os.remove(ARCHIVO_TMP)
-                        print("[INFO] Archivo temporal eliminado. Cerrando programa.")
-                    except OSError as e:
-                        print(f"[Error] No se pudo eliminar el archivo temporal: {e}")
-                else:
-                    print("[Error] El formato de la línea en el archivo no es válido.")
-            else:
-                print("[Error] El archivo no contiene un evento válido (csn_).")
-                
-        except Exception as ex:
-            print(f"[Error] Falló la lectura o el parseo del archivo: {ex}")
-    else:
-        print(f"[ERROR] No se encontró el archivo: {ARCHIVO_TMP}. Asegúrate de ejecutar newpt.sh")
-
-    # Al llegar aquí, el script termina naturalmente al cerrar la ventana de matplotlib
-
+            time.sleep(0.5)
+            
+    except KeyboardInterrupt:
+        print("\n[INFO] NewPT cerrado por el operador")
