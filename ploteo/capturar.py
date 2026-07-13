@@ -343,70 +343,83 @@ def plotear_evento(fecha, lat, lon, prof, mag, event_id, texto_magnitud):
     # =========================================================================
     ax_perfil = fig.add_subplot(1, 2, 2)
     
-    if lon_b:
-        ax_perfil.scatter(lon_b, prof_b, color='gray', alpha=0.3, s=6, marker='.', zorder=1, label="Sismicidad Histórica")
-
-    if lon_slab and prof_slab:
-        label_linea = "Contacto (Slab2 Global)" if usando_global else f"Contacto Placas ({str_perfil})"
-        ax_perfil.plot(lon_slab, prof_slab, color='black', linestyle='-', lw=2.2, 
-                       zorder=3, label=label_linea)
-
-    if lon_topo and alt_topo:
-        ax_perfil.plot(lon_topo, alt_topo, color='black', linestyle='-', lw=1.2, 
-                       zorder=5, label="Topografía/Batimetría")
-
-    ax_perfil.scatter(lon, prof, s=size, color='#ff3333', alpha=0.9, edgecolors='black', linewidths=1.5, zorder=10, label="Hipocentro")
-    
-    if lon_slab:
-        titulo_perfil = f"Perfil Perpendicular ({str_perfil})"
-    else:
-        titulo_perfil = f"Perfil Perpendicular ({str_perfil} - Sin Datos)"
+    # VALIDACIÓN GEOGRÁFICA DE LOS 13 PERFILES LOCALES (Entre 18°S y 45°S)
+    if not (-45.0 <= lat <= -18.0):
+        # Desactivamos los ejes para mostrar un panel limpio de aviso
+        ax_perfil.axis('off')
         
-    ax_perfil.set_title(titulo_perfil, fontsize=11, fontweight='bold', pad=10)
-    ax_perfil.set_xlabel("Longitud", fontsize=9, fontweight='bold', labelpad=8)
-    ax_perfil.set_ylabel("Profundidad (km)", fontsize=9, fontweight='bold', labelpad=8)
-    ax_perfil.tick_params(axis='both', labelsize=8)
-    
-    if lon_slab:
-        limite_izquierdo = min(lon_slab[0], lon - 0.5)
-    else:
-        limite_izquierdo = lon - RANGO_ANCHURA
+        # Insertamos el mensaje centrado de advertencia para el analista
+        ax_perfil.text(0.5, 0.5, "PERFIL NO DISPONIBLE\n\nSismo fuera de la cobertura\nde los perfiles locales (18°S - 45°S)", 
+                       fontsize=12, fontweight='bold', color='#cc0000',
+                       ha='center', va='center', transform=ax_perfil.transAxes,
+                       bbox=dict(facecolor='#ffe6e6', edgecolor='#cc0000', alpha=0.8, boxstyle='round,pad=1'))
         
-    ax_perfil.set_xlim(limite_izquierdo, lon + RANGO_ANCHURA)
-    
-    prof_max_grafico = max(200, float(prof) + 50)
-    ax_perfil.set_ylim(bottom=prof_max_grafico, top=-10) 
-    
-    ax_perfil.grid(True, linestyle=':', alpha=0.4, color='gray', zorder=0)
+    else:
+        # SI ESTÁ EN RANGO, SE EJECUTA EL PLOTEO NORMAL DEL PERFIL
+        if lon_b:
+            ax_perfil.scatter(lon_b, prof_b, color='gray', alpha=0.3, s=6, marker='.', zorder=1, label="Sismicidad Histórica")
 
-    # Tamaño del punto rojo en la leyenda
-    ax_perfil.legend(
-    loc='upper center', 
-    bbox_to_anchor=(0.5, -0.15),  
-    ncol=3,                       
-    fontsize=8,                   
-    frameon=True, 
-    facecolor='#f9f9f9', 
-    edgecolor='gray',
-    markerscale=0.75  # Ajusta el tamaño relativo del marcador dentro de la leyenda
-)
-    
-    """
-    ax_perfil.legend(
-        loc='upper center', 
-        bbox_to_anchor=(0.5, -0.15),  
-        ncol=3,                       
-        fontsize=8,                   
-        frameon=True, 
-        facecolor='#f9f9f9', 
-        edgecolor='gray'              
-    )
-    """
+        if lon_slab and prof_slab:
+            label_linea = "Contacto (Slab2 Global)" if usando_global else f"Contacto Placas ({str_perfil})"
+            ax_perfil.plot(lon_slab, prof_slab, color='black', linestyle='-', lw=2.2, 
+                           zorder=3, label=label_linea)
+
+        if lon_topo and alt_topo:
+            ax_perfil.plot(lon_topo, alt_topo, color='black', linestyle='-', lw=1.2, 
+                           zorder=5, label="Topografía/Batimetría")
+
+        ax_perfil.scatter(lon, prof, s=size, color='#ff3333', alpha=0.9, edgecolors='black', linewidths=1.5, zorder=10, label="Hipocentro")
+        
+        if lon_slab:
+            titulo_perfil = f"Perfil Perpendicular ({str_perfil})"
+        else:
+            titulo_perfil = f"Perfil Perpendicular ({str_perfil} - Sin Datos)"
+            
+        ax_perfil.set_title(titulo_perfil, fontsize=11, fontweight='bold', pad=10)
+        ax_perfil.set_xlabel("Longitud", fontsize=9, fontweight='bold', labelpad=8)
+        ax_perfil.set_ylabel("Profundidad (km)", fontsize=9, fontweight='bold', labelpad=8)
+        ax_perfil.tick_params(axis='both', labelsize=8)
+        
+        if lon_slab:
+            limite_izquierdo = min(lon_slab[0], lon - 0.5)
+        else:
+            limite_izquierdo = lon - RANGO_ANCHURA
+            
+        ax_perfil.set_xlim(limite_izquierdo, lon + RANGO_ANCHURA)
+        
+        prof_max_grafico = max(200, float(prof) + 50)
+        ax_perfil.set_ylim(bottom=prof_max_grafico, top=-10) 
+        
+        ax_perfil.grid(True, linestyle=':', alpha=0.4, color='gray', zorder=0)
+
+        # Tamaño del punto rojo en la leyenda
+        ax_perfil.legend(
+            loc='upper center', 
+            bbox_to_anchor=(0.5, -0.15),  
+            ncol=3,                       
+            fontsize=8,                   
+            frameon=True, 
+            facecolor='#f9f9f9', 
+            edgecolor='gray',
+            markerscale=0.75  # Ajusta el tamaño relativo del marcador dentro de la leyenda
+        )
+        
+        """
+        ax_perfil.legend(
+            loc='upper center', 
+            bbox_to_anchor=(0.5, -0.15),  
+            ncol=3,                       
+            fontsize=8,                   
+            frameon=True, 
+            facecolor='#f9f9f9', 
+            edgecolor='gray'              
+        )
+        """
 
     plt.tight_layout(rect=[0, 0, 1, 0.95])
     plt.show()
     print("[GRAFICADOR] Ventana cerrada por el operador. Volviendo al modo escucha...\n")
-
+    
 # =========================================================================
 # LOOP PRINCIPAL (EJECUCIÓN ÚNICA)
 # =========================================================================
