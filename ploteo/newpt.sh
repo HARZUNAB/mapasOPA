@@ -15,9 +15,8 @@ pkill -f "xterm.*Procesamiento de Evento - NewPT" 2>/dev/null
 sleep 0.2
 
 # =========================================================================
-# LEVANTAR NUEVO EVENTO (Sintaxis corregida sin conflicto de comillas)
+# LEVANTAR NUEVO EVENTO (Sintaxis corregida con espera interactiva)
 # =========================================================================
-# Abrimos la nueva ventana xterm flotante de forma segura
 xterm -geometry 90x25 -T "Procesamiento de Evento - NewPT" -e bash -c "
     echo '=== INICIANDO EXTRACCION DE PARAMETROS ===';
     python3 '$DIR_TRABAJO/consulta_evento.py' '$EVENT_ID';
@@ -35,7 +34,8 @@ xterm -geometry 90x25 -T "Procesamiento de Evento - NewPT" -e bash -c "
         echo '    SeisComP antes de volver a presionar NewPT.'
         echo '============================================================'
         echo ''
-        echo 'Esta ventana se cerrara automaticamente en 8 segundos...'
-        sleep 8
+        # Usamos una sintaxis de read compatible que no rompe las comillas de xterm
+        echo 'Presiona ENTER para cerrar esta ventana...'
+        read
     fi
 " &
