@@ -60,7 +60,12 @@ def plotear_evento(fecha, lat, lon, prof, mag, event_id, texto_magnitud):
     fig.suptitle(f"NewPT - Evento: {event_id}\nFecha: {fecha} | {texto_magnitud} | Profundidad: {prof} km", 
                  fontsize=12, fontweight='bold', y=0.96)
     
-    size = float(mag) * 60
+    # Define tamaño en funsión de la magnitud para el punto que corresponde al evento ploteado 
+    #size = float(mag) * 60
+
+    # Define un tamaño fijo para el punto que corresponde al evento ploteado
+    size = 220
+
     RANGO_ANCHURA = 2.5 # Grados dinámicos alrededor del sismo
 
     # =========================================================================
@@ -317,6 +322,19 @@ def plotear_evento(fecha, lat, lon, prof, mag, event_id, texto_magnitud):
     
     ax_perfil.grid(True, linestyle=':', alpha=0.4, color='gray', zorder=0)
 
+    # Tamaño del punto rojo en la leyenda
+    ax_perfil.legend(
+    loc='upper center', 
+    bbox_to_anchor=(0.5, -0.15),  
+    ncol=3,                       
+    fontsize=8,                   
+    frameon=True, 
+    facecolor='#f9f9f9', 
+    edgecolor='gray',
+    markerscale=0.75  # Ajusta el tamaño relativo del marcador dentro de la leyenda
+)
+    
+    """
     ax_perfil.legend(
         loc='upper center', 
         bbox_to_anchor=(0.5, -0.15),  
@@ -326,6 +344,7 @@ def plotear_evento(fecha, lat, lon, prof, mag, event_id, texto_magnitud):
         facecolor='#f9f9f9', 
         edgecolor='gray'              
     )
+    """
 
     plt.tight_layout(rect=[0, 0, 1, 0.95])
     plt.show()
