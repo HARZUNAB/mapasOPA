@@ -12,7 +12,7 @@ import matplotlib.patheffects
 import csv # Asegúrate de importar esto al inicio
 from math import radians, cos, sin, asin, sqrt
 import math
-
+from adjustText import adjust_text
 
 OUTPUT_FILE = "datos_seiscomp.csv"
 # Obtener el directorio donde reside este script (capturar.py)
@@ -241,6 +241,62 @@ def plotear_evento(fecha, lat, lon, prof, mag, event_id, texto_magnitud):
     distancia_min = float('inf')
     localidad_cercana = "N/A"
 
+    # Cargar localidades, calcular la más cercana y graficar
+    distancia_min = float('inf')
+    localidad_cercana = "N/A"
+    textos_mapa = []  # <-- LISTA NUEVA: Aquí guardaremos las etiquetas para adjustText
+
+    if os.path.exists("localidades.csv"):
+        with open("localidades.csv", mode='r', encoding='utf-8') as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                nombre = row['Nombre']
+                lon_loc = float(row['Lon'])
+                lat_loc = float(row['Lat'])
+                
+                # Calcular distancia para referencia
+                d = calcular_distancia(lon, lat, lon_loc, lat_loc)
+                if d < distancia_min:
+                    distancia_min = d
+                    localidad_cercana = nombre
+                    rumbo = obtener_rumbo(float(row['Lon']), float(row['Lat']), lon, lat)
+                
+                # Dibujar en mapa si está en rango visual
+                if (lon - RANGO_ANCHURA <= lon_loc <= lon + RANGO_ANCHURA) and \
+                   (lat - RANGO_ANCHURA <= lat_loc <= lat + RANGO_ANCHURA):
+                    ax_planta.plot(lon_loc, lat_loc, 'o', color='black', markersize=3, 
+                                   transform=ccrs.PlateCarree(), zorder=6)
+                    
+                    # MODIFICADO: Eliminamos el desplazamiento fijo (+ 0.05) y guardamos en la lista
+                    t = ax_planta.text(lon_loc, lat_loc, nombre, 
+                                   fontsize=7, fontweight='bold', color='black',
+                                   path_effects=[matplotlib.patheffects.withSimplePatchShadow()],
+                                   transform=ccrs.PlateCarree(), zorder=7)
+                    textos_mapa.append(t)
+
+        # NUEVO: Si encontramos localidades en el mapa, ajustamos sus posiciones automáticamente
+        if textos_mapa:
+            adjust_text(textos_mapa, 
+                        ax=ax_planta,
+                        expand=(1.2, 1.4), 
+                        arrowprops=dict(arrowstyle="-", color='black', lw=0.5, alpha=0.6))
+
+        # 3. Dibujar la referencia con el nuevo formato
+        texto_ref = f"{distancia_min:.0f} km al {rumbo} de {localidad_cercana}"
+        ax_planta.text(0.02, 0.02, texto_ref, transform=ax_planta.transAxes, 
+                       fontsize=8, fontweight='bold', color='white',
+                       bbox=dict(facecolor='black', alpha=0.7, edgecolor='none', pad=4),
+                       zorder=10)
+
+    # Rejilla de coordenadas dinámica
+    gl = ax_planta.gridlines(draw_labels=True, linestyle='--', alpha=0.5, color='#444444', zorder=4)
+    gl.top_labels, gl.right_labels = False, False
+    gl.xlabel_style = {'size': 8.5, 'weight': 'bold'}
+    gl.ylabel_style = {'size': 8.5, 'weight': 'bold'}
+    
+    ax_planta.set_title("Vista en Planta", fontsize=11, fontweight='bold', pad=10)
+
+    """
     if os.path.exists("localidades.csv"):
         with open("localidades.csv", mode='r', encoding='utf-8') as f:
             reader = csv.DictReader(f)
@@ -280,6 +336,7 @@ def plotear_evento(fecha, lat, lon, prof, mag, event_id, texto_magnitud):
     gl.ylabel_style = {'size': 8.5, 'weight': 'bold'}
     
     ax_planta.set_title("Vista en Planta", fontsize=11, fontweight='bold', pad=10)
+    """
 
     # =========================================================================
     # 4. CONSTRUCCIÓN GRÁFICA - PLOT 2: VISTA EN PERFIL (W - E)

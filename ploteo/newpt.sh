@@ -15,20 +15,27 @@ pkill -f "xterm.*Procesamiento de Evento - NewPT" 2>/dev/null
 sleep 0.2
 
 # =========================================================================
-# LEVANTAR NUEVO EVENTO
+# LEVANTAR NUEVO EVENTO (Sintaxis corregida sin conflicto de comillas)
 # =========================================================================
-# Abrimos la nueva ventana xterm flotante. Al cerrarse el mapa, se cerrará sola.
-xterm -geometry 90x25 -T "Procesamiento de Evento - NewPT" -e "bash -c '
-    echo \"=== INICIANDO EXTRACCIÓN DE PARÁMETROS ===\";
-    python3 \"$DIR_TRABAJO/consulta_evento.py\" \"$EVENT_ID\";
+# Abrimos la nueva ventana xterm flotante de forma segura
+xterm -geometry 90x25 -T "Procesamiento de Evento - NewPT" -e bash -c "
+    echo '=== INICIANDO EXTRACCION DE PARAMETROS ===';
+    python3 '$DIR_TRABAJO/consulta_evento.py' '$EVENT_ID';
     
-    if [ -f \"$DIR_TRABAJO/evento_data.txt\" ]; then
-        echo \"\";
-        echo \"=== GENERANDO MAPAS ===\";
-        #echo \"Por favor, interactúa con el mapa. Al cerrarlo finalizará el proceso.\";
-        python3 \"$DIR_TRABAJO/capturar.py\";
+    if [ -f '$DIR_TRABAJO/evento_data.txt' ]; then
+        echo '';
+        echo '=== GENERANDO MAPAS ===';
+        python3 '$DIR_TRABAJO/capturar.py';
     else
-        echo \"[X] Error: No se pudo generar el archivo de intercambio.\";
-        sleep 5;
+        echo ''
+        echo '============================================================'
+        echo '[X] ERROR: No se encontraron datos validos para este ID.'
+        echo '[!] NOTA: NewPT solo procesa soluciones PREFERIDAS.'
+        echo '[!] Asegurate de confirmar -Confirm o Commit- el origen en'
+        echo '    SeisComP antes de volver a presionar NewPT.'
+        echo '============================================================'
+        echo ''
+        echo 'Esta ventana se cerrara automaticamente en 8 segundos...'
+        sleep 8
     fi
-'" &
+" &
