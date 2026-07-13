@@ -83,7 +83,9 @@ def consultar_por_fecha_creacion(id_origen):
         ev = cursor.fetchone()
 
         if not ev:
-            print(f"[X] No se encontraron datos para el ID: {id_origen}")
+            print(f"\n[X] ATENCIÓN: El ID {id_origen} no retornó resultados en la base de datos.")
+            print("[!] Esto ocurre si el origen seleccionado NO es la solución preferida actual del evento.")
+            #print(f"[X] No se encontraron datos para el ID: {id_origen}")
             return
 
         # --- FORMATEO ESTRICTO REQUERIDO POR CAPTURAR.PY ---
