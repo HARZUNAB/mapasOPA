@@ -1,4 +1,27 @@
 #!/bin/bash
+
+# Función para dibujar una barra de progreso interactiva
+mostrar_progreso() {
+    local actual=$1
+    local total=$2
+    local mensaje=$3
+    local longitud=30
+    
+    # Calcular porcentaje
+    local porcentaje=$(( actual * 100 / total ))
+    # Calcular cantidad de caracteres de relleno
+    local rellenos=$(( actual * longitud / total ))
+    local vacios=$(( longitud - rellenos ))
+    
+    # Construir la barra visual
+    local barra=""
+    for ((i=0; i<rellenos; i++)); do barra="${barra}█"; done
+    for ((i=0; i<vacios; i++)); do barra="${barra}-"; done
+    
+    # Imprimir la barra volviendo al inicio de la línea (\r)
+    printf "\r[NewPT] |%s| %d%% - %s" "$barra" "$porcentaje" "$mensaje"
+}
+
 EVENT_ID=$1
 DIR_TRABAJO="/home/hriquelmez/Desarrollo/mapasopa/ploteo"
 
