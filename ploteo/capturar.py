@@ -19,6 +19,18 @@ OUTPUT_FILE = "datos_seiscomp.csv"
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 ARCHIVO_TMP = os.path.join(BASE_DIR, "evento_data.txt")
 
+def mostrar_avance(paso, total, mensaje):
+    """
+    Dibuja una barra de progreso en la terminal.
+    """
+    longitud_barra = 20
+    porcentaje = int((paso / total) * 100)
+    bloques = int((paso / total) * longitud_barra)
+    rango_barra = "█" * bloques + "-" * (longitud_barra - bloques)
+    
+    sys.stdout.write(f"\r[NewPT] |{rango_barra}| {porcentaje}% - {mensaje}")
+    sys.stdout.flush()
+
 def calcular_distancia(lon1, lat1, lon2, lat2):
     # Radio de la Tierra en km
     R = 6371.0
@@ -46,12 +58,15 @@ def inicializar_csv():
         f.write(",Fecha_Hora,Latitud,Longitud,Prof.,Mag.,Tipo_mag.,Analista,Event_id,phases\n")
     print("[INFO] CSV reiniciado con éxito.")
 
+#
 def plotear_evento(fecha, lat, lon, prof, mag, event_id, texto_magnitud):
     """
     Genera ventanas sismotectónicas locales dinámicas integrando el archivo
     de relieve real NE2_LR_LC_SR_W_DR.tif para la vista en planta.
     """
-    print(f"[GRAFICADOR] Cargando contexto sismotectónico local para {event_id}...")
+    # === ETAPA 1: Iniciando lectura ===
+    mostrar_avance(1, 4, "Filtrando sismicidad histórica...")
+    time.sleep(0.1) # Breve pausa para percibir visualmente el avance
     
     # Configuración de estilo limpia
     plt.style.use('seaborn-v0_8-whitegrid' if 'seaborn-v0_8-whitegrid' in plt.style.available else 'default')
@@ -60,10 +75,8 @@ def plotear_evento(fecha, lat, lon, prof, mag, event_id, texto_magnitud):
     fig.suptitle(f"NewPT - Evento: {event_id}\nFecha: {fecha} | {texto_magnitud} | Profundidad: {prof} km", 
                  fontsize=12, fontweight='bold', y=0.96)
     
-    # Define un tamaño fijo para el punto que corresponde al evento ploteado
     size = 220
-
-    RANGO_ANCHURA = 2.5 # Grados dinámicos alrededor del sismo
+    RANGO_ANCHURA = 2.5 
 
     # =========================================================================
     # 1. CARGA EXPRESO DEL BACKGROUND SÍSMICO (Sismos grises)
@@ -84,6 +97,10 @@ def plotear_evento(fecha, lat, lon, prof, mag, event_id, texto_magnitud):
                             prof_b.append(float(partes[4])) 
         except Exception as e:
             print(f"[Aviso] No se pudo cargar el background sísmico: {e}")
+
+    # === ETAPA 2: Finalizó carga de catálogo, iniciamos búsqueda de grillas ===
+    mostrar_avance(2, 4, "Buscando perfil óptimo de subducción (Slab)...")
+    time.sleep(0.1)
 
     # =========================================================================
     # 2. SELECCIÓN INTELIGENTE Y CARGA DE SUBDUCCIÓN Y TOPOGRAFÍA (CORREGIDO)
@@ -132,7 +149,7 @@ def plotear_evento(fecha, lat, lon, prof, mag, event_id, texto_magnitud):
 
     if mejor_perfil_id and distancia_minima < 1.5 and datos_perfil_elegido:
         str_perfil = f"P{mejor_perfil_id:02d}"
-        print(f"[SLAB/TOPO] Perfil óptimo detectado: {str_perfil} (Dist: {distancia_minima:.2f}°)")
+        #print(f"[SLAB/TOPO] Perfil óptimo detectado: {str_perfil} (Dist: {distancia_minima:.2f}°)")
         
         # Calculamos la corrección de desfase (delta_lon)
         delta_lon = lon - lon_control_perfil if lon_control_perfil is not None else 0.0
@@ -353,7 +370,22 @@ def plotear_evento(fecha, lat, lon, prof, mag, event_id, texto_magnitud):
             markerscale=0.75  
         )
 
+    # === ETAPA 3: Renderizando las capas ===
+    mostrar_avance(3, 4, "Proyectando mapas y relieve .tif...")
     plt.tight_layout(rect=[0, 0, 1, 0.95])
+    time.sleep(0.15)
+
+    # === ETAPA 4: Completado ===
+    mostrar_avance(4, 4, "¡Listo! Abriendo interfaz gráfica.")
+    print("\n") # Salto de línea crucial para que tus prints de abajo no pisen la barra
+
+    # Ahora sí, se imprimen tus logs de consola nativos y se abre el mapa
+    print(f"[GRAFICADOR] Cargando contexto sismotectónico local para {event_id}...")
+    if lon_slab:
+        print(f"[SLAB/TOPO] Perfil óptimo detectado: {str_perfil} (Dist: {distancia_minima:.2f}°)")
+    else:
+        print(f"[SLAB] Fuera de cobertura local.")
+        
     plt.show()
     print("[GRAFICADOR] Ventana cerrada por el operador. Volviendo al modo escucha...\n")
     
@@ -369,13 +401,22 @@ if __name__ == "__main__":
             if texto_actual and "csn_" in texto_actual:
                 print("[EVENTO SELECCIONADO] Procesando parámetros...")
                 
+                #
                 partes = texto_actual.split(';')
                 if len(partes) >= 12:
                     fecha = partes[0].strip()
-                    mag = float(partes[3].strip())
-                    tipo_mag = partes[4]
-                    texto_magnitud = f"{partes[3]} {tipo_mag}"
+                    
+                    # --- CONVERSIÓN SEGURA DE MAGNITUD ---
+                    try:
+                        mag = float(partes[3].strip())
+                        tipo_mag = partes[4].strip() if partes[4] else "M"
+                        texto_magnitud = f"{mag:.1f} {tipo_mag}"
+                    except (ValueError, IndexError, TypeError):
+                        mag = 0.0
+                        tipo_mag = partes[4].strip() if (len(partes) > 4 and partes[4]) else "M"
+                        texto_magnitud = f"M s/d ({tipo_mag})"  # "s/d" significa Sin Datos
 
+                    # --- PROCESAMIENTO DE COORDENADAS ---
                     raw_lat = partes[8].strip()
                     lat = float(raw_lat.split()[0])
                     if 's' in raw_lat.lower():
@@ -386,11 +427,18 @@ if __name__ == "__main__":
                     if 'w' in raw_lon.lower() or 'o' in raw_lon.lower():
                         lon = -abs(lon)
                         
+                    # --- CONVERSIÓN SEGURA DE PROFUNDIDAD ---
                     raw_prof = partes[10].strip()
-                    prof = float(raw_prof.replace('km', '').strip())
+                    try:
+                        prof = float(raw_prof.replace('km', '').strip())
+                    except (ValueError, IndexError):
+                        # Si la profundidad no es convertible (ej. se desfasó y leyó 'Moments'), 
+                        # le asignamos un valor por defecto (ej. 10.0 km) para evitar que el script se caiga.
+                        print(f"[Aviso] No se pudo parsear la profundidad ('{raw_prof}'). Usando valor por defecto de 10 km.")
+                        prof = 10.0
                     
                     event_id = partes[-1].strip()
-                    
+                   
                     plotear_evento(fecha, lat, lon, prof, mag, event_id, texto_magnitud)
                     
                     try:
