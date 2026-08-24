@@ -4,7 +4,7 @@ import sys
 import re
 import time
 import numpy as np
-import pyperclip
+#import pyperclip
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
@@ -14,10 +14,23 @@ from math import radians, cos, sin, asin, sqrt
 import math
 from adjustText import adjust_text
 
-OUTPUT_FILE = "datos_seiscomp.csv"
-# Obtener el directorio donde reside este script (capturar.py)
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-ARCHIVO_TMP = os.path.join(BASE_DIR, "evento_data.txt")
+def ruta_datos():
+    """
+    Resuelve el directorio donde viven los datos de la instalación.
+    Prioridad: variable de entorno NEWPT_DATA_DIR (definida por newpt.sh),
+    luego el directorio del binario (PyInstaller) o el del script en desarrollo.
+    """
+    env = os.environ.get("NEWPT_DATA_DIR")
+    if env:
+        return env
+    if getattr(sys, 'frozen', False):
+        return os.path.dirname(sys.executable)
+    return os.path.dirname(os.path.abspath(__file__))
+
+DATOS_DIR = ruta_datos()
+GR_DIR = os.path.join(DATOS_DIR, "grillas")
+OUTPUT_FILE = os.path.join(DATOS_DIR, "datos_seiscomp.csv")
+ARCHIVO_TMP = os.path.join(DATOS_DIR, "evento_data.txt")
 
 def mostrar_avance(paso, total, mensaje):
     """
@@ -66,22 +79,27 @@ def plotear_evento(fecha, lat, lon, prof, mag, event_id, texto_magnitud):
     """
     # === ETAPA 1: Iniciando lectura ===
     mostrar_avance(1, 4, "Filtrando sismicidad histórica...")
-    time.sleep(0.1) # Breve pausa para percibir visualmente el avance
     
     # Configuración de estilo limpia
     plt.style.use('seaborn-v0_8-whitegrid' if 'seaborn-v0_8-whitegrid' in plt.style.available else 'default')
     
     fig = plt.figure(figsize=(14, 6.5))
-    fig.suptitle(f"NewPT - Evento: {event_id}\nFecha: {fecha} | {texto_magnitud} | Profundidad: {prof} km", 
-                 fontsize=12, fontweight='bold', y=0.96)
+    #fig.suptitle("NewPT · Contexto Sismotectónico", 
+    #             fontsize=13, fontweight='bold', y=0.985)
+    fig.text(0.5, 0.95, f"{fecha} | {texto_magnitud} | Profundidad: {prof} km | {event_id}",
+             ha='center', fontsize=9, color='#444444')
+    try:
+        fig.canvas.manager.set_window_title("NewPT · Contexto Sismotectónico")
+    except Exception:
+        pass
     
-    size = 220
+    size = 90 # tamaño del circulo representando al evento en los mapas
     RANGO_ANCHURA = 2.5 
 
     # =========================================================================
     # 1. CARGA EXPRESO DEL BACKGROUND SÍSMICO (Sismos grises)
     # =========================================================================
-    arch_base = "base_2023_2026.dat"
+    arch_base = os.path.join(DATOS_DIR, "base_2023_2026.dat")
     lon_b, lat_b, prof_b = [], [], []
     if os.path.exists(arch_base):
         try:
@@ -100,7 +118,6 @@ def plotear_evento(fecha, lat, lon, prof, mag, event_id, texto_magnitud):
 
     # === ETAPA 2: Finalizó carga de catálogo, iniciamos búsqueda de grillas ===
     mostrar_avance(2, 4, "Buscando perfil óptimo de subducción (Slab)...")
-    time.sleep(0.1)
 
     # =========================================================================
     # 2. SELECCIÓN INTELIGENTE Y CARGA DE SUBDUCCIÓN Y TOPOGRAFÍA (CORREGIDO)
@@ -108,47 +125,60 @@ def plotear_evento(fecha, lat, lon, prof, mag, event_id, texto_magnitud):
     lon_slab, prof_slab = [], []
     lon_topo, alt_topo = [], []
     usando_global = False
-    mejor_perfil_id = None
+    mejor_perfil_nombre = None
     distancia_minima = float('inf')
     datos_perfil_elegido = []
-    
+    lat_min_perfil = float('inf')
+    lat_max_perfil = float('-inf')
+
     # Variables de control para el cálculo del desfase (offset)
     lon_control_perfil = None
 
-    for p_id in range(1, 14):
-        arch_test = f"./grillas/slabP{p_id:02d}.tmp"
-        if os.path.exists(arch_test):
-            try:
-                puntos_perfil = []
-                with open(arch_test, 'r') as f:
-                    for linea in f:
-                        if linea.startswith('#') or not linea.strip():
-                            continue
-                        partes = linea.strip().split()
-                        if len(partes) >= 7:
-                            l_val = float(partes[2])   
-                            lat_val = float(partes[3])  
-                            
-                            if 'nan' in partes[6].lower():
-                                p_val = 0.0
-                            else:
-                                p_val = abs(float(partes[6])) 
-                                
-                            puntos_perfil.append((l_val, lat_val, p_val))
-                
-                if puntos_perfil:
-                    for (l_p, lat_p, p_p) in puntos_perfil:
-                        dist = np.sqrt((lon - l_p)**2 + (lat - lat_p)**2)
-                        if dist < distancia_minima:
-                            distancia_minima = dist
-                            mejor_perfil_id = p_id
-                            datos_perfil_elegido = puntos_perfil
-                            lon_control_perfil = l_p
-            except Exception:
-                pass
+    nombres_perfil = []
+    if os.path.isdir(GR_DIR):
+        for nombre in os.listdir(GR_DIR):
+            m = re.match(r'^slabP(\d+)\.tmp$', nombre)
+            if m:
+                nombres_perfil.append((int(m.group(1)), nombre))
+    nombres_perfil.sort(key=lambda x: x[0])
 
-    if mejor_perfil_id and distancia_minima < 1.5 and datos_perfil_elegido:
-        str_perfil = f"P{mejor_perfil_id:02d}"
+    for p_id, nombre_arch in nombres_perfil:
+        arch_test = os.path.join(GR_DIR, nombre_arch)
+        try:
+            puntos_perfil = []
+            with open(arch_test, 'r') as f:
+                for linea in f:
+                    if linea.startswith('#') or not linea.strip():
+                        continue
+                    partes = linea.strip().split()
+                    if len(partes) >= 7:
+                        l_val = float(partes[2])
+                        lat_val = float(partes[3])
+                        if lat_val < lat_min_perfil:
+                            lat_min_perfil = lat_val
+                        if lat_val > lat_max_perfil:
+                            lat_max_perfil = lat_val
+
+                        if 'nan' in partes[6].lower():
+                            p_val = 0.0
+                        else:
+                            p_val = abs(float(partes[6]))
+
+                        puntos_perfil.append((l_val, lat_val, p_val))
+
+            if puntos_perfil:
+                for (l_p, lat_p, p_p) in puntos_perfil:
+                    dist = np.sqrt((lon - l_p)**2 + (lat - lat_p)**2)
+                    if dist < distancia_minima:
+                        distancia_minima = dist
+                        mejor_perfil_nombre = nombre_arch[4:-4]
+                        datos_perfil_elegido = puntos_perfil
+                        lon_control_perfil = l_p
+        except Exception:
+            pass
+
+    if mejor_perfil_nombre and distancia_minima < 1.5 and datos_perfil_elegido:
+        str_perfil = mejor_perfil_nombre
         #print(f"[SLAB/TOPO] Perfil óptimo detectado: {str_perfil} (Dist: {distancia_minima:.2f}°)")
         
         # Calculamos la corrección de desfase (delta_lon)
@@ -164,7 +194,7 @@ def plotear_evento(fecha, lat, lon, prof, mag, event_id, texto_magnitud):
             lon_slab, prof_slab = zip(*sorted(zip(lon_slab, prof_slab)))
             lon_slab, prof_slab = list(lon_slab), list(prof_slab)
 
-        arch_topo_tmp = f"./grillas/topo{str_perfil}.tmp"
+        arch_topo_tmp = os.path.join(GR_DIR, f"topo{str_perfil}.tmp")
         if os.path.exists(arch_topo_tmp):
             try:
                 with open(arch_topo_tmp, 'r') as f:
@@ -187,39 +217,103 @@ def plotear_evento(fecha, lat, lon, prof, mag, event_id, texto_magnitud):
         
     else:
         str_perfil = "Slab2_Global"
-        arch_slab_xyz = "./grillas/sam_slab2_dep_02.23.18.xyz"
-        if os.path.exists(arch_slab_xyz):
-            try:
-                print(f"[SLAB] Fuera de cobertura local. Generando corte directo desde grilla global...")
-                puntos_slab = {}
-                ANCHO_LAT = 0.40
-                with open(arch_slab_xyz, 'r') as f:
-                    for linea in f:
-                        if linea.startswith('#') or not linea.strip():
-                            continue
-                        partes = linea.strip().split(',')
-                        if len(partes) >= 3 and 'nan' not in partes[2].lower():
-                            s_lon = float(partes[0]) - 360 if float(partes[0]) > 180 else float(partes[0])
-                            s_lat = float(partes[1])
-                            s_prof = abs(float(partes[2]))
-                            
-                            if (lat - ANCHO_LAT <= s_lat <= lat + ANCHO_LAT) and (lon - RANGO_ANCHURA <= s_lon <= lon + RANGO_ANCHURA):
-                                lon_bin = round(s_lon, 1)
-                                if lon_bin not in puntos_slab:
-                                    puntos_slab[lon_bin] = []
-                                puntos_slab[lon_bin].append(s_prof)
-                if puntos_slab:
-                    lons_ordenadas = sorted(puntos_slab.keys())
-                    profs_promedio = [np.mean(puntos_slab[ln]) for ln in lons_ordenadas]
+        ANCHO_LAT = 0.40
+        try:
+            print(f"[SLAB] Fuera de cobertura local. Generando corte y topografía desde grillas globales...")
+
+            arch_slab_bin = os.path.join(GR_DIR, "slab2_global.npy")
+            if os.path.exists(arch_slab_bin):
+                data_slab = np.load(arch_slab_bin, mmap_mode='r')
+                i0 = np.searchsorted(data_slab[:, 1], lat - ANCHO_LAT)
+                i1 = np.searchsorted(data_slab[:, 1], lat + ANCHO_LAT, side='right')
+                chunk_slab = data_slab[i0:i1]
+                chunk_slab = chunk_slab[np.abs(chunk_slab[:, 0] - lon) <= RANGO_ANCHURA]
+                if len(chunk_slab):
+                    lons_bin = np.round(chunk_slab[:, 0], 1)
+                    uniq, inv = np.unique(lons_bin, return_inverse=True)
+                    profs_prom = np.zeros(len(uniq), dtype=np.float64)
+                    np.add.at(profs_prom, inv, chunk_slab[:, 2])
+                    profs_prom /= np.bincount(inv)
                     lon_slab_perfil = np.linspace(lon - RANGO_ANCHURA, lon + RANGO_ANCHURA, 100)
-                    prof_interp = np.interp(lon_slab_perfil, lons_ordenadas, profs_promedio, left=np.nan, right=np.nan)
-                    
+                    prof_interp = np.interp(lon_slab_perfil, uniq, profs_prom, left=np.nan, right=np.nan)
                     mask = ~np.isnan(prof_interp)
                     lon_slab = list(lon_slab_perfil[mask])
                     prof_slab = list(prof_interp[mask])
                     usando_global = True
-            except Exception as e:
-                print(f"[Aviso] Falló el procesamiento de respaldo global: {e}")
+            else:
+                arch_slab_xyz = os.path.join(GR_DIR, "sam_slab2_dep_02.23.18.xyz")
+                if os.path.exists(arch_slab_xyz):
+                    puntos_slab = {}
+                    with open(arch_slab_xyz, 'r') as f:
+                        for linea in f:
+                            if linea.startswith('#') or not linea.strip():
+                                continue
+                            partes = linea.strip().split(',')
+                            if len(partes) >= 3 and 'nan' not in partes[2].lower():
+                                s_lon = float(partes[0]) - 360 if float(partes[0]) > 180 else float(partes[0])
+                                s_lat = float(partes[1])
+                                s_prof = abs(float(partes[2]))
+                                if (lat - ANCHO_LAT <= s_lat <= lat + ANCHO_LAT) and (lon - RANGO_ANCHURA <= s_lon <= lon + RANGO_ANCHURA):
+                                    lon_bin = round(s_lon, 1)
+                                    if lon_bin not in puntos_slab:
+                                        puntos_slab[lon_bin] = []
+                                    puntos_slab[lon_bin].append(s_prof)
+                    if puntos_slab:
+                        lons_ordenadas = sorted(puntos_slab.keys())
+                        profs_promedio = [np.mean(puntos_slab[ln]) for ln in lons_ordenadas]
+                        lon_slab_perfil = np.linspace(lon - RANGO_ANCHURA, lon + RANGO_ANCHURA, 100)
+                        prof_interp = np.interp(lon_slab_perfil, lons_ordenadas, profs_promedio, left=np.nan, right=np.nan)
+                        mask = ~np.isnan(prof_interp)
+                        lon_slab = list(lon_slab_perfil[mask])
+                        prof_slab = list(prof_interp[mask])
+                        usando_global = True
+
+            arch_topo_bin = os.path.join(GR_DIR, "topo_chile.npy")
+            if os.path.exists(arch_topo_bin):
+                data_topo = np.load(arch_topo_bin, mmap_mode='r')
+                i0 = np.searchsorted(data_topo[:, 1], lat - ANCHO_LAT)
+                i1 = np.searchsorted(data_topo[:, 1], lat + ANCHO_LAT, side='right')
+                chunk_topo = data_topo[i0:i1]
+                chunk_topo = chunk_topo[np.abs(chunk_topo[:, 0] - lon) <= RANGO_ANCHURA]
+                if len(chunk_topo):
+                    lons_bin = np.round(chunk_topo[:, 0], 1)
+                    uniq, inv = np.unique(lons_bin, return_inverse=True)
+                    alts_prom = np.zeros(len(uniq), dtype=np.float64)
+                    np.add.at(alts_prom, inv, chunk_topo[:, 2] / 1000.0)
+                    alts_prom /= np.bincount(inv)
+                    lon_topo_perfil = np.linspace(lon - RANGO_ANCHURA, lon + RANGO_ANCHURA, 100)
+                    alt_interp = np.interp(lon_topo_perfil, uniq, alts_prom, left=np.nan, right=np.nan)
+                    mask_topo = ~np.isnan(alt_interp)
+                    lon_topo = list(lon_topo_perfil[mask_topo])
+                    alt_topo = list(alt_interp[mask_topo])
+            else:
+                arch_topo_xyz = os.path.join(GR_DIR, "topochile30.xyz")
+                if os.path.exists(arch_topo_xyz):
+                    puntos_topo = {}
+                    with open(arch_topo_xyz, 'r') as f:
+                        for linea in f:
+                            if linea.startswith('#') or not linea.strip():
+                                continue
+                            partes = linea.strip().split()
+                            if len(partes) >= 3:
+                                t_lon = float(partes[0])
+                                t_lat = float(partes[1])
+                                t_alt = float(partes[2]) / 1000.0
+                                if (lat - ANCHO_LAT <= t_lat <= lat + ANCHO_LAT) and (lon - RANGO_ANCHURA <= t_lon <= lon + RANGO_ANCHURA):
+                                    lon_bin = round(t_lon, 1)
+                                    if lon_bin not in puntos_topo:
+                                        puntos_topo[lon_bin] = []
+                                    puntos_topo[lon_bin].append(t_alt)
+                    if puntos_topo:
+                        lons_topo = sorted(puntos_topo.keys())
+                        alts_promedio = [np.mean(puntos_topo[ln]) for ln in lons_topo]
+                        lon_topo_perfil = np.linspace(lon - RANGO_ANCHURA, lon + RANGO_ANCHURA, 100)
+                        alt_interp = np.interp(lon_topo_perfil, lons_topo, alts_promedio, left=np.nan, right=np.nan)
+                        mask_topo = ~np.isnan(alt_interp)
+                        lon_topo = list(lon_topo_perfil[mask_topo])
+                        alt_topo = list(alt_interp[mask_topo])
+        except Exception as e:
+            print(f"[Aviso] Falló el procesamiento de respaldo global: {e}")
 
     # =========================================================================
     # 3. CONSTRUCCIÓN GRÁFICA - PLOT 1: VISTA EN PLANTA (RELIEVE TIF LOCAL)
@@ -227,14 +321,26 @@ def plotear_evento(fecha, lat, lon, prof, mag, event_id, texto_magnitud):
     ax_planta = fig.add_subplot(1, 2, 1, projection=ccrs.PlateCarree())
     ax_planta.set_extent([lon - RANGO_ANCHURA, lon + RANGO_ANCHURA, lat - RANGO_ANCHURA, lat + RANGO_ANCHURA], crs=ccrs.PlateCarree())
 
-    arch_tif = "NE2_LR_LC_SR_W_DR.tif"
+    arch_tif = os.path.join(DATOS_DIR, "NE2_LR_LC_SR_W_DR.tif")
     if os.path.exists(arch_tif):
         try:
             from PIL import Image
             Image.MAX_IMAGE_PIXELS = None  
             img = Image.open(arch_tif)
-            ax_planta.imshow(img, origin='upper', 
-                             extent=[-180, 180, -90, 90], transform=ccrs.PlateCarree())
+            ancho_img, alto_img = img.size
+            x0 = int((lon - RANGO_ANCHURA + 180) / 360.0 * ancho_img)
+            x1 = int((lon + RANGO_ANCHURA + 180) / 360.0 * ancho_img)
+            y0 = int((90 - (lat + RANGO_ANCHURA)) / 180.0 * alto_img)
+            y1 = int((90 - (lat - RANGO_ANCHURA)) / 180.0 * alto_img)
+            x0 = max(0, min(ancho_img - 1, x0))
+            x1 = max(x0 + 1, min(ancho_img, x1))
+            y0 = max(0, min(alto_img - 1, y0))
+            y1 = max(y0 + 1, min(alto_img, y1))
+            img_recorte = img.crop((x0, y0, x1, y1)).resize((400, 400))
+            ax_planta.imshow(img_recorte, origin='upper', 
+                             extent=[lon - RANGO_ANCHURA, lon + RANGO_ANCHURA,
+                                     lat - RANGO_ANCHURA, lat + RANGO_ANCHURA],
+                             transform=ccrs.PlateCarree())
         except Exception as e:
             print(f"[Aviso] No se pudo proyectar el relieve .tif: {e}")
             ax_planta.add_feature(cfeature.LAND.with_scale('50m'), facecolor='#f7f7f4', zorder=1)
@@ -247,17 +353,17 @@ def plotear_evento(fecha, lat, lon, prof, mag, event_id, texto_magnitud):
     ax_planta.add_feature(cfeature.BORDERS.with_scale('50m'), edgecolor='#333333', linestyle=':', linewidth=0.8, zorder=2)
 
     if lon_b:
-        ax_planta.scatter(lon_b, lat_b, color='#222222', alpha=0.25, s=3.5, marker='.', zorder=3, transform=ccrs.PlateCarree())
+        ax_planta.scatter(lon_b, lat_b, color='#222222', alpha=0.25, s=3.5, marker='.', zorder=3, transform=ccrs.PlateCarree(), label="Sismicidad Histórica")
 
-    ax_planta.scatter(lon, lat, s=size, color='#ff3333', alpha=0.95, edgecolors='black', 
-                      linewidth=1.2, zorder=5, transform=ccrs.PlateCarree(), label="Epicentro Actual")
+    ax_planta.scatter(lon, lat, s=size, color='#F7E284', alpha=0.95, edgecolors='black', 
+                      linewidth=1.2, zorder=5, transform=ccrs.PlateCarree(), label="Epicentro")
     
     distancia_min = float('inf')
     localidad_cercana = "N/A"
     textos_mapa = []  
 
-    if os.path.exists("localidades.csv"):
-        with open("localidades.csv", mode='r', encoding='utf-8') as f:
+    if os.path.exists(os.path.join(DATOS_DIR, "localidades.csv")):
+        with open(os.path.join(DATOS_DIR, "localidades.csv"), mode='r', encoding='utf-8') as f:
             reader = csv.DictReader(f)
             for row in reader:
                 nombre = row['Nombre']
@@ -299,19 +405,29 @@ def plotear_evento(fecha, lat, lon, prof, mag, event_id, texto_magnitud):
     gl.ylabel_style = {'size': 8.5, 'weight': 'bold'}
     
     ax_planta.set_title("Vista en Planta", fontsize=11, fontweight='bold', pad=10)
+    ax_planta.legend(loc='upper center', bbox_to_anchor=(0.5, -0.15), ncol=2,
+                     fontsize=8, frameon=True, facecolor='#f9f9f9', edgecolor='gray',
+                     markerscale=0.75)
 
     # =========================================================================
     # 4. CONSTRUCCIÓN GRÁFICA - PLOT 2: VISTA EN PERFIL (W - E)
     # =========================================================================
     ax_perfil = fig.add_subplot(1, 2, 2)
     
-    if not (-45.0 <= lat <= -18.0):
+    hay_datos_para_perfil = bool(lon_slab or lon_topo)
+    if not hay_datos_para_perfil:
         ax_perfil.axis('off')
-        ax_perfil.text(0.5, 0.5, "PERFIL NO DISPONIBLE\n\nSismo fuera de la cobertura\nde los perfiles locales (18°S - 45°S)", 
-                       fontsize=12, fontweight='bold', color='#cc0000',
+        if lat_min_perfil != float('inf'):
+            texto_cobertura = (f"Sismo fuera de la cobertura de los perfiles locales\n"
+                               #f"({abs(lat_max_perfil):.1f}°S - {abs(lat_min_perfil):.1f}°S)\n"
+                               f"y de las grillas globales en esta zona")
+        else:
+            texto_cobertura = ("No se encontraron perfiles locales ni datos\n"
+                               "de las grillas globales en esta zona")
+        ax_perfil.text(0.5, 0.5, f"PERFIL NO DISPONIBLE\n\n{texto_cobertura}",
+                       fontsize=12, fontweight='bold', color="#967E13",
                        ha='center', va='center', transform=ax_perfil.transAxes,
-                       bbox=dict(facecolor='#ffe6e6', edgecolor='#cc0000', alpha=0.8, boxstyle='round,pad=1'))
-        
+                       bbox=dict(facecolor='#ffe6e6', edgecolor='#967E13', alpha=0.8, boxstyle='round,pad=1'))
     else:
         if lon_b:
             ax_perfil.scatter(lon_b, prof_b, color='gray', alpha=0.3, s=6, marker='.', zorder=1, label="Sismicidad Histórica")
@@ -325,7 +441,7 @@ def plotear_evento(fecha, lat, lon, prof, mag, event_id, texto_magnitud):
             ax_perfil.plot(lon_topo, alt_topo, color='black', linestyle='-', lw=1.2, 
                            zorder=5, label="Topografía/Batimetría")
 
-        ax_perfil.scatter(lon, prof, s=size, color='#ff3333', alpha=0.9, edgecolors='black', linewidths=1.5, zorder=10, label="Hipocentro")
+        ax_perfil.scatter(lon, prof, s=size, color='#F7E284', alpha=0.9, edgecolors='black', linewidths=1.5, zorder=10, label="Hipocentro")
         
         if lon_slab:
             titulo_perfil = f"Perfil Perpendicular ({str_perfil})"
@@ -373,14 +489,13 @@ def plotear_evento(fecha, lat, lon, prof, mag, event_id, texto_magnitud):
     # === ETAPA 3: Renderizando las capas ===
     mostrar_avance(3, 4, "Proyectando mapas y relieve .tif...")
     plt.tight_layout(rect=[0, 0, 1, 0.95])
-    time.sleep(0.15)
 
     # === ETAPA 4: Completado ===
     mostrar_avance(4, 4, "¡Listo! Abriendo interfaz gráfica.")
     print("\n") # Salto de línea crucial para que tus prints de abajo no pisen la barra
 
     # Ahora sí, se imprimen tus logs de consola nativos y se abre el mapa
-    print(f"[GRAFICADOR] Cargando contexto sismotectónico local para {event_id}...")
+    print(f"[GRAFICADOR] Cargando contexto sismotectónico para {event_id}...")
     if lon_slab:
         print(f"[SLAB/TOPO] Perfil óptimo detectado: {str_perfil} (Dist: {distancia_minima:.2f}°)")
     else:
@@ -389,6 +504,64 @@ def plotear_evento(fecha, lat, lon, prof, mag, event_id, texto_magnitud):
     plt.show()
     print("[GRAFICADOR] Ventana cerrada por el operador. Volviendo al modo escucha...\n")
     
+def parsear_linea_evento(texto):
+    """
+    Parsea la línea de evento_data.txt escrita por la consulta (campos
+    separados por ';'). Devuelve un dict con fecha, lat, lon, prof, mag,
+    tipo_mag, texto_magnitud y event_id; None si la línea no es válida.
+    """
+    if not texto or "csn_" not in texto:
+        return None
+
+    partes = texto.split(';')
+    if len(partes) < 12:
+        return None
+
+    fecha = partes[0].strip()
+
+    # --- CONVERSIÓN SEGURA DE MAGNITUD ---
+    try:
+        mag = float(partes[3].strip())
+        tipo_mag = partes[4].strip() if partes[4] else "M"
+        texto_magnitud = f"{mag:.1f} {tipo_mag}"
+    except (ValueError, IndexError, TypeError):
+        mag = 0.0
+        tipo_mag = partes[4].strip() if (len(partes) > 4 and partes[4]) else "M"
+        texto_magnitud = f"M s/d ({tipo_mag})"  # "s/d" significa Sin Datos
+
+    # --- PROCESAMIENTO DE COORDENADAS ---
+    raw_lat = partes[8].strip()
+    lat = float(raw_lat.split()[0])
+    if 's' in raw_lat.lower():
+        lat = -abs(lat)
+
+    raw_lon = partes[9].strip()
+    lon = float(raw_lon.split()[0])
+    if 'w' in raw_lon.lower() or 'o' in raw_lon.lower():
+        lon = -abs(lon)
+
+    # --- CONVERSIÓN SEGURA DE PROFUNDIDAD ---
+    raw_prof = partes[10].strip()
+    try:
+        prof = float(raw_prof.replace('km', '').strip())
+    except (ValueError, IndexError):
+        # Si la profundidad no es convertible (ej. se desfasó y leyó 'Moments'),
+        # le asignamos un valor por defecto (ej. 10.0 km) para evitar que el script se caiga.
+        print(f"[Aviso] No se pudo parsear la profundidad ('{raw_prof}'). Usando valor por defecto de 10 km.")
+        prof = 10.0
+
+    return {
+        "fecha": fecha,
+        "lat": lat,
+        "lon": lon,
+        "prof": prof,
+        "mag": mag,
+        "tipo_mag": tipo_mag,
+        "texto_magnitud": texto_magnitud,
+        "event_id": partes[-1].strip(),
+    }
+
+
 # =========================================================================
 # LOOP PRINCIPAL (EJECUCIÓN ÚNICA)
 # =========================================================================
@@ -397,60 +570,29 @@ if __name__ == "__main__":
         try:
             with open(ARCHIVO_TMP, 'r') as f:
                 texto_actual = f.readline().strip()
-            
+
             if texto_actual and "csn_" in texto_actual:
                 print("[EVENTO SELECCIONADO] Procesando parámetros...")
-                
-                #
-                partes = texto_actual.split(';')
-                if len(partes) >= 12:
-                    fecha = partes[0].strip()
-                    
-                    # --- CONVERSIÓN SEGURA DE MAGNITUD ---
-                    try:
-                        mag = float(partes[3].strip())
-                        tipo_mag = partes[4].strip() if partes[4] else "M"
-                        texto_magnitud = f"{mag:.1f} {tipo_mag}"
-                    except (ValueError, IndexError, TypeError):
-                        mag = 0.0
-                        tipo_mag = partes[4].strip() if (len(partes) > 4 and partes[4]) else "M"
-                        texto_magnitud = f"M s/d ({tipo_mag})"  # "s/d" significa Sin Datos
 
-                    # --- PROCESAMIENTO DE COORDENADAS ---
-                    raw_lat = partes[8].strip()
-                    lat = float(raw_lat.split()[0])
-                    if 's' in raw_lat.lower():
-                        lat = -abs(lat)
-                        
-                    raw_lon = partes[9].strip()
-                    lon = float(raw_lon.split()[0])
-                    if 'w' in raw_lon.lower() or 'o' in raw_lon.lower():
-                        lon = -abs(lon)
-                        
-                    # --- CONVERSIÓN SEGURA DE PROFUNDIDAD ---
-                    raw_prof = partes[10].strip()
+            ev = parsear_linea_evento(texto_actual)
+
+            if ev is not None:
                     try:
-                        prof = float(raw_prof.replace('km', '').strip())
-                    except (ValueError, IndexError):
-                        # Si la profundidad no es convertible (ej. se desfasó y leyó 'Moments'), 
-                        # le asignamos un valor por defecto (ej. 10.0 km) para evitar que el script se caiga.
-                        print(f"[Aviso] No se pudo parsear la profundidad ('{raw_prof}'). Usando valor por defecto de 10 km.")
-                        prof = 10.0
-                    
-                    event_id = partes[-1].strip()
-                   
-                    plotear_evento(fecha, lat, lon, prof, mag, event_id, texto_magnitud)
-                    
+                        plotear_evento(ev["fecha"], ev["lat"], ev["lon"], ev["prof"],
+                                       ev["mag"], ev["event_id"], ev["texto_magnitud"])
+                    except Exception as e:
+                        print(f"[Error] Falló la generación de mapas: {e}")
+
                     try:
                         os.remove(ARCHIVO_TMP)
                         print("[INFO] Archivo temporal eliminado. Cerrando programa.")
                     except OSError as e:
                         print(f"[Error] No se pudo eliminar el archivo temporal: {e}")
-                else:
+            elif texto_actual and "csn_" in texto_actual:
                     print("[Error] El formato de la línea en el archivo no es válido.")
             else:
                 print("[Error] El archivo no contiene un evento válido (csn_).")
-                
+
         except Exception as ex:
             print(f"[Error] Falló la lectura o el parseo del archivo: {ex}")
     else:

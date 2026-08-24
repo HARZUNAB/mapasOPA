@@ -2,3 +2,7 @@ __pycache__/
 *.log
 reporte/keygen.txt
 reporte/ssh-copy-id*
+newpt_instalador.tar.gz
+*.spec
+dist/
+build/

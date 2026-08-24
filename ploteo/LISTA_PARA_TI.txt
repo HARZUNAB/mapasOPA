@@ -1,0 +1,61 @@
+LISTA DE PROGRAMAS A SOLICITAR AL ENCARGADO DE TI
+==================================================
+Proyecto: NewPT (contexto sismotectónico de eventos sísmicos)
+Motivo: instalar el proyecto en una máquina nueva SIN instalar ningún
+módulo de Python en el Python del sistema (todo va en un venv) y SIN
+requerir permisos de super usuario para la instalación de NewPT.
+
+
+1) PROGRAMAS DEL SISTEMA (una sola vez, requiere sudo)
+-------------------------------------------------------
+  sudo apt update
+  sudo apt install -y python3 python3-venv python3-tk xterm
+
+  - python3       : intérprete base (Debian 12 trae 3.11).
+  - python3-venv  : necesario para crear el ambiente virtual (venv).
+  - python3-tk    : ventana gráfica de matplotlib (backend TkAgg).
+  - xterm         : terminal de progreso que usa el lanzador newpt.sh.
+
+  IMPORTANTE: NO se instala ningún módulo de Python en el sistema.
+  Los módulos (numpy, matplotlib, cartopy, pyproj, Pillow, psycopg2,
+  adjustText, pyinstaller) se instalan dentro del venv por el instalador,
+  como usuario normal y sin sudo, y siempre en versiones EXACTAS FIJADAS
+  (las mismas probadas en el desarrollo) para evitar incompatibilidades.
+
+  NOTA: en máquinas donde NewPT ya estuvo instalado o corriendo antes,
+  estos 4 programas ya existen: NO deben volver a instalarse. El instalador
+  solo los verifica y continúa automáticamente.
+
+
+2) REQUISITOS DE RED
+--------------------
+  El instalador ejecuta "pip install" desde el venv, por lo que la máquina
+  necesita acceso a PyPI (internet) o a un mirror interno de pip.
+  Si la máquina no tiene acceso, solicitar al encargado de TI un mirror
+  de paquetes PyPI o entregar un paquete offline de wheels.
+
+
+3) NOTAS POR DISTRIBUCIÓN
+-------------------------
+  - Debian / Ubuntu: nombres de paquetes como se indican arriba.
+  - RHEL / CentOS / Rocky: equivalentes:
+        sudo dnf install -y python3 python3-virtualenv tkinter xterm
+  - Si "pip install cartopy" no encuentra un wheel para el Python instalado,
+    alternativa: solicitar a TI que instale python3-cartopy (sudo apt), y
+    crear el venv con --system-site-packages (solo ese módulo sale del sistema).
+
+
+4) BOTÓN DEL MÓDULO DE SEISCOMP
+-------------------------------
+  El botón debe ejecutar (con el ID del evento como argumento):
+      ~/newpt/newpt.sh $EVENT_ID
+  (aquí $EVENT_ID se escribe tal cual: SeisComP lo reemplaza automáticamente
+   por el ID del evento al presionar el botón; ajustar la ruta según la
+   carpeta elegida en la instalación).
+
+
+5) INSTALACIÓN (la realiza el usuario, SIN sudo)
+------------------------------------------------
+  tar -xzf newpt_instalador.tar.gz
+  cd newpt_instalador
+  ./instalar_newpt.sh          # compila binarios e instala en ~/newpt

@@ -1,0 +1,3 @@
+ID_EVENTO=No asociado o temporal
+LAT=N/A
+LON=N/A
