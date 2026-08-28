@@ -13,7 +13,6 @@ import csv
 from math import radians, cos, sin, asin, sqrt
 import math
 from adjustText import adjust_text
-from matplotlib.widgets import Button
 
 def ruta_datos():
     """
@@ -489,33 +488,7 @@ def plotear_evento(fecha, lat, lon, prof, mag, event_id, texto_magnitud):
 
     # === ETAPA 3: Renderizando las capas ===
     mostrar_avance(3, 4, "Proyectando mapas y relieve .tif...")
-    # Banda inferior reservada: las leyendas de los subplots quedan dentro y
-    # el botón "Ver Perfil 3D" no se monta encima de la leyenda del perfil.
-    plt.tight_layout(rect=[0, 0.12, 1, 0.95])
-
-    # Botón para abrir el perfil 3D bajo demanda, mientras esta ventana 2D
-    # siga abierta. El 3D ya NO se abre automáticamente.
-    ax_boton_3d = fig.add_axes([0.855, 0.02, 0.12, 0.05])
-    boton_3d = Button(ax_boton_3d, "Ver Perfil 3D", hovercolor="#dff0ff")
-    boton_3d.label.set_fontsize(9)
-
-    def _abrir_perfil_3d(_ev=None):
-        plotear_perfil_3d(lat, lon, prof, event_id, texto_magnitud, bloquear=False)
-
-    boton_3d.on_clicked(_abrir_perfil_3d)
-    fig._abrir_perfil_3d = _abrir_perfil_3d  # handle expuesto para la marcha blanca
-
-    # La ventana 2D es el mapa principal: si se cierra y hay una ventana 3D
-    # abierta, se cierra también (el 3D es solo un complemento del 2D).
-    def _al_cerrar_2d(_ev=None):
-        global _FIGURA_3D_ACTIVA
-        if _FIGURA_3D_ACTIVA is not None:
-            if plt.fignum_exists(_FIGURA_3D_ACTIVA.number):
-                plt.close(_FIGURA_3D_ACTIVA)
-            _FIGURA_3D_ACTIVA = None
-
-    fig.canvas.mpl_connect('close_event', _al_cerrar_2d)
-    fig._al_cerrar_2d = _al_cerrar_2d  # handle expuesto para la marcha blanca
+    plt.tight_layout(rect=[0, 0, 1, 0.95])
 
     # === ETAPA 4: Completado ===
     mostrar_avance(4, 4, "¡Listo! Abriendo interfaz gráfica.")
@@ -530,225 +503,7 @@ def plotear_evento(fecha, lat, lon, prof, mag, event_id, texto_magnitud):
         
     plt.show()
     print("[GRAFICADOR] Ventana cerrada por el operador. Volviendo al modo escucha...\n")
-
-
-# Resolución del mallado del mapa 3D (grados por celda).
-# A menor valor = más detalle, pero más lento al rotar (más triángulos).
-#   0.1° -> ~13.900 triángulos (detallado, se nota lag)
-#   0.2° -> ~3.600  triángulos (equilibrio recomendado)
-#   0.3° -> ~1.600  triángulos (ligero)
-# Si tu equipo aún siente el giro "traboso", sube el valor a 0.3.
-RES_3D = 0.2
-
-# Resolución del mallado de la TOPOGRAFÍA (grados por celda).
-# El slab se mantiene fijo en RES_3D = 0.2° (~1.600 triángulos).
-#   0.10 -> ~7.400 triángulos de relieve | total 3D ~9.100 | algo de lag
-#   0.12 -> ~5.200 triángulos de relieve | total 3D ~6.900 | intermedio
-#   0.15 -> ~3.400 triángulos de relieve | total 3D ~5.000 | fluido
-# Para cambiar el detalle solo edita el valor de abajo.
-RES_TOPO_3D = 0.15
-
-# Indica que ya hay una ventana 3D abierta desde el botón "Ver Perfil 3D".
-# Así se evita abrir dos ventanas 3D a la vez: se reabre al cerrar la actual.
-_VENTANA_3D_ABIERTA = False
-
-# Referencia a la ventana 3D abierta. Permite que al cerrar la ventana 2D
-# (mapa principal) se cierre también el 3D si estaba abierto, ya que la
-# visualización 3D es solo un complemento del mapa 2D.
-_FIGURA_3D_ACTIVA = None
-
-
-def _promediar_tris(x, y, z, res=RES_3D):
-    """
-    Agrupa puntos (x=lon, y=lat, z=altitud/profundidad) en celdas de 'res'
-    grados y devuelve las coordenadas de las celdas con su valor promedio.
-    Así la superficie 3D queda suave y liviana en vez de graficar miles
-    de puntos.
-    """
-    xr = np.round(x / res) * res
-    yr = np.round(y / res) * res
-    combo = np.stack([xr, yr], axis=1)
-    celdas, inv = np.unique(combo, axis=0, return_inverse=True)
-    suma = np.zeros(len(celdas), dtype=np.float64)
-    np.add.at(suma, inv, z)
-    conteo = np.bincount(inv)
-    return celdas[:, 0], celdas[:, 1], suma / np.maximum(conteo, 1)
-
-
-def plotear_perfil_3d(lat, lon, prof, event_id, texto_magnitud, bloquear=True):
-    """
-    Vista 3D del contexto sismotectónico: topografía sobre el nivel del mar,
-    placa subductada sumergiéndose, sismicidad de fondo e hipocentro.
-    Ventana interactiva: se rota con el mouse (matplotlib 3D).
-    Se abre bajo demanda desde el botón "Ver Perfil 3D" de la ventana 2D.
-
-    Con bloquear=False (uso desde el botón) la ventana se dibuja sin
-    bloquear el programa (el 2D sigue abierto a la vez). Además se evita
-    abrir dos ventanas 3D simultáneas: si ya hay una abierta, el clic se
-    ignora; al cerrarla, el siguiente clic abre una nueva.
-    """
-    global _VENTANA_3D_ABIERTA, _FIGURA_3D_ACTIVA
-    try:
-        from mpl_toolkits.mplot3d import Axes3D  # noqa: F401
-    except ImportError:
-        print("[3D] mplot3d no está disponible en este entorno; omitiendo mapa 3D.")
-        return
-
-    if not bloquear and _VENTANA_3D_ABIERTA:
-        if _FIGURA_3D_ACTIVA is not None and plt.fignum_exists(_FIGURA_3D_ACTIVA.number):
-            print("[3D] Ya hay una ventana 3D abierta. Ciérrala y vuelve a pulsar el botón para abrir otra.")
-            return
-        # La 3D ya no está (por ejemplo, close_event no alcanzó a resetear):
-        # se reajustan las banderas y se abre una nueva a continuación.
-        _VENTANA_3D_ABIERTA = False
-        _FIGURA_3D_ACTIVA = None
-
-    RANGO_3D = 3.0  # caja de ±3° alrededor del evento
-
-    def _recortar(data, col_lon, col_lat, col_z):
-        mask = (np.abs(data[:, col_lat] - lat) <= RANGO_3D) & \
-               (np.abs(data[:, col_lon] - lon) <= RANGO_3D)
-        return data[mask]
-
-    # --- TOPOGRAFÍA (m → km, positiva hacia arriba) ---
-    topo = None
-    arch_topo = os.path.join(GR_DIR, "topo_chile.npy")
-    if os.path.exists(arch_topo):
-        d = np.load(arch_topo, mmap_mode='r')
-        chunk = _recortar(d, 0, 1, 2)
-        if len(chunk):
-            topo = _promediar_tris(chunk[:, 0], chunk[:, 1], chunk[:, 2] / 1000.0,
-                                   res=RES_TOPO_3D)
-
-    # --- PLACA SUBDUCTADA (profundidad, negativa hacia abajo) ---
-    slab = None
-    arch_slab = os.path.join(GR_DIR, "slab2_global.npy")
-    if os.path.exists(arch_slab):
-        d = np.load(arch_slab, mmap_mode='r')
-        chunk = _recortar(d, 0, 1, 2)
-        if len(chunk):
-            sx, sy, sz = _promediar_tris(chunk[:, 0], chunk[:, 1], chunk[:, 2])
-            slab = (sx, sy, -sz)  # profundidad → negativa en el eje Z
-
-    if topo is None and slab is None:
-        print("[3D] Sin cobertura de grillas globales para este evento.")
-        return
-
-    # --- SISMICIDAD DE FONDO (catálogo histórico) ---
-    arch_base = os.path.join(DATOS_DIR, "base_2023_2026.dat")
-    lon_b, lat_b, prof_b = [], [], []
-    if os.path.exists(arch_base):
-        try:
-            with open(arch_base, 'r') as f:
-                for linea in f:
-                    partes = linea.strip().split()
-                    if len(partes) >= 5:
-                        ln = float(partes[3])
-                        lt = float(partes[2])
-                        if (lon - RANGO_3D <= ln <= lon + RANGO_3D) and \
-                           (lat - RANGO_3D <= lt <= lat + RANGO_3D):
-                            lon_b.append(ln)
-                            lat_b.append(lt)
-                            prof_b.append(float(partes[4]))
-        except Exception as e:
-            print(f"[3D] Aviso: no se pudo cargar el background sísmico: {e}")
-
-    fig = plt.figure(figsize=(10, 7))
-    ax = fig.add_subplot(111, projection='3d')
-    ax.set_facecolor("white")
-
-    if topo is not None and len(topo[0]):
-        ax.plot_trisurf(topo[0], topo[1], topo[2],
-                        cmap="terrain", linewidth=0,
-                        antialiased=False, shade=False, alpha=0.9)
-    if slab is not None and len(slab[0]):
-        ax.plot_trisurf(slab[0], slab[1], slab[2],
-                        cmap="hot", linewidth=0,
-                        antialiased=False, shade=False, alpha=0.5)
-
-    # --- SISMICIDAD DE FONDO (ocultamos la muy cercana al evento para que la
-    # estrella del hipocentro no quede tapada) ---
-    RADIO_LIMPIO = 0.35  # grados alrededor del hipocentro sin puntos grises
-    if lon_b:
-        lon_b_l = [ln for ln, lt in zip(lon_b, lat_b)
-                   if (ln - lon) ** 2 + (lt - lat) ** 2 > RADIO_LIMPIO ** 2]
-        lat_b_l = [lt for ln, lt in zip(lon_b, lat_b)
-                   if (ln - lon) ** 2 + (lt - lat) ** 2 > RADIO_LIMPIO ** 2]
-        prof_b_l = [p for ln, lt, p in zip(lon_b, lat_b, prof_b)
-                    if (ln - lon) ** 2 + (lt - lat) ** 2 > RADIO_LIMPIO ** 2]
-        ax.scatter(lon_b_l, lat_b_l, [-p for p in prof_b_l],
-                   s=5, c="gray", alpha=0.5)
-
-    # --- HIPOCENTRO: estrella dibujada con ax.plot() (Line3D). El marcador
-    # "estrella" de ax.scatter() puede quedar oculto por el ordenamiento por
-    # profundidad de matplotlib 3D sobre las superficies; con Line3D el
-    # marcador se proyecta y se ve siempre. Halo blanco detrás para que
-    # resalte sobre la sismicidad.
-    ax.plot([lon], [lat], [-prof], marker='*', markersize=26, ls='',
-            mfc='white', mec='white', zorder=12)
-    ax.plot([lon], [lat], [-prof], marker='*', markersize=19, ls='',
-            mfc='#ff2fd0', mec='black', mew=1.2, zorder=13)
-    ax.plot([lon, lon], [lat, lat], [0.0, -prof],
-            linestyle="--", linewidth=1.0, color="black", alpha=0.5)
-
-    ax.set_xlabel("Longitud (°)")
-    ax.set_ylabel("Latitud (°)")
-    ax.set_zlabel("km (arriba (+) / profundidad (-))")
-    ax.set_title(f"Perfil 3D — {event_id} ({texto_magnitud}, prof {prof} km)")
-    ax.view_init(elev=30, azim=-60)
-
-    fig.text(0.02, 0.02,
-             "Cómo explorar:  ARRASTRA con el mouse para rotar  ·  "
-             "rueda o desplaza para acercar/alejar",
-             fontsize=9, style="italic",
-             bbox=dict(boxstyle="round,pad=0.3", facecolor="white",
-                       edgecolor="gray", alpha=0.9))
-
-    # Rueda del mouse: mplot3d no acerca/aleja por defecto, así que se
-    # implementa a mano escalando los límites alrededor del centro de la
-    # escena. 'up' = acercar (x0.8), 'down' = alejar (x1.25).
-    def _zoom_3d(ev):
-        _sf = 0.8 if ev.button == "up" else 1.25
-        x0, x1 = ax.get_xlim3d()
-        y0, y1 = ax.get_ylim3d()
-        z0, z1 = ax.get_zlim3d()
-        cx, cy, cz = (x0 + x1) / 2, (y0 + y1) / 2, (z0 + z1) / 2
-        ax.set_xlim3d(cx + (x0 - cx) * _sf, cx + (x1 - cx) * _sf)
-        ax.set_ylim3d(cy + (y0 - cy) * _sf, cy + (y1 - cy) * _sf)
-        ax.set_zlim3d(cz + (z0 - cz) * _sf, cz + (z1 - cz) * _sf)
-        fig.canvas.draw_idle()
-
-    fig.canvas.mpl_connect("scroll_event", _zoom_3d)
-    fig._zoom_3d = _zoom_3d  # handle expuesto para la marcha blanca
-
-    from matplotlib.patches import Patch
-    from matplotlib.lines import Line2D
-    ax.legend(handles=[
-        Patch(facecolor="#6fae4d", alpha=0.7, label="Topografía"),
-        Patch(facecolor="#b13d2d", alpha=0.55, label="Placa subductada"),
-        Line2D([0], [0], marker='o', color='w', markerfacecolor='gray',
-               markeredgecolor='gray', ls='', label="Sismicidad histórica"),
-        Line2D([0], [0], marker='*', color='w', markerfacecolor="#6b0707",
-               markeredgecolor='black', markersize=13, ls='',
-               label=f"Hipocentro {texto_magnitud}"),
-    ], loc="upper left", fontsize=9)
-
-    plt.tight_layout()
-    if not bloquear:
-        _VENTANA_3D_ABIERTA = True
-        _FIGURA_3D_ACTIVA = fig
-
-        def _al_cerrar_3d(_ev=None):
-            global _VENTANA_3D_ABIERTA, _FIGURA_3D_ACTIVA
-            _VENTANA_3D_ABIERTA = False
-            _FIGURA_3D_ACTIVA = None
-
-        fig.canvas.mpl_connect('close_event', _al_cerrar_3d)
-    plt.show()
-    if bloquear:
-        print("[3D] Ventana 3D cerrada por el operador.\n")
-
-
+    
 def parsear_linea_evento(texto):
     """
     Parsea la línea de evento_data.txt escrita por la consulta (campos
@@ -828,14 +583,11 @@ if __name__ == "__main__":
                     except Exception as e:
                         print(f"[Error] Falló la generación de mapas: {e}")
 
-                    # Mapa 3D bajo demanda del analista: se abre con el botón
-                    # "Ver Perfil 3D" de la ventana 2D (plotear_evento), no
-                    # automáticamente al finalizar la generación de mapas.
-
-                    # El archivo temporal NO se elimina: cada consulta NewPT lo
-                    # regenera (consulta_evento.py lo borra y reescribe al
-                    # inicio), y dejarlo permite re-ejecutar este script.
-                    print("[INFO] Procesamiento terminado. evento_data.txt queda disponible para re-ejecutar.")
+                    try:
+                        os.remove(ARCHIVO_TMP)
+                        print("[INFO] Archivo temporal eliminado. Cerrando programa.")
+                    except OSError as e:
+                        print(f"[Error] No se pudo eliminar el archivo temporal: {e}")
             elif texto_actual and "csn_" in texto_actual:
                     print("[Error] El formato de la línea en el archivo no es válido.")
             else:

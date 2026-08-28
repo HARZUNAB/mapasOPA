@@ -29,12 +29,17 @@ cp "$DIR_ORIGEN/consulta_evento.py"   "$BASE/fuentes/"
 cp "$DIR_ORIGEN/consuta_evento_sc7.py" "$BASE/fuentes/"
 
 # --- Pruebas unitarias (marcha blanca del instalador) ---
-# Solo los tests: el informe (.docx) y su generador son internos de QA,
-# no viajan en el paquete.
+# Solo los tests: el informe y el curso de pruebas son material interno
+# de QA/capacitación, no viajan en el paquete.
 if [ -d "$DIR_ORIGEN/pruebas" ]; then
     cp -r "$DIR_ORIGEN/pruebas" "$BASE/fuentes/pruebas"
     rm -f "$BASE/fuentes/pruebas/INFORME_TESTS_MARCHA_BLANCA.docx" \
-          "$BASE/fuentes/pruebas/generar_informe_tests.py"
+          "$BASE/fuentes/pruebas/generar_informe_tests.py" \
+          "$BASE/fuentes/pruebas/CURSO_TESTS_UNITARIOS.docx" \
+          "$BASE/fuentes/pruebas/generar_curso.py" \
+          "$BASE/fuentes/pruebas/generar_media_curso.py"
+    rm -rf "$BASE/fuentes/pruebas/CURSO_MEDIA" \
+           "$BASE"/fuentes/pruebas/__pycache__
 fi
 
 # --- Herramientas de instalación ---

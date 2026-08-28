@@ -11,6 +11,7 @@ from io import StringIO
 os.environ.setdefault("MPLBACKEND", "Agg")
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+import matplotlib.pyplot as plt
 import capturar
 
 # Línea de evento_data.txt con el formato real de 19 campos que escribe
@@ -132,6 +133,132 @@ class TestParsearLineaEvento(unittest.TestCase):
         ev = capturar.parsear_linea_evento(linea)
         self.assertEqual(ev["lat"], 35.42)
         self.assertEqual(ev["lon"], 71.62)
+
+
+class TestBoton3D(unittest.TestCase):
+    """
+    La ventana 2D (plotear_evento) expone el botón "Ver Perfil 3D" como
+    fig._abrir_perfil_3d: abre el 3D bajo demanda, no abre una segunda
+    ventana 3D mientras ya hay una abierta, y permite reabrir tras cerrarla.
+    Nota: requiere las grillas locales (GR_DIR); si no existen, se omite.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        if not os.path.isdir(capturar.GR_DIR):
+            raise unittest.SkipTest("Sin grillas locales (GR_DIR); se omite el botón 3D")
+        ev = capturar.parsear_linea_evento(LINEA_VALIDA)
+        cls.ev = ev
+
+    def _render_2d(self):
+        capturar.plotear_evento(
+            self.ev["fecha"], self.ev["lat"], self.ev["lon"],
+            self.ev["prof"], self.ev["mag"],
+            self.ev["event_id"], self.ev["texto_magnitud"])
+        return plt.gcf()
+
+    def test_a15_boton_abre_perfil_3d(self):
+        plt.close("all")
+        capturar._VENTANA_3D_ABIERTA = False
+        figs_antes = len(plt.get_fignums())
+        with redirect_stdout(StringIO()):
+            fig = self._render_2d()
+        self.assertTrue(hasattr(fig, "_abrir_perfil_3d"))
+        with redirect_stdout(StringIO()):
+            fig._abrir_perfil_3d()
+        self.assertTrue(capturar._VENTANA_3D_ABIERTA)
+        self.assertEqual(len(plt.get_fignums()), figs_antes + 2)  # 2D + 3D
+        plt.close("all")
+
+    def test_a16_no_abre_segunda_3d_si_ya_hay_una(self):
+        plt.close("all")
+        capturar._VENTANA_3D_ABIERTA = False
+        with redirect_stdout(StringIO()):
+            fig = self._render_2d()
+            fig._abrir_perfil_3d()          # primer clic -> abre 3D
+        total = len(plt.get_fignums())
+        salida = StringIO()
+        with redirect_stdout(salida):
+            fig._abrir_perfil_3d()          # ya hay una 3D -> ignored
+        self.assertIn("Ya hay una ventana 3D abierta", salida.getvalue())
+        self.assertEqual(len(plt.get_fignums()), total)
+        plt.close("all")
+
+    def test_a17_permite_reabrir_tras_cerrar(self):
+        plt.close("all")
+        capturar._VENTANA_3D_ABIERTA = False
+        with redirect_stdout(StringIO()):
+            fig = self._render_2d()
+            fig._abrir_perfil_3d()
+            cap3d = plt.gcf()               # figura 3D activa
+            capturar._VENTANA_3D_ABIERTA = False  # simula el close_event
+            plt.close(cap3d)
+            n_antes = len(plt.get_fignums())
+            fig._abrir_perfil_3d()          # reabre una 3D nueva
+        self.assertEqual(len(plt.get_fignums()), n_antes + 1)
+        plt.close("all")
+
+    def test_a18_rueda_acerca_y_aleja(self):
+        plt.close("all")
+        capturar._VENTANA_3D_ABIERTA = False
+        with redirect_stdout(StringIO()):
+            fig = self._render_2d()
+            fig._abrir_perfil_3d()
+            fig3d = plt.gcf()
+        self.assertTrue(hasattr(fig3d, "_zoom_3d"))
+
+        class Ev:
+            def __init__(self, b):
+                self.button = b
+
+        ax = fig3d.axes[0]
+        r0 = ax.get_xlim3d()[1] - ax.get_xlim3d()[0]
+        fig3d._zoom_3d(Ev("up"))
+        r1 = ax.get_xlim3d()[1] - ax.get_xlim3d()[0]
+        self.assertLess(r1, r0)          # acercar -> rango menor
+        fig3d._zoom_3d(Ev("down"))
+        r2 = ax.get_xlim3d()[1] - ax.get_xlim3d()[0]
+        self.assertGreater(r2, r1)       # alejar -> rango mayor
+        plt.close("all")
+
+    def test_a19_cerrar_2d_cierra_3d(self):
+        plt.close("all")
+        capturar._VENTANA_3D_ABIERTA = False
+        capturar._FIGURA_3D_ACTIVA = None
+        with redirect_stdout(StringIO()):
+            fig2d = self._render_2d()
+            fig2d._abrir_perfil_3d()
+            fig3d = plt.gcf()
+        self.assertTrue(hasattr(fig2d, "_al_cerrar_2d"))
+        self.assertIs(capturar._FIGURA_3D_ACTIVA, fig3d)
+        num3d = fig3d.number
+        with redirect_stdout(StringIO()):
+            fig2d._al_cerrar_2d(None)    # cierra el mapa 2D principal
+        self.assertIsNone(capturar._FIGURA_3D_ACTIVA)
+        self.assertFalse(plt.fignum_exists(num3d))   # la 3D se cerró con la 2D
+        plt.close("all")
+
+    def test_a20_guarda_se_autocorrige_sin_close_event(self):
+        plt.close("all")
+        capturar._VENTANA_3D_ABIERTA = False
+        capturar._FIGURA_3D_ACTIVA = None
+        with redirect_stdout(StringIO()):
+            fig2d = self._render_2d()
+            fig2d._abrir_perfil_3d()
+            fig3d = plt.gcf()
+        # Cierra la 3D "a pie" (en Agg plt.close no dispara close_event),
+        # dejando las banderas desactualizadas como en un caso borde.
+        plt.close(fig3d)
+        self.assertTrue(capturar._VENTANA_3D_ABIERTA)
+        self.assertIsNotNone(capturar._FIGURA_3D_ACTIVA)
+        # El botón reabre: la guarda detecta que la 3D ya no existe.
+        with redirect_stdout(StringIO()):
+            fig2d._abrir_perfil_3d()
+        fig3d_nueva = plt.gcf()
+        self.assertIsNot(fig3d_nueva, fig3d)      # se abrió una 3D nueva
+        self.assertIs(capturar._FIGURA_3D_ACTIVA, fig3d_nueva)
+        self.assertTrue(capturar._VENTANA_3D_ABIERTA)
+        plt.close("all")
 
 
 if __name__ == "__main__":

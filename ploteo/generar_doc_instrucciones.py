@@ -63,7 +63,7 @@ def main():
         "Los módulos de Python se instalan en el venv con versiones EXACTAMENTE FIJADAS "
         "(las mismas probadas en el desarrollo) y al final imprime las versiones instaladas.",
         "Antes de compilar los binarios ejecuta la MARCHA BLANCA: pruebas unitarias "
-        "(unittest) sobre la lógica crítica y los datos. Si un test falla, la instalación "
+        "(pytest) sobre la lógica crítica y los datos. Si un test falla, la instalación "
         "se DETIENE. Detalle completo en INFORME_TESTS_MARCHA_BLANCA.docx.",
     ]:
         doc.add_paragraph(t, style="List Bullet")

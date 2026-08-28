@@ -59,15 +59,20 @@ PAQUETES_FIJOS=(
     "psycopg2-binary==2.9.12"
     "adjustText==1.4.0"
     "pyinstaller==6.22.2"
+    "pytest==9.1.1"
+    "black==26.5.1"
+    "pandas==3.0.5"
 )
 
 # Ejecuta la marcha blanca (pruebas unitarias de fuentes/pruebas).
+# Usa pytest: corre tanto los suites unittest existentes como los tests
+# en estilo pytest puro que se agreguen.
 ejecutar_pruebas() {
     local venv="$1" dir_datos="$2" dir_fuentes="$3"
     echo ""
-    echo "==> MARCHA BLANCA: ejecutando pruebas unitarias..."
+    echo "==> MARCHA BLANCA: ejecutando pruebas unitarias (pytest)..."
     MPLBACKEND=Agg NEWPT_DATA_DIR="$dir_datos" PYTHONPATH="$dir_fuentes" \
-        "$venv/bin/python" -m unittest discover -s "$dir_fuentes/pruebas" -v
+        "$venv/bin/python" -m pytest "$dir_fuentes/pruebas" -v
 }
 
 echo "============================================================"

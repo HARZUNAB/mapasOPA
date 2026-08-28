@@ -213,9 +213,12 @@ def main():
     doc.add_paragraph("y la instalación NO continúa hasta corregir el problema.")
     doc.add_paragraph("c) Ejecución manual de un suite específico (dentro del venv):")
     codigo(doc, "PYTHONPATH=fuentes MPLBACKEND=Agg \\\n"
-                "python -m unittest discover -s fuentes/pruebas -v\n"
-                "# solo un módulo:\n"
-                "python -m unittest discover -s fuentes/pruebas -p 'test_capturar.py' -v")
+                "python -m pytest fuentes/pruebas -v\n"
+                "# solo un archivo:\n"
+                "python -m pytest fuentes/pruebas/test_capturar.py -v")
+    nota(doc, "La marcha blanca del instalador ejecuta los suites con pytest, "
+              "que corre tanto tests unittest (como estos) como tests en estilo "
+              "pytest puro que se agreguen a la carpeta pruebas/.")
 
     # ------------------------------------------------------------------
     doc.add_heading("7. Interpretación de resultados", 1)

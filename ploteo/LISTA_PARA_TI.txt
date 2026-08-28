@@ -18,9 +18,10 @@ requerir permisos de super usuario para la instalación de NewPT.
 
   IMPORTANTE: NO se instala ningún módulo de Python en el sistema.
   Los módulos (numpy, matplotlib, cartopy, pyproj, Pillow, psycopg2,
-  adjustText, pyinstaller) se instalan dentro del venv por el instalador,
-  como usuario normal y sin sudo, y siempre en versiones EXACTAS FIJADAS
-  (las mismas probadas en el desarrollo) para evitar incompatibilidades.
+  adjustText, pyinstaller, pytest, black, pandas) se instalan dentro del venv
+  por el instalador, como usuario normal y sin sudo, y siempre en
+  versiones EXACTAS FIJADAS (las mismas probadas en el desarrollo)
+  para evitar incompatibilidades.
 
   NOTA: en máquinas donde NewPT ya estuvo instalado o corriendo antes,
   estos 4 programas ya existen: NO deben volver a instalarse. El instalador
@@ -55,7 +56,16 @@ requerir permisos de super usuario para la instalación de NewPT.
 
 
 5) INSTALACIÓN (la realiza el usuario, SIN sudo)
-------------------------------------------------
+-----------------------------------------------
   tar -xzf newpt_instalador.tar.gz
   cd newpt_instalador
   ./instalar_newpt.sh          # compila binarios e instala en ~/newpt
+
+
+6) PERFIL 3D BAJO DEMANDA (NUEVO)
+---------------------------------
+  El mapa 3D ya NO se abre automáticamente al procesar un evento.
+  Se abre manualmente con el botón "Ver Perfil 3D" (esquina inferior
+  derecha de la ventana 2D), todas las veces que se desee mientras esa
+  ventana siga abierta. Solo hay una ventana 3D a la vez: para reabrir,
+  primero cerrar la 3D actual y pulsar el botón de nuevo.
