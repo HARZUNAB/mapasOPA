@@ -6,3 +6,7 @@ newpt_instalador.tar.gz
 *.spec
 dist/
 build/
+*.npy
+*.xyz
+*.tmp
+ploteoantestest/grillas/
