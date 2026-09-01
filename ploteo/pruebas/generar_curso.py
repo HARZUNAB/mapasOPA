@@ -269,7 +269,7 @@ def construir(doc):
     doc.add_paragraph(
         "Este curso te enseña a escribir tus propias pruebas unitarias para el "
         "proyecto NewPT usando pytest (framework de pruebas) y black (formato "
-        "automático de código). Los 25 tests que ya existen quedan como red de "
+        "automático de código). Los 31 tests que ya existen quedan como red de "
         "seguridad: tú agregas los tuyos encima."
     )
     doc.add_heading("Cómo usar este material", level=2)
@@ -331,7 +331,7 @@ def construir(doc):
     )
     imagen(doc, "g_anatomia.png", pie="Las partes de un test y qué hace cada una")
     doc.add_paragraph(
-        "El proyecto ya tiene 25 tests escritos al estilo unittest (clases con "
+        "El proyecto ya tiene 31 tests escritos al estilo unittest (clases con "
         "assertEqual). pytest los ejecuta sin tocarlos. TUS tests nuevos irán en "
         "estilo pytest: más corto y directo. Compara:"
     )

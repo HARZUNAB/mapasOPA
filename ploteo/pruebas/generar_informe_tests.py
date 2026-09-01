@@ -77,7 +77,8 @@ def main():
         "nada. Cubre tres suites:"
     )
     for t in [
-        "Suite A — capturar.py: cálculos geográficos y parseo de la línea de evento.",
+        "Suite A — capturar.py: cálculos geográficos, parseo de la línea de evento "
+        "y el manejo del perfil 3D (botón, zoom con la rueda y cierre coordinado).",
         "Suite B — consulta_evento.py: formato de salida hacia "
         "evento_data.txt, usando una base de datos SIMULADA (mock).",
         "Suite C — archivos de datos: consistencia de grillas, catálogo histórico, "
@@ -105,7 +106,12 @@ def main():
 
     # ------------------------------------------------------------------
     doc.add_heading("3. Suite A — capturar.py (test_capturar.py)", 1)
-    doc.add_paragraph("Prueba la lógica pura del graficador: geodesia y parseo robusto.")
+    doc.add_paragraph(
+        "Prueba la lógica pura del graficador: geodesia, parseo robusto y el manejo "
+        "del perfil 3D (botón 'Ver Perfil 3D', zoom con la rueda del mouse y cierre "
+        "coordinado de la ventana 2D/3D). En total la suite completa suma 31 tests "
+        "(20 de capturar.py, 5 de consulta_evento.py y 6 de datos)."
+    )
     tabla(
         doc,
         ["ID", "Objetivo", "Entrada", "Resultado esperado"],
@@ -136,6 +142,21 @@ def main():
              "Texto sin la marca 'csn_'", "Línea rechazada"],
             ["A14", "Hemisferio norte/este", "'35.42 N' y '71.62 E'",
              "lat=+35.42 y lon=+71.62 (positivos)"],
+            ["A15", "El botón abre el perfil 3D", "Ventana 2D plotear_evento renderizada, "
+             "clic en el botón (fig._abrir_perfil_3d)",
+             "Se abre una ventana 3D nueva: _VENTANA_3D_ABIERTA = True y hay 2D + 3D abiertas"],
+            ["A16", "No abre una segunda 3D", "3D ya abierta y nuevo clic en el botón",
+             "Mensaje 'Ya hay una ventana 3D abierta' y el número de figuras no cambia"],
+            ["A17", "Reabre tras cerrar la 3D", "Se cierra la 3D y se hace clic de nuevo",
+             "Se abre una 3D nueva (una sola a la vez, reabrible)"],
+            ["A18", "Zoom con la rueda del mouse", "fig3d._zoom_3d({button:'up'}) y "
+             "luego {button:'down'}", "Rango del eje X se reduce al acercar y aumenta al alejar"],
+            ["A19", "Cerrar el 2D cierra el 3D", "Cerrar la ventana 2D principal "
+             "(fig2d._al_cerrar_2d)", "La 3D se cierra con la 2D y _FIGURA_3D_ACTIVA = None"],
+            ["A20", "Guarda autocorregible sin close_event",
+             "Cerrar la 3D sin evento de cierre (backend Agg) y reclicar",
+             "Se detecta que la figura 3D ya no existe y se abre una 3D nueva "
+             "(sin banderas desincronizadas)"],
         ],
     )
 
