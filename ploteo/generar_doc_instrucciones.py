@@ -14,7 +14,7 @@ except ImportError:
     sys.exit(1)
 
 DIR = os.path.dirname(os.path.abspath(__file__))
-SALIDA = os.path.join(DIR, "INSTRUCCIONES_INSTALACION.docx")
+SALIDA = os.path.join(DIR, "documentos", "INSTRUCCIONES_INSTALACION.docx")
 
 
 def codigo(doc, texto):
@@ -54,7 +54,8 @@ def main():
     for t in [
         "No instala ningún módulo de Python en el Python del sistema (todo va en el venv).",
         "Los códigos fuente y el venv quedan ocultos en la carpeta .dev/ (chmod 700).",
-        "Genera binarios ejecutables de consulta y de graficado.",
+        "Genera binarios ejecutables de consulta, de graficado y de precalentamiento "
+        "de caché (este último deja módulos y datos en RAM para acelerar el arranque).",
         "Copia los datos (grillas, TIF, sismicidad histórica, localidades).",
         "Crea el lanzador newpt.sh y la configuración de base de datos (.env).",
         "El instalador NUNCA ejecuta apt: los programas del sistema solo se verifican, "
@@ -64,7 +65,7 @@ def main():
         "(las mismas probadas en el desarrollo) y al final imprime las versiones instaladas.",
         "Antes de compilar los binarios ejecuta la MARCHA BLANCA: pruebas unitarias "
         "(pytest) sobre la lógica crítica y los datos. Si un test falla, la instalación "
-        "se DETIENE. Detalle completo en INFORME_TESTS_MARCHA_BLANCA.docx.",
+        "se DETIENE.",
     ]:
         doc.add_paragraph(t, style="List Bullet")
 
@@ -73,7 +74,7 @@ def main():
 
     doc.add_heading("Paso 1 - En la máquina de desarrollo (carpeta ploteo/)", 2)
     doc.add_paragraph("Solo si cambiaste código, verifica que no haya errores de sintaxis:")
-    codigo(doc, "python3 -m py_compile capturar.py consulta_evento.py consuta_evento_sc7.py")
+    codigo(doc, "python3 -m py_compile capturar.py consulta_evento.py precalentar.py lee_catalogo.py preprocesa_grillas.py")
     doc.add_paragraph("Regenera el paquete de instalación (fuentes + datos + herramientas):")
     codigo(doc, "./crear_instalador.sh")
     doc.add_paragraph("El resultado es newpt_instalador.tar.gz en la carpeta actual "
@@ -93,8 +94,7 @@ def main():
     )
     doc.add_paragraph(
         "El modo --probar crea un venv temporal, instala los módulos con versiones fijas, "
-        "corre las pruebas unitarias (ver INFORME_TESTS_MARCHA_BLANCA.docx) y borra lo "
-        "temporal: no instala nada en ~/newpt."
+        "corre las pruebas unitarias y borra el temporal: no instala nada en ~/newpt."
     )
     doc.add_paragraph(
         "En la prueba, reemplace 'csn_sc62026nkkbb' por el ID del evento que quiera graficar "
@@ -149,9 +149,11 @@ def main():
         "├── newpt.sh                     lanzador (lo ejecuta el botón de SeisComP)\n"
         "├── .env                         configuración de la base de datos (chmod 600)\n"
         "├── bin/newpt_capturar/          binario del graficador\n"
-        "├── bin/newpt_consulta/          binario de la consulta\n"
+        "├── bin/newpt_consulta/          binario de la consulta BD\n"
+        "├── bin/newpt_precalentar/       binario de precalentamiento de caché\n"
         "├── grillas/                     perfiles de subducción y topografía\n"
-        "├── NE2_LR_LC_SR_W_DR.tif        imagen de relieve\n"
+        "├── NE2_LR_LC_SR_W_DR.tif        imagen de relieve global (respaldo)\n"
+        "├── relieve_chile.tif            relieve recortado a zona de trabajo\n"
         "├── base_2023_2026.dat           sismicidad histórica\n"
         "├── localidades.csv              localidades\n"
         "└── .dev/                        venv + fuentes (oculto, chmod 700)",
