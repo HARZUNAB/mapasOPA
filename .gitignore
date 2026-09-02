@@ -10,3 +10,9 @@ build/
 *.xyz
 *.tmp
 ploteoantestest/grillas/
+*.tif
+*.tiff
+*.npy
+*.xyz
+*.tmp
+ploteo/grillas/

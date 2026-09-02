@@ -1,1 +1,1 @@
-2026-09-01 18:54:59;;;3.4;MLv;23;0.34;179;23.88 S;66.91 W;221 km;from location;confirmed;;2;CSN;eatl;Jujuy Province, Argentina;csn_sc62026rdnek
+2026-09-01 04:30:46;;;3.3;MLv;33;0.42;166;20.66 S;68.99 W;97 km;from location;confirmed;;2;CSN;cris;Chile-Bolivia Border Region;csn_sc62026rckrb

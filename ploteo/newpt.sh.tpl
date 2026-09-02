@@ -19,6 +19,7 @@ fi
 
 BIN_CAPTURAR="$DIR_TRABAJO/bin/newpt_capturar/newpt_capturar"
 BIN_CONSULTA="$DIR_TRABAJO/bin/newpt_consulta/newpt_consulta"
+BIN_PRECALENTAR="$DIR_TRABAJO/bin/newpt_precalentar/newpt_precalentar"
 
 # =========================================================================
 # LIMPIEZA AUTOMÁTICA DE EVENTOS ANTERIORES
@@ -37,7 +38,13 @@ sleep 0.2
 # =========================================================================
 xterm -geometry 90x25 -T "Procesamiento de Evento - NewPT" -e bash -c "
     echo '=== INICIANDO EXTRACCION DE PARAMETROS ===';
+    # Precalentamiento de caché (silencioso a nivel gráfico). Corre en
+    # background mientras la consulta a la BD espera por red, dejando
+    # módulos y datos en RAM para que el graficador vaya rápido.
+    '$BIN_PRECALENTAR' &
+    PREWARM_PID=$!;
     '$BIN_CONSULTA' '$EVENT_ID';
+    wait $PREWARM_PID 2>/dev/null;
 
     if [ -f '$DIR_TRABAJO/evento_data.txt' ]; then
         echo '';

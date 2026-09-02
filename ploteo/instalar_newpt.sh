@@ -265,6 +265,7 @@ echo "==> Validando componentes del instalador..."
 [ -f "$TPL" ]               || { echo "[ERROR] No existe $TPL"; exit 1; }
 [ -f "$FUENTES_DIR/capturar.py" ]        || { echo "[ERROR] Falta fuentes/capturar.py"; exit 1; }
 [ -f "$FUENTES_DIR/consulta_evento.py" ] || { echo "[ERROR] Falta fuentes/consulta_evento.py"; exit 1; }
+[ -f "$FUENTES_DIR/precalentar.py" ]     || { echo "[ERROR] Falta fuentes/precalentar.py"; exit 1; }
 [ -f "$DATOS_DIR_SRC/NE2_LR_LC_SR_W_DR.tif" ] || { echo "[ERROR] Falta datos/NE2_LR_LC_SR_W_DR.tif"; exit 1; }
 [ -f "$DATOS_DIR_SRC/base_2023_2026.dat" ]   || { echo "[ERROR] Falta datos/base_2023_2026.dat"; exit 1; }
 [ -f "$DATOS_DIR_SRC/localidades.csv" ]      || { echo "[ERROR] Falta datos/localidades.csv"; exit 1; }
@@ -358,6 +359,15 @@ cd "$DIR_INSTALACION/.dev/fuentes"
     --name newpt_consulta \
     consulta_evento.py
 
+"$VENV/bin/pyinstaller" --onedir --noconfirm --clean \
+    --name newpt_precalentar \
+    --collect-data cartopy \
+    --collect-data pyproj \
+    --hidden-import matplotlib.backends.backend_tkagg \
+    --hidden-import tkinter \
+    --hidden-import PIL._tkinter_finder \
+    precalentar.py
+
 # -----------------------------------------------------------------------------
 # 6. ENSAMBLADO DE LA INSTALACIÓN
 # -----------------------------------------------------------------------------
@@ -365,6 +375,7 @@ echo ""
 echo "==> Ensamblando instalación..."
 cp -r "$DIR_INSTALACION/.dev/fuentes/dist/newpt_capturar" "$DIR_INSTALACION/bin/"
 cp -r "$DIR_INSTALACION/.dev/fuentes/dist/newpt_consulta" "$DIR_INSTALACION/bin/"
+cp -r "$DIR_INSTALACION/.dev/fuentes/dist/newpt_precalentar" "$DIR_INSTALACION/bin/"
 
 cp -r "$DATOS_DIR_SRC/." "$DIR_INSTALACION/"
 

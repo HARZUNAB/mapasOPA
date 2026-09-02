@@ -322,26 +322,60 @@ def plotear_evento(fecha, lat, lon, prof, mag, event_id, texto_magnitud):
     ax_planta = fig.add_subplot(1, 2, 1, projection=ccrs.PlateCarree())
     ax_planta.set_extent([lon - RANGO_ANCHURA, lon + RANGO_ANCHURA, lat - RANGO_ANCHURA, lat + RANGO_ANCHURA], crs=ccrs.PlateCarree())
 
-    arch_tif = os.path.join(DATOS_DIR, "NE2_LR_LC_SR_W_DR.tif")
+    # Se prioriza el relieve pre-recortado a la zona de trabajo (mucho más
+    # liviano y rápido de leer); si no existe, se usa el relieve global completo.
+    # Si el evento cae FUERA de la cobertura del recorte, se usa el relieve
+    # global como respaldo y se avisa al analista.
+    uso_relieve_global = False
+    arch_tif = os.path.join(DATOS_DIR, "relieve_chile.tif")
+    proy = None
+    if os.path.exists(arch_tif):
+        # Constantes de la proyección local del recorte relieve_chile.tif
+        lon_min_r, lon_max_r, lat_min_r, lat_max_r = -97.0, -53.0, -62.0, -4.0
+        proy = ("local", lon_min_r, lon_max_r, lat_min_r, lat_max_r)
+        # ¿El área visible alrededor del evento cae dentro del recorte?
+        dentro_recorte = (lon - RANGO_ANCHURA >= lon_min_r and
+                          lon + RANGO_ANCHURA <= lon_max_r and
+                          lat - RANGO_ANCHURA >= lat_min_r and
+                          lat + RANGO_ANCHURA <= lat_max_r)
+        if not dentro_recorte:
+            arch_relieve_global = os.path.join(DATOS_DIR, "NE2_LR_LC_SR_W_DR.tif")
+            if os.path.exists(arch_relieve_global):
+                arch_tif = arch_relieve_global
+                proy = ("global",)
+                uso_relieve_global = True
+    else:
+        arch_tif = os.path.join(DATOS_DIR, "NE2_LR_LC_SR_W_DR.tif")
+        proy = ("global",)
     if os.path.exists(arch_tif):
         try:
             from PIL import Image
             Image.MAX_IMAGE_PIXELS = None  
             img = Image.open(arch_tif)
             ancho_img, alto_img = img.size
-            x0 = int((lon - RANGO_ANCHURA + 180) / 360.0 * ancho_img)
-            x1 = int((lon + RANGO_ANCHURA + 180) / 360.0 * ancho_img)
-            y0 = int((90 - (lat + RANGO_ANCHURA)) / 180.0 * alto_img)
-            y1 = int((90 - (lat - RANGO_ANCHURA)) / 180.0 * alto_img)
+            if proy[0] == "local":
+                _, lon_min_r, lon_max_r, lat_min_r, lat_max_r = proy
+                x0 = int((lon - RANGO_ANCHURA - lon_min_r) / (lon_max_r - lon_min_r) * ancho_img)
+                x1 = int((lon + RANGO_ANCHURA - lon_min_r) / (lon_max_r - lon_min_r) * ancho_img)
+                y0 = int((lat_max_r - (lat + RANGO_ANCHURA)) / (lat_max_r - lat_min_r) * alto_img)
+                y1 = int((lat_max_r - (lat - RANGO_ANCHURA)) / (lat_max_r - lat_min_r) * alto_img)
+            else:
+                x0 = int((lon - RANGO_ANCHURA + 180) / 360.0 * ancho_img)
+                x1 = int((lon + RANGO_ANCHURA + 180) / 360.0 * ancho_img)
+                y0 = int((90 - (lat + RANGO_ANCHURA)) / 180.0 * alto_img)
+                y1 = int((90 - (lat - RANGO_ANCHURA)) / 180.0 * alto_img)
             x0 = max(0, min(ancho_img - 1, x0))
             x1 = max(x0 + 1, min(ancho_img, x1))
             y0 = max(0, min(alto_img - 1, y0))
             y1 = max(y0 + 1, min(alto_img, y1))
-            img_recorte = img.crop((x0, y0, x1, y1)).resize((400, 400))
-            ax_planta.imshow(img_recorte, origin='upper', 
-                             extent=[lon - RANGO_ANCHURA, lon + RANGO_ANCHURA,
-                                     lat - RANGO_ANCHURA, lat + RANGO_ANCHURA],
-                             transform=ccrs.PlateCarree())
+            if x1 > x0 and y1 > y0:
+                img_recorte = img.crop((x0, y0, x1, y1)).resize((400, 400))
+                ax_planta.imshow(img_recorte, origin='upper', 
+                                 extent=[lon - RANGO_ANCHURA, lon + RANGO_ANCHURA,
+                                         lat - RANGO_ANCHURA, lat + RANGO_ANCHURA],
+                                 transform=ccrs.PlateCarree())
+            else:
+                raise ValueError("recorte fuera de la imagen")
         except Exception as e:
             print(f"[Aviso] No se pudo proyectar el relieve .tif: {e}")
             ax_planta.add_feature(cfeature.LAND.with_scale('50m'), facecolor='#f7f7f4', zorder=1)
@@ -349,6 +383,19 @@ def plotear_evento(fecha, lat, lon, prof, mag, event_id, texto_magnitud):
     else:
         ax_planta.add_feature(cfeature.LAND.with_scale('50m'), facecolor='#f7f7f4', zorder=1)
         ax_planta.add_feature(cfeature.OCEAN.with_scale('50m'), facecolor='#edf4f9', zorder=1)
+
+    # Aviso al analista cuando el evento queda fuera de la cobertura del relieve
+    # local y se está usando el relieve global como respaldo.
+    if uso_relieve_global:
+        print("[Aviso] Sismo fuera de la cobertura del relieve local. Usando relieve global.")
+        ax_planta.text(0.02, 0.98,
+                       "Relieve: usando respaldo global\n(sismo fuera de la cobertura local)",
+                       transform=ax_planta.transAxes, fontsize=9, fontweight='bold',
+                       color="#8B0000", ha='left', va='top', zorder=20,
+                       bbox=dict(facecolor='white', edgecolor='#8B0000', alpha=0.85,
+                                 boxstyle='round,pad=0.4'))
+    elif proy is not None and proy[0] == "global":
+        print("[Aviso] No se encontró el relieve local (relieve_chile.tif). Usando relieve global.")
 
     ax_planta.coastlines(resolution='50m', color='#111111', linewidth=1.1, zorder=2)
     ax_planta.add_feature(cfeature.BORDERS.with_scale('50m'), edgecolor='#333333', linestyle=':', linewidth=0.8, zorder=2)

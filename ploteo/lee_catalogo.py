@@ -10,17 +10,17 @@ def lee_catalogo(archivo, sensibles=False):
 
     # CORRECCIÓN DE COLUMNAS FORMATO CORRECTO (.dat)
     # Ahora la columna 2 es LATITUD y la columna 3 es LONGITUD
-    lat_sismos = np.loadtxt(archivo, usecols=[2])
-    lon_sismos = np.loadtxt(archivo, usecols=[3])
-    prof_sismos = np.loadtxt(archivo, usecols=[4])
-    mag_sismos = np.loadtxt(archivo, usecols=[5])
-    typemag_sismos = np.loadtxt(archivo, usecols=[6], dtype="str")
-    sensibles_sismos = np.loadtxt(archivo, usecols=[7], dtype="str")
+    lat_sismos = np.loadtxt(archivo, usecols=[2], ndmin=1)
+    lon_sismos = np.loadtxt(archivo, usecols=[3], ndmin=1)
+    prof_sismos = np.loadtxt(archivo, usecols=[4], ndmin=1)
+    mag_sismos = np.loadtxt(archivo, usecols=[5], ndmin=1)
+    typemag_sismos = np.loadtxt(archivo, usecols=[6], dtype="str", ndmin=1)
+    sensibles_sismos = np.loadtxt(archivo, usecols=[7], dtype="str", ndmin=1)
     
     fechas = []
 
     with open(archivo, "r") as f:
-        lineas = f.readlines()
+        lineas = [l for l in f.readlines() if l.strip() and not l.strip().startswith('#')]
 
     sensible = np.full(len(lineas), True, dtype=bool)
 
@@ -43,7 +43,7 @@ def lee_catalogo(archivo, sensibles=False):
     df = pd.DataFrame(data)
 
     if sensibles:
-        df['sensible'] = np.loadtxt(archivo, usecols=[-1]) 
+        df['sensible'] = np.loadtxt(archivo, usecols=[-1], ndmin=1) 
 
     return df
 
