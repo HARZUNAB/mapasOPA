@@ -16,3 +16,9 @@ ploteoantestest/grillas/
 *.xyz
 *.tmp
 ploteo/grillas/
+*.npy
+*.xyz
+*.tif
+*.tiff
+*.tmp
+ploteo/grillas/
