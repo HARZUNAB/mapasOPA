@@ -32,20 +32,19 @@ cp "$DIR_ORIGEN/lee_catalogo.py"      "$BASE/fuentes/"
 cp "$DIR_ORIGEN/preprocesa_grillas.py" "$BASE/fuentes/"
 
 # --- Pruebas unitarias (marcha blanca del instalador) ---
-# Solo los tests: el informe y el curso de pruebas son material interno
+# Solo los tests: los informes y el curso de pruebas son material interno
 # de QA/capacitación, no viajan en el paquete.
-if [ -d "$DIR_ORIGEN/pruebas" ]; then
-    cp -r "$DIR_ORIGEN/pruebas" "$BASE/fuentes/pruebas"
-    rm -f "$BASE/fuentes/pruebas/INFORME_TESTS_MARCHA_BLANCA.docx" \
-          "$BASE/fuentes/pruebas/generar_informe_tests.py" \
-          "$BASE/fuentes/pruebas/generar_informe_mis_tests.py" \
-          "$BASE/fuentes/pruebas/generar_informe_tests_ia.py" \
-          "$BASE/fuentes/pruebas/CURSO_TESTS_UNITARIOS.docx" \
-          "$BASE/fuentes/pruebas/generar_curso.py" \
-          "$BASE/fuentes/pruebas/generar_media_curso.py"
-    rm -rf "$BASE/fuentes/pruebas/CURSO_MEDIA" \
-           "$BASE"/fuentes/pruebas/__pycache__
+# En desarrollo viven en pruebas_uni/{IA_pruebas,mis_pruebas}/; el instalador
+# los espera en fuentes/pruebas/ (los tests base en la raíz y los M1-M5 en
+# fuentes/pruebas/mis_pruebas/).
+mkdir -p "$BASE/fuentes/pruebas/mis_pruebas"
+if [ -d "$DIR_ORIGEN/pruebas_uni/IA_pruebas" ]; then
+    cp "$DIR_ORIGEN"/pruebas_uni/IA_pruebas/test_*.py "$BASE/fuentes/pruebas/"
 fi
+if [ -d "$DIR_ORIGEN/pruebas_uni/mis_pruebas" ]; then
+    cp "$DIR_ORIGEN"/pruebas_uni/mis_pruebas/test_*.py "$BASE/fuentes/pruebas/mis_pruebas/"
+fi
+find "$BASE" -type d -name "__pycache__" -prune -exec rm -rf {} +
 
 # --- Herramientas de instalación ---
 cp "$DIR_ORIGEN/instalar_newpt.sh"    "$BASE/"

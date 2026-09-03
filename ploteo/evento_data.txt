@@ -1,1 +1,1 @@
-2026-09-01 04:30:46;;;3.3;MLv;33;0.42;166;20.66 S;68.99 W;97 km;from location;confirmed;;2;CSN;cris;Chile-Bolivia Border Region;csn_sc62026rckrb
+2026-09-03 21:18:16;;;5.2;M;49;0.42;311;31.59 S;71.55 W;105 km;from location;confirmed;;2;CSN;scautoloc3@prod-pub-seiscomp6;Near Coast of Central Chile;csn_sc62026rhiyc
