@@ -1,1 +1,1 @@
-2026-09-07 13:10:36;;;3.9;MLv;16;0.77;278;21.43 S;66.60 W;200 km;from location;confirmed;;2;CSN;maca;Southern Bolivia;csn_sc62026roawy
+2026-09-07 14:11:17;;;3.5;MLv;15;0.19;310;23.93 S;67.63 W;215 km;from location;confirmed;;2;CSN;maca;Chile-Argentina Border Region;csn_sc62026rocxb

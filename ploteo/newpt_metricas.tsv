@@ -299,3 +299,63 @@ epoch_inicio	ms_desde_arranque	script	fase	extra
 1788787707	1100	capturar	grillas_fin	
 1788787707	1228	capturar	tif_fin	
 1788787707	1572	capturar	localidades_fin	
+1788788554	0	precalentar	arranque	
+1788788554	0	consulta	arranque	
+1788788554	59	consulta	conexion_fin	host=10.54.217.69
+1788788554	71	consulta	query_origen_fin	
+1788788554	74	consulta	escritura_fin	
+1788788554	967	precalentar	imports_fin	
+1788788554	995	precalentar	datos_fin	
+1788788554	1006	precalentar	so_fin	
+1788788555	0	capturar	arranque	
+1788788555	865	capturar	imports_fin	
+1788788555	1101	capturar	catalogo_fin	n=1066
+1788788555	1123	capturar	grillas_fin	
+1788788555	1244	capturar	tif_fin	
+1788788555	1575	capturar	localidades_fin	
+1788788555	12195	capturar	mplot3d_import_fin	
+1788788555	587185	capturar	mplot3d_import_fin	
+1788791911	0	consulta	arranque	
+1788791911	0	precalentar	arranque	
+1788791911	50	consulta	conexion_fin	host=10.54.217.69
+1788791911	59	consulta	query_origen_fin	
+1788791911	60	consulta	escritura_fin	
+1788791911	942	precalentar	imports_fin	
+1788791911	973	precalentar	datos_fin	
+1788791911	985	precalentar	so_fin	
+1788791912	0	capturar	arranque	
+1788791912	816	capturar	imports_fin	
+1788791912	1049	capturar	catalogo_fin	n=1108
+1788791912	1095	capturar	grillas_fin	
+1788791912	1223	capturar	tif_fin	
+1788791912	1584	capturar	localidades_fin	
+1788791912	5072	capturar	mplot3d_import_fin	
+1788791966	0	precalentar	arranque	
+1788791966	0	consulta	arranque	
+1788791966	49	consulta	conexion_fin	host=10.54.217.69
+1788791966	63	consulta	query_origen_fin	
+1788791966	63	consulta	escritura_fin	
+1788791966	894	precalentar	imports_fin	
+1788791966	921	precalentar	datos_fin	
+1788791966	932	precalentar	so_fin	
+1788791967	0	capturar	arranque	
+1788791967	903	capturar	imports_fin	
+1788791967	1132	capturar	catalogo_fin	n=1695
+1788791967	1151	capturar	grillas_fin	
+1788791967	1275	capturar	tif_fin	
+1788791967	1689	capturar	localidades_fin	
+1788791967	159715	capturar	mplot3d_import_fin	
+1788794480	0	consulta	arranque	
+1788794480	0	precalentar	arranque	
+1788794480	52	consulta	conexion_fin	host=10.54.217.69
+1788794480	173	consulta	query_origen_fin	
+1788794480	174	consulta	escritura_fin	
+1788794480	901	precalentar	imports_fin	
+1788794480	928	precalentar	datos_fin	
+1788794480	939	precalentar	so_fin	
+1788794481	0	capturar	arranque	
+1788794481	852	capturar	imports_fin	
+1788794481	1081	capturar	catalogo_fin	n=1108
+1788794481	1102	capturar	grillas_fin	
+1788794481	1210	capturar	tif_fin	
+1788794481	1557	capturar	localidades_fin	

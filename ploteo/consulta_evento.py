@@ -31,8 +31,10 @@ def consultar_por_fecha_creacion(id_origen):
         "host": os.environ.get("NEWPT_DB_HOST", "10.54.217.69"),
         "database": os.environ.get("NEWPT_DB_DATABASE", "seiscomp"),
         "user": os.environ.get("NEWPT_DB_USER", "sysop"),
-        "password": os.environ.get("NEWPT_DB_PASSWORD", "sysop")
+        "password": os.environ.get("NEWPT_DB_PASSWORD", "sysop"),
+        "connect_timeout": 10
     }
+    id_limpio = (id_origen or "").strip()
 
     # === LIMPIEZA PREVENTIVA ===
     # Borramos inmediatamente cualquier residuo anterior para evitar ploteos fantasmas
@@ -62,14 +64,14 @@ def consultar_por_fecha_creacion(id_origen):
             o.m_evaluationstatus AS estatus
         FROM origin o
         INNER JOIN publicobject po_o ON o._oid = po_o._oid
-        LEFT JOIN event e ON TRIM(e.m_preferredoriginid::text) = TRIM(po_o.m_publicid::text)
+        LEFT JOIN event e ON e.m_preferredoriginid = po_o.m_publicid
         LEFT JOIN publicobject po_e ON e._oid = po_e._oid
         LEFT JOIN publicobject po_m ON e.m_preferredmagnitudeid = po_m.m_publicid
         LEFT JOIN magnitude m ON po_m._oid = m._oid
         LEFT JOIN eventdescription ed ON ed._parent_oid = e._oid AND ed.m_type = 'region name'
-        WHERE TRIM(po_o.m_publicid::text) = TRIM(%s::text);
+        WHERE po_o.m_publicid = %s;
         """
-        cursor.execute(sql_por_origen, (id_origen,))
+        cursor.execute(sql_por_origen, (id_limpio,))
         origen = cursor.fetchone()
         med.hito("consulta", "query_origen_fin")
 
@@ -104,10 +106,10 @@ def consultar_por_fecha_creacion(id_origen):
             LEFT JOIN publicobject po_m ON e.m_preferredmagnitudeid = po_m.m_publicid
             LEFT JOIN magnitude m ON po_m._oid = m._oid
             LEFT JOIN eventdescription ed ON ed._parent_oid = e._oid AND ed.m_type = 'region name'
-            WHERE TRIM(po_e.m_publicid::text) = TRIM(%s::text)
+            WHERE po_e.m_publicid = %s
             LIMIT 1;
             """
-            cursor.execute(sql_por_evento, (id_origen,))
+            cursor.execute(sql_por_evento, (id_limpio,))
             ev = cursor.fetchone()
             med.hito("consulta", "query_evento_fin")
 
