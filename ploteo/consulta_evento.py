@@ -1,6 +1,14 @@
 #!/usr/bin/env python3
 import sys
 import os
+import time
+
+import mediciones as med
+
+# Arranca el cronómetro apenas se carga el módulo, para incluir el import de
+# psycopg2 (que también carga sus librerías) en la medición de la consulta.
+med.arranque("consulta")
+
 import psycopg2
 from psycopg2.extras import RealDictCursor
 
@@ -38,6 +46,7 @@ def consultar_por_fecha_creacion(id_origen):
     try:
         conn = psycopg2.connect(**connection_params)
         cursor = conn.cursor(cursor_factory=RealDictCursor)
+        med.hito("consulta", "conexion_fin", extra=f"host={connection_params['host']}")
 
         # 1) Intento directo: el ID es el publicID de un ORIGEN.
         #    Se enlaza con su evento vía m_preferredoriginid (sin depender de
@@ -62,6 +71,7 @@ def consultar_por_fecha_creacion(id_origen):
         """
         cursor.execute(sql_por_origen, (id_origen,))
         origen = cursor.fetchone()
+        med.hito("consulta", "query_origen_fin")
 
         ev = None
 
@@ -99,6 +109,7 @@ def consultar_por_fecha_creacion(id_origen):
             """
             cursor.execute(sql_por_evento, (id_origen,))
             ev = cursor.fetchone()
+            med.hito("consulta", "query_evento_fin")
 
         # CONTROL ESTRICTO: Si no hay fila, el ID no existe como origen ni evento
         if not ev or not ev['id_evento']:
@@ -149,6 +160,7 @@ def consultar_por_fecha_creacion(id_origen):
 
         with open(ruta_tmp, "w", encoding="utf-8") as f:
             f.write(linea_salida + "\n")
+        med.hito("consulta", "escritura_fin")
 
         print(f"[OK] Archivo temporal generado.")
 

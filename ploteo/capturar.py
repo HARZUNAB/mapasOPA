@@ -3,8 +3,12 @@ import os
 import sys
 import re
 import time
+
+import mediciones as med
+med.arranque("capturar")
+
 import numpy as np
-#import pyperclip
+# import pyperclip
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
@@ -14,6 +18,7 @@ from math import radians, cos, sin, asin, sqrt
 import math
 from adjustText import adjust_text
 from matplotlib.widgets import Button
+med.hito("capturar", "imports_fin")
 
 def ruta_datos():
     """
@@ -116,6 +121,7 @@ def plotear_evento(fecha, lat, lon, prof, mag, event_id, texto_magnitud):
                             prof_b.append(float(partes[4])) 
         except Exception as e:
             print(f"[Aviso] No se pudo cargar el background sísmico: {e}")
+    med.hito("capturar", "catalogo_fin", extra=f"n={len(lon_b)}")
 
     # === ETAPA 2: Finalizó carga de catálogo, iniciamos búsqueda de grillas ===
     mostrar_avance(2, 4, "Buscando perfil óptimo de subducción (Slab)...")
@@ -315,6 +321,7 @@ def plotear_evento(fecha, lat, lon, prof, mag, event_id, texto_magnitud):
                         alt_topo = list(alt_interp[mask_topo])
         except Exception as e:
             print(f"[Aviso] Falló el procesamiento de respaldo global: {e}")
+    med.hito("capturar", "grillas_fin")
 
     # =========================================================================
     # 3. CONSTRUCCIÓN GRÁFICA - PLOT 1: VISTA EN PLANTA (RELIEVE TIF LOCAL)
@@ -383,6 +390,7 @@ def plotear_evento(fecha, lat, lon, prof, mag, event_id, texto_magnitud):
     else:
         ax_planta.add_feature(cfeature.LAND.with_scale('50m'), facecolor='#f7f7f4', zorder=1)
         ax_planta.add_feature(cfeature.OCEAN.with_scale('50m'), facecolor='#edf4f9', zorder=1)
+    med.hito("capturar", "tif_fin")
 
     # Aviso al analista cuando el evento queda fuera de la cobertura del relieve
     # local y se está usando el relieve global como respaldo.
@@ -446,6 +454,7 @@ def plotear_evento(fecha, lat, lon, prof, mag, event_id, texto_magnitud):
                        fontsize=8, fontweight='bold', color='white',
                        bbox=dict(facecolor='black', alpha=0.7, edgecolor='none', pad=4),
                        zorder=10)
+    med.hito("capturar", "localidades_fin")
 
     gl = ax_planta.gridlines(draw_labels=True, linestyle='--', alpha=0.5, color='#444444', zorder=4)
     gl.top_labels, gl.right_labels = False, False
@@ -640,6 +649,7 @@ def plotear_perfil_3d(lat, lon, prof, event_id, texto_magnitud, bloquear=True):
     except ImportError:
         print("[3D] mplot3d no está disponible en este entorno; omitiendo mapa 3D.")
         return
+    med.hito("capturar", "mplot3d_import_fin")
 
     if not bloquear and _VENTANA_3D_ABIERTA:
         if _FIGURA_3D_ACTIVA is not None and plt.fignum_exists(_FIGURA_3D_ACTIVA.number):

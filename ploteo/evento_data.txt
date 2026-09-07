@@ -1,1 +1,1 @@
-2026-09-03 21:18:16;;;5.2;M;49;0.42;311;31.59 S;71.55 W;105 km;from location;confirmed;;2;CSN;scautoloc3@prod-pub-seiscomp6;Near Coast of Central Chile;csn_sc62026rhiyc
+2026-09-07 13:10:36;;;3.9;MLv;16;0.77;278;21.43 S;66.60 W;200 km;from location;confirmed;;2;CSN;maca;Southern Bolivia;csn_sc62026roawy

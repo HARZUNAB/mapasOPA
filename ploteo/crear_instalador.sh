@@ -51,6 +51,7 @@ cp "$DIR_ORIGEN/instalar_newpt.sh"    "$BASE/"
 cp "$DIR_ORIGEN/newpt.sh.tpl"         "$BASE/"
 cp "$DIR_ORIGEN/documentos/LISTA_PARA_TI.txt"    "$BASE/"
 cp "$DIR_ORIGEN/documentos/INSTRUCCIONES_INSTALACION.docx" "$BASE/"
+cp "$DIR_ORIGEN/documentos/manual_NewPT.odt"      "$BASE/"
 
 # --- Datos ---
 cp -r "$DIR_ORIGEN/grillas"           "$BASE/datos/"
