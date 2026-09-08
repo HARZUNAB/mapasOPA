@@ -143,7 +143,8 @@ def calentar_modulos():
 def main():
     med.arranque("precalentar")
     t0 = time.time()
-    print("[Precaliente] Inicializando módulos...", flush=True)
+    #print("[Precaliente] Inicializando módulos...", flush=True)
+    print("[Precarga] Inicializando módulos...", flush=True)
 
     import matplotlib
     matplotlib.use("Agg")
