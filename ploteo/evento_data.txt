@@ -1,1 +1,1 @@
-2026-09-08 12:53:10;;;2.2;MLv;12;0.40;164;21.78 S;68.52 W;109 km;from location;confirmed;;2;CSN;jaba;Chile-Bolivia Border Region;csn_sc62026rpvvl
+2026-08-30 17:48:41;;;3.4;MLv;13;0.37;288;22.61 S;66.67 W;276 km;from location;confirmed;;2;CSN;maca;Jujuy Province, Argentina;csn_sc62026qztyt
