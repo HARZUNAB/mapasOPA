@@ -778,3 +778,309 @@ epoch_inicio	ms_desde_arranque	script	fase	extra
 1788883329	1183	capturar	tif_fin	
 1788883329	1560	capturar	localidades_fin	
 1788883329	26546	capturar	mplot3d_import_fin	
+1788893827	0	precalentar	arranque	
+1788893827	0	consulta	arranque	
+1788893827	108	consulta	conexion_fin	host=10.54.217.69
+1788893827	117	consulta	query_origen_fin	
+1788893827	117	consulta	escritura_fin	
+1788893827	851	precalentar	imports_fin	
+1788893827	880	precalentar	datos_fin	
+1788893827	891	precalentar	so_fin	
+1788893828	0	capturar	arranque	
+1788893828	811	capturar	imports_fin	
+1788893828	1036	capturar	catalogo_fin	n=1389
+1788893828	1055	capturar	grillas_fin	
+1788893828	1163	capturar	tif_fin	
+1788893828	1584	capturar	localidades_fin	
+1788893857	0	consulta	arranque	
+1788893857	0	precalentar	arranque	
+1788893857	52	consulta	conexion_fin	host=10.54.217.69
+1788893857	58	consulta	query_origen_fin	
+1788893857	58	consulta	escritura_fin	
+1788893857	852	precalentar	imports_fin	
+1788893857	881	precalentar	datos_fin	
+1788893857	891	precalentar	so_fin	
+1788893858	0	capturar	arranque	
+1788893858	825	capturar	imports_fin	
+1788893858	1050	capturar	catalogo_fin	n=379
+1788893858	1091	capturar	grillas_fin	
+1788893858	1206	capturar	tif_fin	
+1788893858	1646	capturar	localidades_fin	
+1788893858	71102	capturar	mplot3d_import_fin	
+1788894436	0	precalentar	arranque	
+1788894436	0	consulta	arranque	
+1788894436	511	consulta	conexion_fin	host=10.54.217.69
+1788894436	549	consulta	query_origen_fin	
+1788894436	549	consulta	escritura_fin	
+1788894436	2386	precalentar	imports_fin	
+1788894436	2410	precalentar	datos_fin	
+1788894436	2420	precalentar	so_fin	
+1788894438	0	capturar	arranque	
+1788894438	831	capturar	imports_fin	
+1788894438	1061	capturar	catalogo_fin	n=1025
+1788894438	1090	capturar	grillas_fin	
+1788894438	1219	capturar	tif_fin	
+1788894438	1595	capturar	localidades_fin	
+1788895062	0	precalentar	arranque	
+1788895062	0	consulta	arranque	
+1788895062	63	consulta	conexion_fin	host=10.54.217.69
+1788895062	70	consulta	query_origen_fin	
+1788895062	71	consulta	escritura_fin	
+1788895062	846	precalentar	imports_fin	
+1788895062	876	precalentar	datos_fin	
+1788895062	886	precalentar	so_fin	
+1788895063	0	capturar	arranque	
+1788895063	808	capturar	imports_fin	
+1788895063	1038	capturar	catalogo_fin	n=1453
+1788895063	1061	capturar	grillas_fin	
+1788895063	1189	capturar	tif_fin	
+1788895063	1613	capturar	localidades_fin	
+1788895164	0	consulta	arranque	
+1788895164	0	precalentar	arranque	
+1788895164	52	consulta	conexion_fin	host=10.54.217.69
+1788895164	58	consulta	query_origen_fin	
+1788895164	58	consulta	escritura_fin	
+1788895164	883	precalentar	imports_fin	
+1788895164	913	precalentar	datos_fin	
+1788895164	923	precalentar	so_fin	
+1788895165	0	capturar	arranque	
+1788895165	796	capturar	imports_fin	
+1788895165	1023	capturar	catalogo_fin	n=1453
+1788895165	1044	capturar	grillas_fin	
+1788895165	1153	capturar	tif_fin	
+1788895165	1554	capturar	localidades_fin	
+1788895346	0	consulta	arranque	
+1788895346	0	precalentar	arranque	
+1788895346	53	consulta	conexion_fin	host=10.54.217.69
+1788895346	60	consulta	query_origen_fin	
+1788895346	60	consulta	escritura_fin	
+1788895346	838	precalentar	imports_fin	
+1788895346	868	precalentar	datos_fin	
+1788895346	878	precalentar	so_fin	
+1788895347	0	capturar	arranque	
+1788895347	834	capturar	imports_fin	
+1788895347	1064	capturar	catalogo_fin	n=460
+1788895347	1096	capturar	grillas_fin	
+1788895347	1207	capturar	tif_fin	
+1788895347	1585	capturar	localidades_fin	
+1788895603	0	precalentar	arranque	
+1788895603	0	consulta	arranque	
+1788895603	48	consulta	conexion_fin	host=10.54.217.69
+1788895603	54	consulta	query_origen_fin	
+1788895603	55	consulta	escritura_fin	
+1788895603	858	precalentar	imports_fin	
+1788895603	887	precalentar	datos_fin	
+1788895603	898	precalentar	so_fin	
+1788895604	0	capturar	arranque	
+1788895604	897	capturar	imports_fin	
+1788895604	1132	capturar	catalogo_fin	n=460
+1788895604	1152	capturar	grillas_fin	
+1788895604	1260	capturar	tif_fin	
+1788895604	1620	capturar	localidades_fin	
+1788895978	0	precalentar	arranque	
+1788895978	0	consulta	arranque	
+1788895978	44	consulta	conexion_fin	host=10.54.217.69
+1788895978	50	consulta	query_origen_fin	
+1788895978	50	consulta	escritura_fin	
+1788895978	821	precalentar	imports_fin	
+1788895978	853	precalentar	datos_fin	
+1788895978	863	precalentar	so_fin	
+1788895979	0	capturar	arranque	
+1788895979	779	capturar	imports_fin	
+1788895979	1009	capturar	catalogo_fin	n=1453
+1788895979	1029	capturar	grillas_fin	
+1788895979	1141	capturar	tif_fin	
+1788895979	1531	capturar	localidades_fin	
+1788897460	0	consulta	arranque	
+1788897460	0	precalentar	arranque	
+1788897460	57	consulta	conexion_fin	host=10.54.217.69
+1788897460	64	consulta	query_origen_fin	
+1788897460	65	consulta	escritura_fin	
+1788897460	896	precalentar	imports_fin	
+1788897460	925	precalentar	datos_fin	
+1788897460	936	precalentar	so_fin	
+1788897461	0	capturar	arranque	
+1788897461	794	capturar	imports_fin	
+1788897461	1020	capturar	catalogo_fin	n=1453
+1788897461	1038	capturar	grillas_fin	
+1788897461	1151	capturar	tif_fin	
+1788897461	1548	capturar	localidades_fin	
+1788897461	10449	capturar	mplot3d_import_fin	
+1788898108	0	consulta	arranque	
+1788898108	0	precalentar	arranque	
+1788898108	54	consulta	conexion_fin	host=10.54.217.69
+1788898108	60	consulta	query_origen_fin	
+1788898108	60	consulta	escritura_fin	
+1788898108	875	precalentar	imports_fin	
+1788898108	904	precalentar	datos_fin	
+1788898108	914	precalentar	so_fin	
+1788898109	0	capturar	arranque	
+1788898109	806	capturar	imports_fin	
+1788898109	1029	capturar	catalogo_fin	n=1455
+1788898109	1048	capturar	grillas_fin	
+1788898109	1154	capturar	tif_fin	
+1788898109	1540	capturar	localidades_fin	
+1788898109	7606	capturar	mplot3d_import_fin	
+1788903532	0	capturar	arranque	
+1788903532	216	capturar	imports_fin	
+1788903532	0	consulta	arranque	
+1788903532	216	capturar	catalogo_fin	n=421
+1788903532	256	capturar	grillas_fin	
+1788903532	462	capturar	tif_fin	
+1788903532	1094	capturar	localidades_fin	
+1788903532	1320	capturar	mplot3d_import_fin	
+1788903532	2004	capturar	catalogo_fin	n=421
+1788903532	2026	capturar	grillas_fin	
+1788903532	2089	capturar	tif_fin	
+1788903532	2231	capturar	localidades_fin	
+1788903532	2443	capturar	mplot3d_import_fin	
+1788903532	3122	capturar	mplot3d_import_fin	
+1788903532	3128	capturar	catalogo_fin	n=421
+1788903532	3157	capturar	grillas_fin	
+1788903532	3210	capturar	tif_fin	
+1788903532	3353	capturar	localidades_fin	
+1788903532	3561	capturar	mplot3d_import_fin	
+1788903532	4188	capturar	mplot3d_import_fin	
+1788903532	4852	capturar	catalogo_fin	n=421
+1788903532	4875	capturar	grillas_fin	
+1788903532	4979	capturar	tif_fin	
+1788903532	5119	capturar	localidades_fin	
+1788903532	5325	capturar	mplot3d_import_fin	
+1788903532	6394	capturar	catalogo_fin	n=421
+1788903532	6424	capturar	grillas_fin	
+1788903532	6476	capturar	tif_fin	
+1788903532	6624	capturar	localidades_fin	
+1788903532	6824	capturar	mplot3d_import_fin	
+1788903532	7523	capturar	catalogo_fin	n=421
+1788903532	7548	capturar	grillas_fin	
+1788903532	7609	capturar	tif_fin	
+1788903532	7752	capturar	localidades_fin	
+1788903532	8003	capturar	mplot3d_import_fin	
+1788903532	8663	capturar	mplot3d_import_fin	
+1788903532	9323	consulta	conexion_fin	host=10.54.217.69
+1788903532	9324	consulta	query_origen_fin	
+1788903532	9324	consulta	escritura_fin	
+1788903532	9327	consulta	conexion_fin	host=10.54.217.69
+1788903532	9328	consulta	query_origen_fin	
+1788903532	9328	consulta	escritura_fin	
+1788903532	9331	consulta	conexion_fin	host=10.54.217.69
+1788903532	9331	consulta	query_origen_fin	
+1788903532	9331	consulta	query_evento_fin	
+1788903532	9334	consulta	conexion_fin	host=10.54.217.69
+1788903532	9335	consulta	query_origen_fin	
+1788903532	9335	consulta	query_evento_fin	
+1788903532	9338	consulta	conexion_fin	host=10.54.217.69
+1788903532	9339	consulta	query_origen_fin	
+1788903532	9463	consulta	conexion_fin	host=10.54.217.69
+1788903532	9464	consulta	query_origen_fin	
+1788903532	9464	consulta	escritura_fin	
+1788903532	9467	consulta	conexion_fin	host=10.54.217.69
+1788903532	9467	consulta	query_origen_fin	
+1788903532	9469	consulta	conexion_fin	host=10.54.217.69
+1788903532	9470	consulta	query_origen_fin	
+1788903532	9470	consulta	query_evento_fin	
+1788903532	9472	consulta	conexion_fin	host=10.54.217.69
+1788903532	9473	consulta	query_origen_fin	
+1788903532	9473	consulta	query_evento_fin	
+1788903532	9476	consulta	conexion_fin	host=10.54.217.69
+1788903532	9476	consulta	query_origen_fin	
+1788903532	9476	consulta	escritura_fin	
+1788903532	9480	consulta	conexion_fin	host=10.54.217.69
+1788903532	9481	consulta	query_origen_fin	
+1788903532	9481	consulta	query_evento_fin	
+1788903532	9481	consulta	escritura_fin	
+1788903532	9485	consulta	conexion_fin	host=10.54.217.69
+1788903532	9485	consulta	query_origen_fin	
+1788903532	9485	consulta	escritura_fin	
+1788903532	9489	consulta	conexion_fin	host=10.54.217.69
+1788903532	9490	consulta	query_origen_fin	
+1788903532	9490	consulta	escritura_fin	
+1788903559	0	capturar	arranque	
+1788903559	212	capturar	imports_fin	
+1788903559	0	consulta	arranque	
+1788903559	218	capturar	catalogo_fin	n=421
+1788903559	240	capturar	grillas_fin	
+1788903559	387	capturar	tif_fin	
+1788903559	874	capturar	localidades_fin	
+1788903559	1097	capturar	mplot3d_import_fin	
+1788903559	1813	capturar	catalogo_fin	n=421
+1788903559	1839	capturar	grillas_fin	
+1788903559	1906	capturar	tif_fin	
+1788903559	2057	capturar	localidades_fin	
+1788903559	2252	capturar	mplot3d_import_fin	
+1788903559	2941	capturar	mplot3d_import_fin	
+1788903559	2948	capturar	catalogo_fin	n=421
+1788903559	2972	capturar	grillas_fin	
+1788903559	3021	capturar	tif_fin	
+1788903559	3170	capturar	localidades_fin	
+1788903559	3374	capturar	mplot3d_import_fin	
+1788903559	4028	capturar	mplot3d_import_fin	
+1788903559	4673	capturar	catalogo_fin	n=421
+1788903559	4701	capturar	grillas_fin	
+1788903559	4812	capturar	tif_fin	
+1788903559	4954	capturar	localidades_fin	
+1788903559	5159	capturar	mplot3d_import_fin	
+1788903559	6196	capturar	catalogo_fin	n=421
+1788903559	6220	capturar	grillas_fin	
+1788903559	6278	capturar	tif_fin	
+1788903559	6421	capturar	localidades_fin	
+1788903559	6617	capturar	mplot3d_import_fin	
+1788903559	7295	capturar	catalogo_fin	n=421
+1788903559	7317	capturar	grillas_fin	
+1788903559	7370	capturar	tif_fin	
+1788903559	7517	capturar	localidades_fin	
+1788903559	7724	capturar	mplot3d_import_fin	
+1788903559	8385	capturar	mplot3d_import_fin	
+1788903559	9071	consulta	conexion_fin	host=10.54.217.69
+1788903559	9071	consulta	query_origen_fin	
+1788903559	9071	consulta	escritura_fin	
+1788903559	9074	consulta	conexion_fin	host=10.54.217.69
+1788903559	9074	consulta	query_origen_fin	
+1788903559	9075	consulta	escritura_fin	
+1788903559	9078	consulta	conexion_fin	host=10.54.217.69
+1788903559	9079	consulta	query_origen_fin	
+1788903559	9079	consulta	query_evento_fin	
+1788903559	9082	consulta	conexion_fin	host=10.54.217.69
+1788903559	9082	consulta	query_origen_fin	
+1788903559	9083	consulta	query_evento_fin	
+1788903559	9085	consulta	conexion_fin	host=10.54.217.69
+1788903559	9087	consulta	query_origen_fin	
+1788903559	9485	consulta	conexion_fin	host=10.54.217.69
+1788903559	9486	consulta	query_origen_fin	
+1788903559	9486	consulta	escritura_fin	
+1788903559	9488	consulta	conexion_fin	host=10.54.217.69
+1788903559	9488	consulta	query_origen_fin	
+1788903559	9491	consulta	conexion_fin	host=10.54.217.69
+1788903559	9492	consulta	query_origen_fin	
+1788903559	9492	consulta	query_evento_fin	
+1788903559	9494	consulta	conexion_fin	host=10.54.217.69
+1788903559	9495	consulta	query_origen_fin	
+1788903559	9495	consulta	query_evento_fin	
+1788903559	9498	consulta	conexion_fin	host=10.54.217.69
+1788903559	9498	consulta	query_origen_fin	
+1788903559	9498	consulta	escritura_fin	
+1788903559	9501	consulta	conexion_fin	host=10.54.217.69
+1788903559	9501	consulta	query_origen_fin	
+1788903559	9502	consulta	query_evento_fin	
+1788903559	9502	consulta	escritura_fin	
+1788903559	9505	consulta	conexion_fin	host=10.54.217.69
+1788903559	9505	consulta	query_origen_fin	
+1788903559	9505	consulta	escritura_fin	
+1788903559	9508	consulta	conexion_fin	host=10.54.217.69
+1788903559	9509	consulta	query_origen_fin	
+1788903559	9509	consulta	escritura_fin	
+1788903812	0	consulta	arranque	
+1788903812	0	precalentar	arranque	
+1788903812	61	consulta	conexion_fin	host=10.54.217.69
+1788903812	68	consulta	query_origen_fin	
+1788903812	68	consulta	escritura_fin	
+1788903812	963	precalentar	imports_fin	
+1788903812	994	precalentar	datos_fin	
+1788903812	1007	precalentar	so_fin	
+1788903814	0	capturar	arranque	
+1788903814	865	capturar	imports_fin	
+1788903814	1124	capturar	catalogo_fin	n=1023
+1788903814	1150	capturar	grillas_fin	
+1788903814	1281	capturar	tif_fin	
+1788903814	1684	capturar	localidades_fin	
+1788903814	4607	capturar	mplot3d_import_fin	

@@ -338,7 +338,7 @@ def main():
     v1.append(render_terminal(
         ["$ echo $?", "0", "", "# cero = la marcha blanca quedó SUPERADA"],
         "/tmp/x.png"))
-    frames("v1", v1)
+    frames("v1_correr_suite", v1)
 
     # ---------- V2: primer test paso a paso ----------
     cod_vacio = render_codigo(["# (archivo vacío: aquí nacerá tu primer test)"],
@@ -365,7 +365,7 @@ def main():
                           "/tmp/x.png"),
           render_terminal(["==================== 1 passed ====================", "",
                            "# ¡Tu primer test está vivo!"], "/tmp/x.png")]
-    frames("v2", v2)
+    frames("v2_primer_test", v2)
 
     # ---------- V3: leer un traceback ----------
     fallo = render_codigo(
@@ -404,7 +404,7 @@ def main():
           render_terminal(["$ python3 -m pytest pruebas_uni/IA_pruebas/test_fallo.py -v", "",
                            "test_fallo.py::test_porcentaje_correcto PASSED [100%]",
                            "1 passed"], "/tmp/x.png")]
-    frames("v3", v3)
+    frames("v3_leer_traceback", v3)
 
     # ---------- V4: black ----------
     feo = render_codigo(
@@ -430,7 +430,7 @@ def main():
                            "would reformat fuentes/pruebas/test_demo.py",
                            "1 file would be reformatted."],
                           "/tmp/x.png")]
-    frames("v4", v4)
+    frames("v4_black", v4)
 
     # ---------- V5: mock ----------
     gm = Image.open(os.path.join(BUILD, "g_mock.png")).convert("RGB")
@@ -453,7 +453,7 @@ def main():
               "/tmp/x.png", "…y verificamos el resultado como siempre"),
           render_terminal(["$ python3 -m pytest pruebas_uni -v", "",
                            "25 passed in 0.81s"], "/tmp/x.png")]
-    frames("v5", v5)
+    frames("v5_mock", v5)
 
     # ---------- capturas estáticas para el docx ----------
     apilar([v1[2], v1[4]], os.path.join(BUILD, "s_suite.png"))

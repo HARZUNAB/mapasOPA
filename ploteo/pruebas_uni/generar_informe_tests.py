@@ -86,11 +86,13 @@ def main():
         "Además, valida en conjunto las versiones FIJADAS de los módulos de Python "
         "(numpy, matplotlib, cartopy, etc.), que es donde aparecieron problemas de "
         "compatibilidad en el pasado.",
+        "Las 41 pruebas adicionales de la rama M1-M5 (mis_pruebas/) se documentan por "
+        "separado en INFORME_DETALLADO_MIS_TESTS_M1_M5.docx.",
     ]:
         doc.add_paragraph(t, style="List Bullet")
     nota(doc,
-         "Los tests usan únicamente la librería estándar unittest: no agregan ninguna "
-         "dependencia nueva al proyecto.")
+         "Los tests usan el framework estándar unittest de la biblioteca estándar: no "
+         "agregan ninguna dependencia nueva al proyecto.")
 
     # ------------------------------------------------------------------
     doc.add_heading("2. Entorno de ejecución", 1)
@@ -109,8 +111,9 @@ def main():
     doc.add_paragraph(
         "Prueba la lógica pura del graficador: geodesia, parseo robusto y el manejo "
         "del perfil 3D (botón 'Ver Perfil 3D', zoom con la rueda del mouse y cierre "
-        "coordinado de la ventana 2D/3D). En total la suite completa suma 31 tests "
-        "(20 de capturar.py, 5 de consulta_evento.py y 6 de datos)."
+        "coordinado de la ventana 2D/3D). En total, las suites base suman 31 tests "
+        "(20 de capturar.py, 5 de consulta_evento.py y 6 de datos); las 41 pruebas "
+        "extra de la rama M1-M5 se tratan en INFORME_DETALLADO_MIS_TESTS_M1_M5.docx."
     )
     tabla(
         doc,
@@ -171,14 +174,11 @@ def main():
         doc,
         ["ID", "Objetivo", "Entrada", "Resultado esperado"],
         [
-            ["B1", "Estructura de la línea", "Fila simulada de la BD",
-             "evento_data.txt con exactamente 19 campos separados por ';'"],
-            ["B2", "Formato de fecha", "Origen con m_time_value dado",
-             "OT escrita como '%Y-%m-%d %H:%M:%S'"],
-            ["B3", "Coordenadas con cardinal", "lat=-33.45, lon=-71.62",
-             "'33.45 S' y '71.62 W' (valor absoluto + sufijo)"],
-            ["B4", "Profundidad formateada", "profundidad_km=95.3",
-             "'95 km' (se trunca a entero)"],
+            ["B1_B2_B3_B4", "Estructura, fecha, coords y profundidad",
+             "Fila simulada de la BD con m_time_value, lat/-33.45, lon/-71.62, "
+             "profundidad_km=95.3",
+             "evento_data.txt con 19 campos; OT como '%Y-%m-%d %H:%M:%S'; "
+             "'33.45 S' y '71.62 W'; '95 km' (truncado a entero)"],
             ["B5", "ID inexistente", "cursor sin filas",
              "NO se escribe archivo y la función termina sin error"],
             ["B6", "Limpieza preventiva", "evento_data.txt viejo preexistente",
@@ -237,6 +237,10 @@ def main():
                 "python -m pytest fuentes/pruebas -v\n"
                 "# solo un archivo:\n"
                 "python -m pytest fuentes/pruebas/test_capturar.py -v")
+    doc.add_paragraph("d) En desarrollo (la carpeta del proyecto, sin compilar nada):")
+    codigo(doc, "cd ploteo\n"
+                "NEWPT_DATA_DIR=$PWD MPLBACKEND=Agg \\\n"
+                "python3 -m pytest pruebas_uni -v   # suite completa: 72 pruebas")
     nota(doc, "La marcha blanca del instalador ejecuta los suites con pytest, "
               "que corre tanto tests unittest (como estos) como tests en estilo "
               "pytest puro que se agreguen a fuentes/pruebas/ del paquete de "

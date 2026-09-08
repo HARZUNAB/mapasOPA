@@ -1,1 +1,1 @@
-2026-08-30 17:48:41;;;3.4;MLv;13;0.37;288;22.61 S;66.67 W;276 km;from location;confirmed;;2;CSN;maca;Jujuy Province, Argentina;csn_sc62026qztyt
+2026-09-08 19:59:18;;;3.1;MLv;19;0.27;300;24.03 S;67.33 W;227 km;from location;confirmed;;2;CSN;maca;Chile-Argentina Border Region;csn_sc62026rqjwz

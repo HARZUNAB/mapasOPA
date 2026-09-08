@@ -282,8 +282,10 @@ def construir(doc):
         "El capítulo 8 es el laboratorio: ahí escribes TUS tests. Las soluciones "
         "comentadas están en el capítulo 9 — intenta cada ejercicio antes de mirar.",
         "Regla de oro del proyecto: todo archivo test_*.py que dejes en pruebas_uni/ "
-        "corre automáticamente en la marcha blanca del instalador. Valida siempre "
-        "en local antes (python3 -m pytest pruebas -v) para no bloquear "
+        "(desarrollo) corre automáticamente en la marcha blanca del instalador "
+        "(en el paquete instalado vive en fuentes/pruebas/). Valida siempre "
+        "en local antes (cd ploteo && NEWPT_DATA_DIR=$PWD "
+        "python3 -m pytest pruebas_uni -v) para no bloquear "
         "instalaciones ajenas.",
     ):
         doc.add_paragraph(txt, style="List Bullet")
@@ -394,7 +396,8 @@ def construir(doc):
 
     # ---------------- cap 5 ----------------
     doc.add_heading("5. Ejecutar los tests y leer los resultados", level=1)
-    codigo(doc, "cd ploteo\npython3 -m pytest pruebas_uni -v          # toda la carpeta\n"
+    codigo(doc, "cd ploteo\nexport NEWPT_DATA_DIR=$PWD   # los tests C de datos (test_datos.py) leen de aquí\n"
+                "python3 -m pytest pruebas_uni -v          # toda la carpeta\n"
                 "python3 -m pytest pruebas_uni/IA_pruebas/test_lab1_avance.py -v   # un archivo\n"
                 "python3 -m pytest pruebas_uni -k profundidad -v # por nombre\n"
                 "python3 -m pytest pruebas_uni -x               # detener en el 1er fallo\n"

@@ -180,18 +180,18 @@ def main():
         doc,
         ["ID", "Objetivo", "Entrada", "Resultado esperado"],
         [
-            ["B1", "Estructura, fecha, coords y profundidad",
+            ["B1_B2_B3_B4", "Estructura, fecha, coords y profundidad",
              "Fila simulada de la BD con m_time_value, lat/-33.45, lon/-71.62, "
              "profundidad_km=95.3",
              "evento_data.txt con 19 campos; OT como '%Y-%m-%d %H:%M:%S'; "
              "'33.45 S' y '71.62 W'; '95 km' (truncado a entero)"],
-            ["B2", "ID inexistente", "cursor sin filas",
+            ["B5", "ID inexistente", "cursor sin filas",
              "NO se escribe archivo y la función termina sin error"],
-            ["B3", "Limpieza preventiva", "evento_data.txt viejo preexistente",
+            ["B6", "Limpieza preventiva", "evento_data.txt viejo preexistente",
              "Se elimina ANTES de consultar (evita ploteos fantasma)"],
-            ["B4", "Magnitud no calculada", "magnitud=None en la fila",
+            ["B7", "Magnitud no calculada", "magnitud=None en la fila",
              "Campo de magnitud vacío en la línea (aguas abajo será 'M s/d')"],
-            ["B5", "Origen no preferido",
+            ["B8", "Origen no preferido",
              "Origen sin evento asociado (no confirmado)",
              "Mensaje de ATENCIÓN al operador y NO se escribe archivo"],
         ],

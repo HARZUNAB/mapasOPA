@@ -251,7 +251,8 @@ def main():
     )
     for t in [
         "python3 -m pytest pruebas_uni/mis_pruebas -v",
-        "python3 -m pytest pruebas_uni -v   (suite completa: 72 pruebas)",
+        "cd ploteo && NEWPT_DATA_DIR=$PWD python3 -m pytest pruebas_uni -v   "
+        "(suite completa: 72 pruebas)",
     ]:
         doc.add_paragraph(t, style="List Bullet")
 
