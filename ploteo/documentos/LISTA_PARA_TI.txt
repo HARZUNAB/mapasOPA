@@ -40,7 +40,7 @@ requerir permisos de super usuario para la instalación de NewPT.
 -------------------------
   - Debian / Ubuntu: nombres de paquetes como se indican arriba.
   - RHEL / CentOS / Rocky: equivalentes:
-        sudo dnf install -y python3 python3-virtualenv tkinter xterm
+        sudo dnf install -y python3 python3-virtualenv python3-tkinter xterm
   - Si "pip install cartopy" no encuentra un wheel para el Python instalado,
     alternativa: solicitar a TI que instale python3-cartopy (sudo apt), y
     crear el venv con --system-site-packages (solo ese módulo sale del sistema).
@@ -59,7 +59,9 @@ requerir permisos de super usuario para la instalación de NewPT.
 -----------------------------------------------
   tar -xzf newpt_instalador.tar.gz
   cd newpt_instalador
-  ./instalar_newpt.sh          # compila binarios e instala en ~/newpt
+  ./instalar_newpt.sh --solo-verificar   # opcional: comprueba prerequisitos
+  ./instalar_newpt.sh --probar           # opcional: marcha blanca (tests)
+  ./instalar_newpt.sh                    # compila binarios e instala en ~/newpt
 
 
 6) PERFIL 3D BAJO DEMANDA (NUEVO)

@@ -225,8 +225,9 @@ def main():
         "--hidden-import PIL._tkinter_finder.",
         "Todas las dependencias de Python van al venv con versiones EXACTAMENTE FIJADAS a las "
         "probadas en desarrollo: numpy 2.4.4, matplotlib 3.10.9, cartopy 0.25.0, pyproj 3.7.2, "
-        "Pillow 12.2.0, psycopg2-binary 2.9.12, adjustText 1.4.0 y pyinstaller 6.22.2. Al "
-        "terminar, el instalador imprime las versiones realmente instaladas.",
+        "Pillow 12.2.0, psycopg2-binary 2.9.12, adjustText 1.4.0, pyinstaller 6.22.2, "
+        "pytest 9.1.1, black 26.5.1 y pandas 3.0.5. Al terminar, el instalador imprime las "
+        "versiones realmente instaladas.",
         "Si alguna vez aparece 'shapely.errors.GEOSException: Points of LinearRing do not form "
         "a closed linestring': es una incompatibilidad de matplotlib 3.11 con la graticula "
         "(gridlines) de cartopy. Por eso todas las versiones van fijadas (matplotlib 3.10.9); "
