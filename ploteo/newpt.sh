@@ -23,7 +23,7 @@ mostrar_progreso() {
 }
 
 EVENT_ID=$1
-DIR_TRABAJO="/home/hriquelmez/Desarrollo/mapasopa/ploteo"
+DIR_TRABAJO="/home/hriquelmez/Desarrollo/mapasOPA/ploteo"
 
 # =========================================================================
 # LIMPIEZA AUTOMÁTICA DE EVENTOS ANTERIORES
