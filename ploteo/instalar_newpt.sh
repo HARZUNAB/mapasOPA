@@ -13,8 +13,10 @@
 #   PYTHON_INTERPRETER=/usr/bin/python3 ./instalar_newpt.sh   # forzar intérprete
 #
 # REQUIERE que junto a este script existan:
-#   fuentes/   -> capturar.py, consulta_evento.py, consuta_evento_sc7.py
-#   datos/     -> grillas/, NE2_LR_LC_SR_W_DR.tif, base_2023_2026.dat, localidades.csv
+#   fuentes/   -> capturar.py, consulta_evento.py, precalentar.py, mediciones.py,
+#                 lee_catalogo.py, preprocesa_grillas.py
+#   datos/     -> grillas/, NE2_LR_LC_SR_W_DR.tif, relieve_chile.tif,
+#                 base_2023_2026.dat, localidades.csv
 #   newpt.sh.tpl
 # (Ese contenido lo genera crear_instalador.sh en la máquina de desarrollo.)
 # =============================================================================
@@ -266,6 +268,7 @@ echo "==> Validando componentes del instalador..."
 [ -f "$FUENTES_DIR/capturar.py" ]        || { echo "[ERROR] Falta fuentes/capturar.py"; exit 1; }
 [ -f "$FUENTES_DIR/consulta_evento.py" ] || { echo "[ERROR] Falta fuentes/consulta_evento.py"; exit 1; }
 [ -f "$FUENTES_DIR/precalentar.py" ]     || { echo "[ERROR] Falta fuentes/precalentar.py"; exit 1; }
+[ -f "$FUENTES_DIR/mediciones.py" ]      || { echo "[ERROR] Falta fuentes/mediciones.py"; exit 1; }
 [ -f "$DATOS_DIR_SRC/NE2_LR_LC_SR_W_DR.tif" ] || { echo "[ERROR] Falta datos/NE2_LR_LC_SR_W_DR.tif"; exit 1; }
 [ -f "$DATOS_DIR_SRC/base_2023_2026.dat" ]   || { echo "[ERROR] Falta datos/base_2023_2026.dat"; exit 1; }
 [ -f "$DATOS_DIR_SRC/localidades.csv" ]      || { echo "[ERROR] Falta datos/localidades.csv"; exit 1; }

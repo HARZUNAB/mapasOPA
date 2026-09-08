@@ -70,7 +70,7 @@ def hito(script=None, fase="", extra=""):
     script = script or _script
     ms = (time.monotonic() - _t0) * 1000.0
     _escritor([f"{_epoch0:.0f}", f"{ms:.0f}", script, fase, extra])
-    print(f"[M] {script} · {fase}: {ms:.0f} ms {extra}".rstrip(), flush=True)
+    #print(f"[M] {script} · {fase}: {ms:.0f} ms {extra}".rstrip(), flush=True)
 
 
 def ms_desde_arranque():

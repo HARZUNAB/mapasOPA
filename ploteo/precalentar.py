@@ -168,12 +168,14 @@ def main():
     fuente, n_so, lista_so = calentar_modulos()
     med.hito("precalentar", "so_fin")
 
+    # Carga de modulos pesados en cache
+    """
     if leidos_datos:
         print(f"[Precaliente] Datos en caché: {', '.join(leidos_datos)}", flush=True)
     if lista_so:
         print(f"[Precaliente] Módulos en caché ({fuente}): {n_so} .so", flush=True)
     print(f"[Precaliente] Listo ({med.ms_desde_arranque():.0f} ms). Caché tibio.", flush=True)
-
+    """
 
 if __name__ == "__main__":
     main()

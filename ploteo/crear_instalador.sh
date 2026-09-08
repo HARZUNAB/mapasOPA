@@ -27,6 +27,9 @@ mkdir -p "$BASE/fuentes" "$BASE/datos"
 cp "$DIR_ORIGEN/capturar.py"          "$BASE/fuentes/"
 cp "$DIR_ORIGEN/consulta_evento.py"   "$BASE/fuentes/"
 cp "$DIR_ORIGEN/precalentar.py"       "$BASE/fuentes/"
+# mediciones.py es dependencia en tiempo de ejecución de capturar/consulta/precalentar
+# (cronometrado por fase -> newpt_metricas.tsv); sin él los binarios no importan.
+cp "$DIR_ORIGEN/mediciones.py"        "$BASE/fuentes/"
 # Módulos auxiliares que los tests de la marcha blanca importan (PYTHONPATH=fuentes)
 cp "$DIR_ORIGEN/lee_catalogo.py"      "$BASE/fuentes/"
 cp "$DIR_ORIGEN/preprocesa_grillas.py" "$BASE/fuentes/"

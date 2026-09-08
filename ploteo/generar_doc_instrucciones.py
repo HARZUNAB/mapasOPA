@@ -56,6 +56,9 @@ def main():
         "Los códigos fuente y el venv quedan ocultos en la carpeta .dev/ (chmod 700).",
         "Genera binarios ejecutables de consulta, de graficado y de precalentamiento "
         "de caché (este último deja módulos y datos en RAM para acelerar el arranque).",
+        "Los binarios registran por fase el tiempo que invierte cada paso usando el "
+        "módulo mediciones.py y lo guardan en newpt_metricas.tsv en la carpeta de "
+        "datos: se usa para diagnosticar demoras (como la de ~40 s ya corregida).",
         "Copia los datos (grillas, TIF, sismicidad histórica, localidades).",
         "Crea el lanzador newpt.sh y la configuración de base de datos (.env).",
         "El instalador NUNCA ejecuta apt: los programas del sistema solo se verifican, "
@@ -74,7 +77,7 @@ def main():
 
     doc.add_heading("Paso 1 - En la máquina de desarrollo (carpeta ploteo/)", 2)
     doc.add_paragraph("Solo si cambiaste código, verifica que no haya errores de sintaxis:")
-    codigo(doc, "python3 -m py_compile capturar.py consulta_evento.py precalentar.py lee_catalogo.py preprocesa_grillas.py")
+    codigo(doc, "python3 -m py_compile capturar.py consulta_evento.py precalentar.py mediciones.py lee_catalogo.py preprocesa_grillas.py")
     doc.add_paragraph("Regenera el paquete de instalación (fuentes + datos + herramientas):")
     codigo(doc, "./crear_instalador.sh")
     doc.add_paragraph("El resultado es newpt_instalador.tar.gz en la carpeta actual "

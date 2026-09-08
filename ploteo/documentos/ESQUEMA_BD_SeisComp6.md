@@ -29,7 +29,7 @@ event
 
 ### object
 
-Raíz común de todos los objetos (identidad _oid).
+Raíz común de todos los objetos del sistema.
 
 | Columna | Tipo |
 | --- | --- |
@@ -42,7 +42,7 @@ Raíz común de todos los objetos (identidad _oid).
 
 ### publicobject
 
-Extiende object: añade m_publicid, el ID público (único).
+Traduce `_oid` ↔ ID público.
 
 | Columna | Tipo |
 | --- | --- |
@@ -58,7 +58,7 @@ Extiende object: añade m_publicid, el ID público (único).
 
 ### event
 
-El sismo agregado. m_preferredoriginid apunta al ORIGEN PREFERIDO.
+El sismo agregado, tal como lo ve el analista.
 
 | Columna | Tipo |
 | --- | --- |
@@ -93,7 +93,7 @@ _Enlaza la cadena preferida:_ `m_preferredoriginid`, `m_preferredmagnitudeid`
 
 ### origin
 
-Una solución de hipocentro (la preferida es la que analiza el analista).
+Una solución de hipocentro (un "origen").
 
 | Columna | Tipo |
 | --- | --- |
@@ -189,7 +189,7 @@ Una solución de hipocentro (la preferida es la que analiza el analista).
 
 ### magnitude
 
-Magnitud preferida del evento (m_linkea por publicid).
+La magnitud del evento.
 
 | Columna | Tipo |
 | --- | --- |
@@ -230,7 +230,7 @@ _Enlaza la cadena preferida:_ `m_originid`
 
 ### eventdescription
 
-Descripciones textuales (m_type='region name' = región).
+Textos descriptivos del evento.
 
 | Columna | Tipo |
 | --- | --- |
@@ -248,7 +248,7 @@ Descripciones textuales (m_type='region name' = región).
 
 ### originreference
 
-Contexto: lista todos los orígenes asociados al evento.
+Enlace evento ↔ origen (contexto).
 
 | Columna | Tipo |
 | --- | --- |
@@ -270,7 +270,7 @@ _Enlaza la cadena preferida:_ `m_originid`
 
 ### arrival
 
-Llegada de una fase usada para localizar; enlaza el pick usado.
+Llegada de una fase usada en la localización.
 
 | Columna | Tipo |
 | --- | --- |
@@ -314,7 +314,7 @@ _Enlaza la cadena preferida:_ `m_pickid`
 
 ### pick
 
-Detección de una fase en un canal: dice EN QUÉ ESTACIÓN.
+Detección de una fase en un canal (tiene hora y canal).
 
 | Columna | Tipo |
 | --- | --- |
@@ -383,7 +383,7 @@ _Enlaza la cadena preferida:_ `m_waveformid_networkcode`, `m_waveformid_stationc
 
 ### amplitude
 
-Amplitud medida sobre un pick.
+Amplitud medida sobre una señal.
 
 | Columna | Tipo |
 | --- | --- |
@@ -506,7 +506,7 @@ _Enlaza la cadena preferida:_ `m_originid`, `m_amplitudeid`, `m_waveformid_netwo
 
 ### stationmagnitudecontribution
 
-Contribución de cada estación a la magnitud.
+Detalle de la contribución de cada estación a la magnitud.
 
 | Columna | Tipo |
 | --- | --- |
@@ -526,7 +526,7 @@ Contribución de cada estación a la magnitud.
 
 ### dataused
 
-Fases/datos usados en la localización.
+Resumen de datos empleados en el origen.
 
 | Columna | Tipo |
 | --- | --- |
@@ -545,7 +545,7 @@ Fases/datos usados en la localización.
 
 ### reading
 
-Lecturas asociadas (auxiliar).
+Lecturas asociadas a un pick.
 
 | Columna | Tipo |
 | --- | --- |
@@ -561,7 +561,7 @@ Lecturas asociadas (auxiliar).
 
 ### network
 
-Red sismológica (padre del inventario).
+Red sismológica (nivel superior del inventario).
 
 | Columna | Tipo |
 | --- | --- |
@@ -592,7 +592,7 @@ Red sismológica (padre del inventario).
 
 ### station
 
-Estación: lat/lon/elev, a la que apunta pick.m_waveformid_stationcode.
+Estación sismológica.
 
 | Columna | Tipo |
 | --- | --- |
@@ -627,7 +627,7 @@ Estación: lat/lon/elev, a la que apunta pick.m_waveformid_stationcode.
 
 ### sensorlocation
 
-Emplazamiento de la estación.
+Emplazamiento dentro de una estación.
 
 | Columna | Tipo |
 | --- | --- |
@@ -651,7 +651,7 @@ Emplazamiento de la estación.
 
 ### stream
 
-Canal (stream) del emplazamiento.
+Canal (stream) de un emplazamiento.
 
 | Columna | Tipo |
 | --- | --- |
@@ -691,31 +691,640 @@ Canal (stream) del emplazamiento.
 
 ## Relaciones clave (matriz)
 
-| De | Columna | Hacia | Nota |
-| --- | --- | --- | --- |
-| `object` | `_oid` | `publicobject` | publicobject._oid = object._oid |
-| `publicobject` | `_oid` | `origin` | origin._oid = publicobject._oid |
-| `publicobject` | `_oid` | `event` | event._oid = publicobject._oid |
-| `publicobject` | `_oid` | `magnitude` | magnitude._oid = publicobject._oid |
-| `publicobject` | `_oid` | `pick` | pick._oid = publicobject._oid |
-| `event` | `m_preferredoriginid` | `origin` | ORIGEN PREFERIDO ★ |
-| `event` | `m_preferredmagnitudeid` | `magnitude` | magnitud preferida ★ |
-| `event` | `_oid` | `eventdescription` | eventdescription._parent_oid = event._oid |
-| `event` | `_oid` | `originreference` | origenes del evento |
-| `originreference` | `m_originid` | `origin` | un origen alternativo |
-| `origin` | `_oid` | `arrival` | llegadas del origen ★ |
-| `arrival` | `m_pickid` | `pick` | pick usado ★ |
-| `pick` | `m_waveformid_stationcode` | `station` | qué estación ★ |
-| `origin` | `_oid` | `amplitude` | amplitudes del origen |
-| `amplitude` | `m_pickid` | `pick` | sobre ese pick |
-| `origin` | `m_publicid` | `stationmagnitude` | magnitud por estación ★ |
-| `stationmagnitude` | `m_amplitudeid` | `amplitude` | usa esa amplitud |
-| `magnitude` | `_oid` | `stationmagnitudecontribution` | contribuciones |
-| `stationmagnitudecontribution` | `m_stationmagnitudeid` | `stationmagnitude` | de cada estación |
-| `origin` | `_oid` | `dataused` | datos usados |
-| `pick` | `_oid` | `reading` | lecturas del pick |
-| `network` | `_oid` | `station` | st. pertenece a la red |
-| `station` | `_oid` | `sensorlocation` | emplazamientos |
-| `sensorlocation` | `_oid` | `stream` | canales (streams) |
+| De | Columna | Hacia | Nota | Cardinalidad |
+| --- | --- | --- | --- | --- |
+| `object` | `_oid` | `publicobject` | mismo _oid | 1 : 1 |
+| `publicobject` | `_oid` | `origin` | mismo _oid | 1 : 1 |
+| `publicobject` | `_oid` | `event` | mismo _oid | 1 : 1 |
+| `publicobject` | `_oid` | `magnitude` | mismo _oid | 1 : 1 |
+| `publicobject` | `_oid` | `pick` | mismo _oid | 1 : 1 |
+| `event` | `m_preferredoriginid` | `origin` | ORIGEN PREFERIDO ★ | N : 0..1 |
+| `event` | `m_preferredmagnitudeid` | `magnitude` | magnitud preferida ★ | N : 0..1 |
+| `event` | `_oid` | `eventdescription` | descripciones del evento | 1 : N |
+| `event` | `_oid` | `originreference` | origenes del evento | 1 : N |
+| `originreference` | `m_originid` | `origin` | un origen alternativo | N : 1 |
+| `origin` | `_oid` | `arrival` | llegadas del origen ★ | 1 : N |
+| `arrival` | `m_pickid` | `pick` | pick usado ★ | N : 0..1 |
+| `pick` | `m_waveformid_stationcode` | `station` | qué estación ★ | N : 1 |
+| `origin` | `_oid` | `amplitude` | amplitudes del origen | 1 : N |
+| `amplitude` | `m_pickid` | `pick` | sobre ese pick | N : 1 |
+| `origin` | `m_publicid` | `stationmagnitude` | magnitud por estación ★ | 1 : N |
+| `stationmagnitude` | `m_amplitudeid` | `amplitude` | usa esa amplitud | N : 0..1 |
+| `magnitude` | `_oid` | `stationmagnitudecontribution` | contribuciones | 1 : N |
+| `stationmagnitudecontribution` | `m_stationmagnitudeid` | `stationmagnitude` | de cada estación | N : 1 |
+| `origin` | `_oid` | `dataused` | datos usados | 1 : N |
+| `pick` | `_oid` | `reading` | lecturas del pick | 1 : N |
+| `network` | `_oid` | `station` | st. pertenece a la red | 1 : N |
+| `station` | `_oid` | `sensorlocation` | emplazamientos | 1 : N |
+| `sensorlocation` | `_oid` | `stream` | canales (streams) | 1 : N |
 
-> ★ = relación de la **solución preferida**.
+> ★ = relación de la **solución preferida**. En el diagrama, cada extremo del conector lleva un **símbolo** que indica cuántas filas de la tabla que toca participan en la relación: `1` = una, `N` = varias, `0..1` = cero o una (opcional), `0..N` = cero o varias. En esta tabla la cardinalidad se lee en el sentido De → Hacia (primera etiqueta = tabla De, segunda = Hacia).
+
+### Símbolos de cardinalidad
+
+| Símbolo | Significado |
+| --- | --- |
+| `1` | una fila de esa tabla participa en la relación |
+| `N` | varias filas de esa tabla participan en la relación |
+| `0..1` | cero o una (opcional) — como máximo una fila |
+| `0..N` | cero o varias (opcional) |
+
+## Anexo — Descripción de cada tabla
+
+> **Contiene.** qué datos viven en la tabla. **Para qué se usa.** su rol dentro del esquema (especialmente en la cadena de la solución preferida). **Atributos.** columnas en orden, con las llaves en negrita (llave = PRIMARY KEY, única = UNIQUE).
+
+### BASE
+
+#### object
+
+- **Contiene.** Dos columnas: `_oid` (identidad global única) y `_timestamp`. Toda tabla de dominio hereda este `_oid`: el objeto se reparte en una fila en `object` y otra en la tabla específica con el mismo `_oid`.
+- **Para qué se usa.** Da la identidad compartida: es la forma de relacionar "la misma cosa" entre tablas (event, origin, pick, etc.) sin depender de textos. El `_parent_oid` de las tablas hijas apunta a un `_oid` de acá.
+
+**Atributos:**
+
+| Nombre | Tipo de dato |
+| --- | --- |
+| **`_oid`** (llave) | bigint |
+| `_timestamp` | timestamp without time zone |
+
+#### publicobject
+
+- **Contiene.** `_oid` (idéntico al de `object`) y `m_publicid`, el identificador público textual (p. ej. `Origin/2026-09-07_...`), único e indexado.
+- **Para qué se usa.** Es el "puente de nombres" del esquema: las referencias entre objetos se guardan como texto (`m_preferredoriginid`, `m_pickid`, etc.) y `publicobject` permite traducir ese texto al `_oid` numérico (o al revés) con un único lookup por índice. Por eso aparece unido con `object` en la base del diagrama.
+
+**Atributos:**
+
+| Nombre | Tipo de dato |
+| --- | --- |
+| **`_oid`** (llave) | bigint |
+| **`m_publicid`** (única) | character varying |
+
+### NÚCLEO SÍSMICO
+
+#### event
+
+- **Contiene.** Datos generales del evento: tipo (`m_type`), incertidumbre (`m_typecertainty`), agencia/autor, y los punteros a la solución oficial: `m_preferredoriginid`, `m_preferredmagnitudeid`, `m_preferredfocalmechanismid`.
+- **Para qué se usa.** Puerta de entrada del análisis: de acá sale la cadena de la SOLUCIÓN PREFERIDA que NewPT consulta. Si el ID que se pasa es de un evento, el script busca su `m_preferredoriginid` para plotear ese origen.
+
+**Atributos:**
+
+| Nombre | Tipo de dato |
+| --- | --- |
+| **`_oid`** (llave) | bigint |
+| `_parent_oid` | bigint |
+| `_last_modified` | timestamp without time zone |
+| `m_preferredoriginid` | character varying |
+| `m_preferredmagnitudeid` | character varying |
+| `m_preferredfocalmechanismid` | character varying |
+| `m_type` | character varying |
+| `m_typecertainty` | character varying |
+| `m_creationinfo_agencyid` | character varying |
+| `m_creationinfo_agencyuri` | character varying |
+| `m_creationinfo_author` | character varying |
+| `m_creationinfo_authoruri` | character varying |
+| `m_creationinfo_creationtime` | timestamp without time zone |
+| `m_creationinfo_creationtime_ms` | integer |
+| `m_creationinfo_modificationtime` | timestamp without time zone |
+| `m_creationinfo_modificationtime_ms` | integer |
+| `m_creationinfo_version` | character varying |
+| `m_creationinfo_used` | boolean |
+
+#### origin
+
+- **Contiene.** Resultado de una localización: tiempo origen (`m_time_value`), latitud, longitud, profundidad, RMS (`m_quality_standarderror`), gap azimutal, cantidad de fases usadas (`m_quality_usedphasecount`), agencia/autor y estado de evaluación (`m_evaluationstatus`).
+- **Para qué se usa.** El ORIGEN PREFERIDO es el corazón de la cadena: arrastra sus `arrival` (llegadas), `amplitude`, `stationmagnitude` (magnitudes por estación) y `dataused`. Es la solución que el analista debe Confirmar en SeisComP; si el ID copiado no es el preferido actual, NewPT avisa.
+
+**Atributos:**
+
+| Nombre | Tipo de dato |
+| --- | --- |
+| **`_oid`** (llave) | bigint |
+| `_parent_oid` | bigint |
+| `_last_modified` | timestamp without time zone |
+| `m_time_value` | timestamp without time zone |
+| `m_time_value_ms` | integer |
+| `m_time_uncertainty` | double precision |
+| `m_time_loweruncertainty` | double precision |
+| `m_time_upperuncertainty` | double precision |
+| `m_time_confidencelevel` | double precision |
+| `m_time_pdf_variable_content` | bytea |
+| `m_time_pdf_probability_content` | bytea |
+| `m_time_pdf_used` | boolean |
+| `m_latitude_value` | double precision |
+| `m_latitude_uncertainty` | double precision |
+| `m_latitude_loweruncertainty` | double precision |
+| `m_latitude_upperuncertainty` | double precision |
+| `m_latitude_confidencelevel` | double precision |
+| `m_latitude_pdf_variable_content` | bytea |
+| `m_latitude_pdf_probability_content` | bytea |
+| `m_latitude_pdf_used` | boolean |
+| `m_longitude_value` | double precision |
+| `m_longitude_uncertainty` | double precision |
+| `m_longitude_loweruncertainty` | double precision |
+| `m_longitude_upperuncertainty` | double precision |
+| `m_longitude_confidencelevel` | double precision |
+| `m_longitude_pdf_variable_content` | bytea |
+| `m_longitude_pdf_probability_content` | bytea |
+| `m_longitude_pdf_used` | boolean |
+| `m_depth_value` | double precision |
+| `m_depth_uncertainty` | double precision |
+| `m_depth_loweruncertainty` | double precision |
+| `m_depth_upperuncertainty` | double precision |
+| `m_depth_confidencelevel` | double precision |
+| `m_depth_pdf_variable_content` | bytea |
+| `m_depth_pdf_probability_content` | bytea |
+| `m_depth_pdf_used` | boolean |
+| `m_depth_used` | boolean |
+| `m_depthtype` | character varying |
+| `m_timefixed` | boolean |
+| `m_epicenterfixed` | boolean |
+| `m_referencesystemid` | character varying |
+| `m_methodid` | character varying |
+| `m_earthmodelid` | character varying |
+| `m_quality_associatedphasecount` | integer |
+| `m_quality_usedphasecount` | integer |
+| `m_quality_associatedstationcount` | integer |
+| `m_quality_usedstationcount` | integer |
+| `m_quality_depthphasecount` | integer |
+| `m_quality_standarderror` | double precision |
+| `m_quality_azimuthalgap` | double precision |
+| `m_quality_secondaryazimuthalgap` | double precision |
+| `m_quality_groundtruthlevel` | character varying |
+| `m_quality_maximumdistance` | double precision |
+| `m_quality_minimumdistance` | double precision |
+| `m_quality_mediandistance` | double precision |
+| `m_quality_used` | boolean |
+| `m_uncertainty_horizontaluncertainty` | double precision |
+| `m_uncertainty_minhorizontaluncertainty` | double precision |
+| `m_uncertainty_maxhorizontaluncertainty` | double precision |
+| `m_uncertainty_azimuthmaxhorizontaluncertainty` | double precision |
+| `m_uncertainty_confidenceellipsoid_semimajoraxislength` | double precision |
+| `m_uncertainty_confidenceellipsoid_semiminoraxislength` | double precision |
+| `m_uncertainty_confidenceellipsoid_semiintermediateaxislength` | double precision |
+| `m_uncertainty_confidenceellipsoid_majoraxisplunge` | double precision |
+| `m_uncertainty_confidenceellipsoid_majoraxisazimuth` | double precision |
+| `m_uncertainty_confidenceellipsoid_majoraxisrotation` | double precision |
+| `m_uncertainty_confidenceellipsoid_used` | boolean |
+| `m_uncertainty_preferreddescription` | character varying |
+| `m_uncertainty_confidencelevel` | double precision |
+| `m_uncertainty_used` | boolean |
+| `m_type` | character varying |
+| `m_evaluationmode` | character varying |
+| `m_evaluationstatus` | character varying |
+| `m_creationinfo_agencyid` | character varying |
+| `m_creationinfo_agencyuri` | character varying |
+| `m_creationinfo_author` | character varying |
+| `m_creationinfo_authoruri` | character varying |
+| `m_creationinfo_creationtime` | timestamp without time zone |
+| `m_creationinfo_creationtime_ms` | integer |
+| `m_creationinfo_modificationtime` | timestamp without time zone |
+| `m_creationinfo_modificationtime_ms` | integer |
+| `m_creationinfo_version` | character varying |
+| `m_creationinfo_used` | boolean |
+
+#### magnitude
+
+- **Contiene.** Valor numérico (`m_magnitude_value`), tipo (ML, Md, Mw…), y referencia al origen del que se calculó (`m_originid`).
+- **Para qué se usa.** Representa la magnitud PREFERIDA (`event.m_preferredmagnitudeid`) y agrupa las contribuciones por estación de `stationmagnitudecontribution`. NewPT la muestra en el título del ploteo.
+
+**Atributos:**
+
+| Nombre | Tipo de dato |
+| --- | --- |
+| **`_oid`** (llave) | bigint |
+| `_parent_oid` | bigint |
+| `_last_modified` | timestamp without time zone |
+| `m_magnitude_value` | double precision |
+| `m_magnitude_uncertainty` | double precision |
+| `m_magnitude_loweruncertainty` | double precision |
+| `m_magnitude_upperuncertainty` | double precision |
+| `m_magnitude_confidencelevel` | double precision |
+| `m_magnitude_pdf_variable_content` | bytea |
+| `m_magnitude_pdf_probability_content` | bytea |
+| `m_magnitude_pdf_used` | boolean |
+| `m_type` | character varying |
+| `m_originid` | character varying |
+| `m_methodid` | character varying |
+| `m_stationcount` | integer |
+| `m_azimuthalgap` | double precision |
+| `m_evaluationstatus` | character varying |
+| `m_creationinfo_agencyid` | character varying |
+| `m_creationinfo_agencyuri` | character varying |
+| `m_creationinfo_author` | character varying |
+| `m_creationinfo_authoruri` | character varying |
+| `m_creationinfo_creationtime` | timestamp without time zone |
+| `m_creationinfo_creationtime_ms` | integer |
+| `m_creationinfo_modificationtime` | timestamp without time zone |
+| `m_creationinfo_modificationtime_ms` | integer |
+| `m_creationinfo_version` | character varying |
+| `m_creationinfo_used` | boolean |
+
+#### eventdescription
+
+- **Contiene.** Filas con `m_type` (por ejemplo `region name`) y el texto asociado (`m_text`), vinculadas al evento por `_parent_oid`.
+- **Para qué se usa.** Fuente del nombre de la región que aparece en el título del gráfico de NewPT: se toma la fila con `m_type = 'region name'`.
+
+**Atributos:**
+
+| Nombre | Tipo de dato |
+| --- | --- |
+| **`_oid`** (llave) | bigint |
+| **`_parent_oid`** (única) | bigint |
+| `_last_modified` | timestamp without time zone |
+| `m_text` | character varying |
+| **`m_type`** (única) | character varying |
+
+#### originreference
+
+- **Contiene.** Cada fila asocia un evento con uno de sus orígenes vía `m_originid` (por ID público); `_parent_oid` apunta al evento.
+- **Para qué se usa.** Aclara que un evento "tiene asociados" varios orígenes. Explica por qué NewPT valida que el origen pegado sea el preferido antes de generar el ploteo.
+
+**Atributos:**
+
+| Nombre | Tipo de dato |
+| --- | --- |
+| **`_oid`** (llave) | bigint |
+| **`_parent_oid`** (única) | bigint |
+| `_last_modified` | timestamp without time zone |
+| **`m_originid`** (única) | character varying |
+
+### CADENA DEL ORIGEN PREFERIDO
+
+#### arrival
+
+- **Contiene.** Observación del cálculo del origen: fase (`m_phase_code`, p. ej. `P`/`S`), si se usó en la localización (`m_timeused`), peso (`m_weight`) y el pick que la respalda (`m_pickid`).
+- **Para qué se usa.** Hilvana ORIGEN → PICK: cada llegada del origen preferido apunta al `pick` que le da la hora de esa fase. Contar las `arrival` con `m_timeused` da el número de fases usadas del evento.
+
+**Atributos:**
+
+| Nombre | Tipo de dato |
+| --- | --- |
+| **`_oid`** (llave) | bigint |
+| **`_parent_oid`** (única) | bigint |
+| `_last_modified` | timestamp without time zone |
+| **`m_pickid`** (única) | character varying |
+| `m_phase_code` | character varying |
+| `m_timecorrection` | double precision |
+| `m_azimuth` | double precision |
+| `m_distance` | double precision |
+| `m_takeoffangle` | double precision |
+| `m_timeresidual` | double precision |
+| `m_horizontalslownessresidual` | double precision |
+| `m_backazimuthresidual` | double precision |
+| `m_timeused` | boolean |
+| `m_horizontalslownessused` | boolean |
+| `m_backazimuthused` | boolean |
+| `m_weight` | double precision |
+| `m_earthmodelid` | character varying |
+| `m_preliminary` | boolean |
+| `m_creationinfo_agencyid` | character varying |
+| `m_creationinfo_agencyuri` | character varying |
+| `m_creationinfo_author` | character varying |
+| `m_creationinfo_authoruri` | character varying |
+| `m_creationinfo_creationtime` | timestamp without time zone |
+| `m_creationinfo_creationtime_ms` | integer |
+| `m_creationinfo_modificationtime` | timestamp without time zone |
+| `m_creationinfo_modificationtime_ms` | integer |
+| `m_creationinfo_version` | character varying |
+| `m_creationinfo_used` | boolean |
+
+#### pick
+
+- **Contiene.** Tiempo de la detección (`m_time_value`), canal completo vía `m_waveformid_networkcode/stationcode/locationcode/streamcode`, fase estimada (`m_phasehint_code`), onset, polaridad y estado de evaluación.
+- **Para qué se usa.** Responde "EN QUÉ ESTACIÓN se registró cada fase": el canal (`m_waveformid_stationcode` + `networkcode`) se resuelve contra `station`/`network`. Es el eslabón final de la cadena preferida y la clave del proyecto de revisar los picks por evento.
+
+**Atributos:**
+
+| Nombre | Tipo de dato |
+| --- | --- |
+| **`_oid`** (llave) | bigint |
+| `_parent_oid` | bigint |
+| `_last_modified` | timestamp without time zone |
+| `m_time_value` | timestamp without time zone |
+| `m_time_value_ms` | integer |
+| `m_time_uncertainty` | double precision |
+| `m_time_loweruncertainty` | double precision |
+| `m_time_upperuncertainty` | double precision |
+| `m_time_confidencelevel` | double precision |
+| `m_time_pdf_variable_content` | bytea |
+| `m_time_pdf_probability_content` | bytea |
+| `m_time_pdf_used` | boolean |
+| `m_waveformid_networkcode` | character varying |
+| `m_waveformid_stationcode` | character varying |
+| `m_waveformid_locationcode` | character varying |
+| `m_waveformid_channelcode` | character varying |
+| `m_waveformid_resourceuri` | character varying |
+| `m_filterid` | character varying |
+| `m_methodid` | character varying |
+| `m_horizontalslowness_value` | double precision |
+| `m_horizontalslowness_uncertainty` | double precision |
+| `m_horizontalslowness_loweruncertainty` | double precision |
+| `m_horizontalslowness_upperuncertainty` | double precision |
+| `m_horizontalslowness_confidencelevel` | double precision |
+| `m_horizontalslowness_pdf_variable_content` | bytea |
+| `m_horizontalslowness_pdf_probability_content` | bytea |
+| `m_horizontalslowness_pdf_used` | boolean |
+| `m_horizontalslowness_used` | boolean |
+| `m_backazimuth_value` | double precision |
+| `m_backazimuth_uncertainty` | double precision |
+| `m_backazimuth_loweruncertainty` | double precision |
+| `m_backazimuth_upperuncertainty` | double precision |
+| `m_backazimuth_confidencelevel` | double precision |
+| `m_backazimuth_pdf_variable_content` | bytea |
+| `m_backazimuth_pdf_probability_content` | bytea |
+| `m_backazimuth_pdf_used` | boolean |
+| `m_backazimuth_used` | boolean |
+| `m_slownessmethodid` | character varying |
+| `m_onset` | character varying |
+| `m_phasehint_code` | character varying |
+| `m_phasehint_used` | boolean |
+| `m_polarity` | character varying |
+| `m_evaluationmode` | character varying |
+| `m_evaluationstatus` | character varying |
+| `m_creationinfo_agencyid` | character varying |
+| `m_creationinfo_agencyuri` | character varying |
+| `m_creationinfo_author` | character varying |
+| `m_creationinfo_authoruri` | character varying |
+| `m_creationinfo_creationtime` | timestamp without time zone |
+| `m_creationinfo_creationtime_ms` | integer |
+| `m_creationinfo_modificationtime` | timestamp without time zone |
+| `m_creationinfo_modificationtime_ms` | integer |
+| `m_creationinfo_version` | character varying |
+| `m_creationinfo_used` | boolean |
+
+#### amplitude
+
+- **Contiene.** Valor de amplitud y tipo, asociada a un pick (`m_pickid`), al origen (`_parent_oid`) y con canal de origen (`m_waveformid_*`).
+- **Para qué se usa.** Da las mediciones de amplitud por fase, base para magnitudes tipo Mw por estación; alimenta `stationmagnitude`.
+
+**Atributos:**
+
+| Nombre | Tipo de dato |
+| --- | --- |
+| **`_oid`** (llave) | bigint |
+| `_parent_oid` | bigint |
+| `_last_modified` | timestamp without time zone |
+| `m_type` | character varying |
+| `m_amplitude_value` | double precision |
+| `m_amplitude_uncertainty` | double precision |
+| `m_amplitude_loweruncertainty` | double precision |
+| `m_amplitude_upperuncertainty` | double precision |
+| `m_amplitude_confidencelevel` | double precision |
+| `m_amplitude_pdf_variable_content` | bytea |
+| `m_amplitude_pdf_probability_content` | bytea |
+| `m_amplitude_pdf_used` | boolean |
+| `m_amplitude_used` | boolean |
+| `m_timewindow_reference` | timestamp without time zone |
+| `m_timewindow_reference_ms` | integer |
+| `m_timewindow_begin` | double precision |
+| `m_timewindow_end` | double precision |
+| `m_timewindow_used` | boolean |
+| `m_period_value` | double precision |
+| `m_period_uncertainty` | double precision |
+| `m_period_loweruncertainty` | double precision |
+| `m_period_upperuncertainty` | double precision |
+| `m_period_confidencelevel` | double precision |
+| `m_period_pdf_variable_content` | bytea |
+| `m_period_pdf_probability_content` | bytea |
+| `m_period_pdf_used` | boolean |
+| `m_period_used` | boolean |
+| `m_snr` | double precision |
+| `m_unit` | character varying |
+| `m_pickid` | character varying |
+| `m_waveformid_networkcode` | character varying |
+| `m_waveformid_stationcode` | character varying |
+| `m_waveformid_locationcode` | character varying |
+| `m_waveformid_channelcode` | character varying |
+| `m_waveformid_resourceuri` | character varying |
+| `m_waveformid_used` | boolean |
+| `m_filterid` | character varying |
+| `m_methodid` | character varying |
+| `m_scalingtime_value` | timestamp without time zone |
+| `m_scalingtime_value_ms` | integer |
+| `m_scalingtime_uncertainty` | double precision |
+| `m_scalingtime_loweruncertainty` | double precision |
+| `m_scalingtime_upperuncertainty` | double precision |
+| `m_scalingtime_confidencelevel` | double precision |
+| `m_scalingtime_pdf_variable_content` | bytea |
+| `m_scalingtime_pdf_probability_content` | bytea |
+| `m_scalingtime_pdf_used` | boolean |
+| `m_scalingtime_used` | boolean |
+| `m_magnitudehint` | character varying |
+| `m_evaluationmode` | character varying |
+| `m_creationinfo_agencyid` | character varying |
+| `m_creationinfo_agencyuri` | character varying |
+| `m_creationinfo_author` | character varying |
+| `m_creationinfo_authoruri` | character varying |
+| `m_creationinfo_creationtime` | timestamp without time zone |
+| `m_creationinfo_creationtime_ms` | integer |
+| `m_creationinfo_modificationtime` | timestamp without time zone |
+| `m_creationinfo_modificationtime_ms` | integer |
+| `m_creationinfo_version` | character varying |
+| `m_creationinfo_used` | boolean |
+
+#### stationmagnitude
+
+- **Contiene.** Magnitud por estación (`m_magnitude_value`, `m_type`), que referencia el origen del evento (`m_originid`) y la amplitud usada (`m_amplitudeid`).
+- **Para qué se usa.** Es la contribución individual de cada estación a la magnitud; sirve para auditar cómo se calculó la magnitud del evento.
+
+**Atributos:**
+
+| Nombre | Tipo de dato |
+| --- | --- |
+| **`_oid`** (llave) | bigint |
+| `_parent_oid` | bigint |
+| `_last_modified` | timestamp without time zone |
+| `m_originid` | character varying |
+| `m_magnitude_value` | double precision |
+| `m_magnitude_uncertainty` | double precision |
+| `m_magnitude_loweruncertainty` | double precision |
+| `m_magnitude_upperuncertainty` | double precision |
+| `m_magnitude_confidencelevel` | double precision |
+| `m_magnitude_pdf_variable_content` | bytea |
+| `m_magnitude_pdf_probability_content` | bytea |
+| `m_magnitude_pdf_used` | boolean |
+| `m_type` | character varying |
+| `m_amplitudeid` | character varying |
+| `m_methodid` | character varying |
+| `m_waveformid_networkcode` | character varying |
+| `m_waveformid_stationcode` | character varying |
+| `m_waveformid_locationcode` | character varying |
+| `m_waveformid_channelcode` | character varying |
+| `m_waveformid_resourceuri` | character varying |
+| `m_waveformid_used` | boolean |
+| `m_passedqc` | boolean |
+| `m_creationinfo_agencyid` | character varying |
+| `m_creationinfo_agencyuri` | character varying |
+| `m_creationinfo_author` | character varying |
+| `m_creationinfo_authoruri` | character varying |
+| `m_creationinfo_creationtime` | timestamp without time zone |
+| `m_creationinfo_creationtime_ms` | integer |
+| `m_creationinfo_modificationtime` | timestamp without time zone |
+| `m_creationinfo_modificationtime_ms` | integer |
+| `m_creationinfo_version` | character varying |
+| `m_creationinfo_used` | boolean |
+
+#### stationmagnitudecontribution
+
+- **Contiene.** Residual, peso y punteros: `_parent_oid` hacia la `magnitude` y `m_stationmagnitudeid` hacia el `stationmagnitude` que contribuye.
+- **Para qué se usa.** Permite reconstruir cómo se obtuvo la magnitud preferida a partir de las magnitudes por estación (auditoría del cálculo).
+
+**Atributos:**
+
+| Nombre | Tipo de dato |
+| --- | --- |
+| **`_oid`** (llave) | bigint |
+| **`_parent_oid`** (única) | bigint |
+| `_last_modified` | timestamp without time zone |
+| **`m_stationmagnitudeid`** (única) | character varying |
+| `m_residual` | double precision |
+| `m_weight` | double precision |
+
+#### dataused
+
+- **Contiene.** Por tipo de onda (`m_wavetype`, p. ej. `P`, `S`): conteo de estaciones (`m_stationcount`) y componentes (`m_componentcount`) usados, bajo `_parent_oid` del origen.
+- **Para qué se usa.** Da el detalle "qué datos se usaron para localizar el origen preferido".
+
+**Atributos:**
+
+| Nombre | Tipo de dato |
+| --- | --- |
+| **`_oid`** (llave) | bigint |
+| `_parent_oid` | bigint |
+| `_last_modified` | timestamp without time zone |
+| `m_wavetype` | character varying |
+| `m_stationcount` | integer |
+| `m_componentcount` | integer |
+| `m_shortestperiod` | double precision |
+
+#### reading
+
+- **Contiene.** Filas auxiliares enlazadas por `_parent_oid` a un `pick`.
+- **Para qué se usa.** Información complementaria del proceso automático de lecturas; no participa de forma crítica en la cadena preferida.
+
+**Atributos:**
+
+| Nombre | Tipo de dato |
+| --- | --- |
+| **`_oid`** (llave) | bigint |
+| `_parent_oid` | bigint |
+
+### INVENTARIO DE ESTACIONES
+
+#### network
+
+- **Contiene.** Código de red (`m_code`, p. ej. `CO`), tipo y descripción.
+- **Para qué se usa.** Agrupa estaciones; el `pick.m_waveformid_networkcode` se resuelve contra el `m_code` de acá para saber la red del canal.
+
+**Atributos:**
+
+| Nombre | Tipo de dato |
+| --- | --- |
+| **`_oid`** (llave) | bigint |
+| **`_parent_oid`** (única) | bigint |
+| `_last_modified` | timestamp without time zone |
+| **`m_code`** (única) | character varying |
+| **`m_start`** (única) | timestamp without time zone |
+| **`m_start_ms`** (única) | integer |
+| `m_end` | timestamp without time zone |
+| `m_end_ms` | integer |
+| `m_description` | character varying |
+| `m_institutions` | character varying |
+| `m_region` | character varying |
+| `m_type` | character varying |
+| `m_netclass` | character |
+| `m_archive` | character varying |
+| `m_restricted` | boolean |
+| `m_shared` | boolean |
+| `m_remark_content` | bytea |
+| `m_remark_used` | boolean |
+
+#### station
+
+- **Contiene.** Código (`m_code`, p. ej. `HEL`), latitud, longitud, elevación, tipo, y pertenencia a la red vía `_parent_oid`.
+- **Para qué se usa.** Destino directo de `pick.m_waveformid_stationcode`: responde qué estación registró cada fase; es la referencia geográfica del inventario.
+
+**Atributos:**
+
+| Nombre | Tipo de dato |
+| --- | --- |
+| **`_oid`** (llave) | bigint |
+| **`_parent_oid`** (única) | bigint |
+| `_last_modified` | timestamp without time zone |
+| **`m_code`** (única) | character varying |
+| **`m_start`** (única) | timestamp without time zone |
+| **`m_start_ms`** (única) | integer |
+| `m_end` | timestamp without time zone |
+| `m_end_ms` | integer |
+| `m_description` | character varying |
+| `m_latitude` | double precision |
+| `m_longitude` | double precision |
+| `m_elevation` | double precision |
+| `m_place` | character varying |
+| `m_country` | character varying |
+| `m_affiliation` | character varying |
+| `m_type` | character varying |
+| `m_archive` | character varying |
+| `m_archivenetworkcode` | character varying |
+| `m_restricted` | boolean |
+| `m_shared` | boolean |
+| `m_remark_content` | bytea |
+| `m_remark_used` | boolean |
+
+#### sensorlocation
+
+- **Contiene.** Código de emplazamiento (`m_code`, p. ej. `00`), coordenadas y elevación propias, bajo `_parent_oid` de la estación.
+- **Para qué se usa.** Segundo nivel del inventario: distingue posiciones/deploy dentro de la misma estación para asignar el canal correcto del pick.
+
+**Atributos:**
+
+| Nombre | Tipo de dato |
+| --- | --- |
+| **`_oid`** (llave) | bigint |
+| **`_parent_oid`** (única) | bigint |
+| `_last_modified` | timestamp without time zone |
+| **`m_code`** (única) | character varying |
+| **`m_start`** (única) | timestamp without time zone |
+| **`m_start_ms`** (única) | integer |
+| `m_end` | timestamp without time zone |
+| `m_end_ms` | integer |
+| `m_latitude` | double precision |
+| `m_longitude` | double precision |
+| `m_elevation` | double precision |
+
+#### stream
+
+- **Contiene.** Código de canal (`m_code`, p. ej. `HHZ`), frecuencia de muestreo (numerador/denominador), profundidad, ganancia y período de operación, bajo `_parent_oid` del emplazamiento.
+- **Para qué se usa.** Nivel hoja del inventario: el `pick.m_waveformid_streamcode` se resuelve acá y materializa la señal física del canal.
+
+**Atributos:**
+
+| Nombre | Tipo de dato |
+| --- | --- |
+| **`_oid`** (llave) | bigint |
+| **`_parent_oid`** (única) | bigint |
+| `_last_modified` | timestamp without time zone |
+| **`m_code`** (única) | character varying |
+| **`m_start`** (única) | timestamp without time zone |
+| **`m_start_ms`** (única) | integer |
+| `m_end` | timestamp without time zone |
+| `m_end_ms` | integer |
+| `m_datalogger` | character varying |
+| `m_dataloggerserialnumber` | character varying |
+| `m_dataloggerchannel` | integer |
+| `m_sensor` | character varying |
+| `m_sensorserialnumber` | character varying |
+| `m_sensorchannel` | integer |
+| `m_clockserialnumber` | character varying |
+| `m_sampleratenumerator` | integer |
+| `m_sampleratedenominator` | integer |
+| `m_depth` | double precision |
+| `m_azimuth` | double precision |
+| `m_dip` | double precision |
+| `m_gain` | double precision |
+| `m_gainfrequency` | double precision |
+| `m_gainunit` | character varying |
+| `m_format` | character varying |
+| `m_flags` | character varying |
+| `m_restricted` | boolean |
+| `m_shared` | boolean |
