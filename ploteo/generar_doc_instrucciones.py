@@ -111,7 +111,7 @@ def main():
 
     doc.add_heading("Paso 3 - Prerequisitos del sistema (SOLO la primera vez por máquina)", 2)
     doc.add_paragraph("Estos programas se solicitan al encargado de TI y requieren sudo:")
-    codigo(doc, "sudo apt update\nsudo apt install -y python3 python3-venv python3-tk xterm")
+    codigo(doc, "sudo apt update\nsudo apt install -y python3 python3-venv python3-tk xterm binutils")
     doc.add_paragraph(
         "En una máquina donde NewPT ya estuvo instalado o corriendo antes, estos programas "
         "ya existen: NO se vuelven a instalar. El instalador verifica cada uno y muestra su "
@@ -134,8 +134,8 @@ def main():
     for t in [
         "No hay conflicto: el instalador crea una instalación independiente en ~/newpt.",
         "Los códigos y datos originales NO se tocan, quedan donde estaban.",
-        "Los programas del sistema (python3, python3-tk, xterm) ya están instalados: "
-        "no se vuelven a instalar.",
+        "Los programas del sistema (python3, python3-venv, python3-tk, xterm, binutils) "
+        "ya están instalados: no se vuelven a instalar.",
         "Si instalas en una carpeta que ya contenía una instalación previa de NewPT "
         "(newpt.sh / bin/ / .dev/), el instalador lo detecta y reconstruye .dev/ y bin/ "
         "de forma limpia, conservando el resto.",
@@ -234,7 +234,7 @@ def main():
         "no actualizarlas por separado.",
         "El instalador nunca ejecuta apt y nunca instala nada en el Python del sistema.",
         "Distribuciones RHEL/CentOS/Rocky: los equivalentes son "
-        "sudo dnf install -y python3 python3-virtualenv tkinter xterm.",
+        "sudo dnf install -y python3 python3-virtualenv tkinter xterm binutils.",
     ]:
         doc.add_paragraph(t, style="List Bullet")
 

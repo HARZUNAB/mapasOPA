@@ -141,8 +141,9 @@ def main():
              "prof=10.0 (valor por defecto) y aviso en pantalla"],
             ["A12", "Línea incompleta", "Menos de 12 campos separados por ';'",
              "Línea rechazada (None)"],
-            ["A13", "Línea ajena al proyecto",
-             "Texto sin la marca 'csn_'", "Línea rechazada"],
+            ["A13", "Cualquier event_id es válido",
+             "Línea válida con event_id sin 'csn_' (ej. 'simulador2026rqhz')",
+             "ev['event_id'] = 'simulador2026rqhz' (línea aceptada)"],
             ["A14", "Hemisferio norte/este", "'35.42 N' y '71.62 E'",
              "lat=+35.42 y lon=+71.62 (positivos)"],
             ["A15", "El botón abre el perfil 3D", "Ventana 2D plotear_evento renderizada, "

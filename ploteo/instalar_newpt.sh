@@ -172,12 +172,14 @@ else
     exit 1
 fi
 
-comprobar "Módulo venv para crear el ambiente virtual (paquete python3-venv)" \
-    bash -c "$PYTHON -m venv --help >/dev/null 2>&1"
+comprobar "Módulo venv + ensurepip para crear el ambiente virtual (paquete python3-venv / python3.11-venv)" \
+    bash -c "$PYTHON -m venv --help >/dev/null 2>&1 && $PYTHON -c 'import ensurepip' 2>/dev/null"
 comprobar "Terminal xterm para la ventana de progreso (paquete xterm)" \
     command -v xterm
 comprobar "Tkinter para la ventana gráfica de matplotlib (paquete python3-tk)" \
     bash -c "$PYTHON -c 'import tkinter'"
+comprobar "objdump para compilar con PyInstaller (paquete binutils)" \
+    command -v objdump
 
 echo ""
 echo "    ------------------------------------------------------------"
@@ -196,7 +198,7 @@ if [ "$FALTA" -ne 0 ]; then
     echo "  del sistema (una sola vez, con sudo):"
     echo ""
     echo "      sudo apt update"
-    echo "      sudo apt install -y python3 python3-venv python3-tk xterm"
+    echo "      sudo apt install -y python3 python3-venv python3-tk xterm binutils"
     echo ""
     echo "  La instalación NO continuará hasta que todos los"
     echo "  prerequisitos estén instalados. Una vez instalados,"
@@ -430,5 +432,5 @@ echo "  Aquí SÍ se escribe literalmente \$EVENT_ID: SeisComP lo"
 echo "  reemplaza automáticamente por el ID del evento al presionarlo."
 echo ""
 echo "RECORDATORIO (una sola vez, con sudo):"
-echo "  sudo apt install -y python3 python3-venv python3-tk xterm"
+echo "  sudo apt install -y python3 python3-venv python3-tk xterm binutils"
 echo "============================================================"

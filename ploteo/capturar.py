@@ -812,7 +812,7 @@ def parsear_linea_evento(texto):
     separados por ';'). Devuelve un dict con fecha, lat, lon, prof, mag,
     tipo_mag, texto_magnitud y event_id; None si la línea no es válida.
     """
-    if not texto or "csn_" not in texto:
+    if not texto or ";" not in texto or not texto.split(';')[-1].strip():
         return None
 
     partes = texto.split(';')
@@ -873,12 +873,10 @@ if __name__ == "__main__":
             with open(ARCHIVO_TMP, 'r') as f:
                 texto_actual = f.readline().strip()
 
-            if texto_actual and "csn_" in texto_actual:
-                print("[EVENTO SELECCIONADO] Procesando parámetros...")
-
             ev = parsear_linea_evento(texto_actual)
 
             if ev is not None:
+                    print("[EVENTO SELECCIONADO] Procesando parámetros...")
                     try:
                         plotear_evento(ev["fecha"], ev["lat"], ev["lon"], ev["prof"],
                                        ev["mag"], ev["event_id"], ev["texto_magnitud"])
@@ -893,10 +891,10 @@ if __name__ == "__main__":
                     # regenera (consulta_evento.py lo borra y reescribe al
                     # inicio), y dejarlo permite re-ejecutar este script.
                     print("[INFO] Procesamiento terminado. evento_data.txt queda disponible para re-ejecutar.")
-            elif texto_actual and "csn_" in texto_actual:
+            elif texto_actual:
                     print("[Error] El formato de la línea en el archivo no es válido.")
             else:
-                print("[Error] El archivo no contiene un evento válido (csn_).")
+                print("[Error] El archivo no contiene un evento válido.")
 
         except Exception as ex:
             print(f"[Error] Falló la lectura o el parseo del archivo: {ex}")

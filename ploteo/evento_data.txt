@@ -1,1 +1,1 @@
-2026-09-08 19:59:18;;;3.1;MLv;19;0.27;300;24.03 S;67.33 W;227 km;from location;confirmed;;2;CSN;maca;Chile-Argentina Border Region;csn_sc62026rqjwz
+2026-09-10 14:24:40;;;1.9;MLv;18;0.23;138;21.11 S;69.07 W;113 km;from location;confirmed;;2;CSN;eatl;Northern Chile;csn_sc62026rtpwq

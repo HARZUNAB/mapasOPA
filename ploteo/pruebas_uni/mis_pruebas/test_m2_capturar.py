@@ -5,7 +5,7 @@
 # campos que plotear_evento() necesita para graficar.
 #
 # La línea tiene 19 campos separados por ";" y esta función:
-# 1. Valida que la línea tenga "csn_" (marca de identificación del CSN)
+# 1. Valida que la línea traiga un event_id no vacío al final
 # 2. Extrae lat/lon convirtiendo hemisferios (S/W → negativo)
 # 3. Convierte magnitud y profundidad de string a float
 # 4. Maneja errores (profundidad corrupta, magnitud vacía, etc.)
@@ -42,7 +42,7 @@ LINEA_VALIDA = (
     "CSN;"                              # 12: agencia
     "operador1;"                        # 13: operador
     "Region del Maule;"                 # 14: region
-    "csn_sc62026nkkbb"                  # 15: event_id (DEBE contener "csn_")
+    "csn_sc62026nkkbb"                  # 15: event_id
 )
 
 
@@ -119,16 +119,20 @@ class TestM2ParsearLinea(unittest.TestCase):
         self.assertIsNone(resultado, "Línea con <12 campos debe devolver None")
 
     # =====================================================================
-    # TEST 5: Sin marca "csn_" → None
+    # TEST 5: Cualquier event_id (con o sin "csn_") es válido; vacío/None no
     # =====================================================================
-    # La función requiere que el event_id contenga "csn_" para validar
-    # que la línea es del CSN. Si no lo tiene, la descarta.
-    def test_5_sin_marca_csn_devuelve_none(self):
-        """Sin 'csn_' en el event_id: la función rechaza la línea."""
-        # Reemplazamos el ID del CSN por uno genérico sin "csn_"
-        linea_ajena = LINEA_VALIDA.replace("csn_sc62026nkkbb", "otro_2026xyz")
-        self.assertIsNone(capturar.parsear_linea_evento(linea_ajena))
-        # También con string vacío y None
+    # La consulta puede devolver IDs de otras fuentes (ej. simulador2026rqhz).
+    # El parser solo exige un event_id no vacío al final de la línea.
+    def test_5_cualquier_event_id_es_valido(self):
+        """Línea válida con ID sin 'csn_' se acepta; vacío/None se rechazan."""
+        # Reemplazamos el ID por uno genérico sin "csn_"
+        linea_ajena = LINEA_VALIDA.replace("csn_sc62026nkkbb", "simulador2026rqhz")
+        ev = capturar.parsear_linea_evento(linea_ajena)
+        self.assertIsNotNone(ev, "Un ID sin 'csn_' también debe ser válido")
+        self.assertEqual(ev["event_id"], "simulador2026rqhz")
+        # Último campo vacío, string vacío y None → None
+        self.assertIsNone(capturar.parsear_linea_evento(
+            LINEA_VALIDA.replace("csn_sc62026nkkbb", "")))
         self.assertIsNone(capturar.parsear_linea_evento(""))
         self.assertIsNone(capturar.parsear_linea_evento(None))
 

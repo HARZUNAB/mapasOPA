@@ -77,7 +77,7 @@ tar -czf "$TARBALL" -C "$EMP" newpt_instalador
 echo "==> Listo: $TARBALL"
 echo ""
 echo "Para instalarlo en una máquina nueva:"
-echo "  1) (TI)  sudo apt install -y python3 python3-venv python3-tk xterm"
+echo "  1) (TI)  sudo apt install -y python3 python3-venv python3-tk xterm binutils"
 echo "  2) Copiar $TARBALL a la máquina"
 echo "  3) tar -xzf newpt_instalador.tar.gz"
 echo "  4) cd newpt_instalador && ./instalar_newpt.sh"

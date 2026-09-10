@@ -120,9 +120,11 @@ class TestParsearLineaEvento(unittest.TestCase):
         corta = ";".join(LINEA_VALIDA.split(";")[:11])
         self.assertIsNone(capturar.parsear_linea_evento(corta))
 
-    def test_a13_sin_marca_csn_se_rechaza(self):
-        ajena = LINEA_VALIDA.replace("csn_sc62026nkkbb", "otro_2026xyz")
-        self.assertIsNone(capturar.parsear_linea_evento(ajena))
+    def test_a13_cualquier_event_id_es_valido(self):
+        ajena = LINEA_VALIDA.replace("csn_sc62026nkkbb", "simulador2026rqhz")
+        ev = capturar.parsear_linea_evento(ajena)
+        self.assertIsNotNone(ev)
+        self.assertEqual(ev["event_id"], "simulador2026rqhz")
         self.assertIsNone(capturar.parsear_linea_evento(""))
         self.assertIsNone(capturar.parsear_linea_evento(None))
 

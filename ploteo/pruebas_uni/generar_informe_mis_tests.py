@@ -109,9 +109,9 @@ MISIONES = [
         ["M2_4", "Línea incompleta devuelve None",
          "Línea incompleta (< 12 campos separados por ';'): la función la rechaza "
          "y devuelve None.", "PASSED"],
-        ["M2_5", "Sin marca 'csn_' devuelve None",
-         "Sin marca 'csn_' en el event_id (texto ajeno, vacío o None): la función "
-         "la rechaza y devuelve None.", "PASSED"],
+        ["M2_5", "Cualquier event_id es válido",
+         "Línea válida con event_id genérico (ej. 'simulador2026rqhz'): se acepta y "
+         "devuelve ev['event_id'] = el ID; texto vacío o None → None.", "PASSED"],
         ["M2_6", "Hemisferio norte latitud positiva",
          "Hemisferio Norte ('35.42 N'): la latitud se conserva positiva (+35.42).", "PASSED"],
         ["M2_7", "Hemisferio este longitud positiva",
