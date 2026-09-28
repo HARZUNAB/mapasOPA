@@ -1,1 +1,1 @@
-2026-09-20 16:41:16;;;2.6;MLv;15;7.66;215;27.93 S;69.97 W;22 km;from location;confirmed;;2;CSN;yole;Northern Chile;csn_sc62026smbnh
+2026-09-28 15:55:22;;;3.0;M;8;0.18;354;32.31 S;67.00 W;140 km;from location;confirmed;;2;CSN;yole;Mendoza Province, Argentina;csn_sc62026taqcq
