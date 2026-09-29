@@ -29,7 +29,7 @@ def ruta_datos():
 def consultar_por_fecha_creacion(id_origen):
     connection_params = {
         "host": os.environ.get("NEWPT_DB_HOST", "10.54.217.69"),
-        "database": os.environ.get("NEWPT_DB_DATABASE", "seiscomp"),
+        "database": os.environ.get("NEWPT_DB_DATABASE", "seiscomp2"),
         "user": os.environ.get("NEWPT_DB_USER", "sysop"),
         "password": os.environ.get("NEWPT_DB_PASSWORD", "sysop"),
         "connect_timeout": 10
