@@ -1,1 +1,1 @@
-2026-09-29 12:18:49;;;2.8;MLv;11;0.40;195;27.39 S;69.68 W;100 km;from location;confirmed;;2;CSN;cris;Northern Chile;csn_sc62026tcemf
+2026-09-20 16:41:16;;;2.8;MLv;12;0.26;202;27.10 S;71.05 W;40 km;from location;confirmed;;2;CSN;yole;Near Coast of Northern Chile;csn_sc62026smbng
