@@ -1,1 +1,1 @@
-2026-09-20 16:41:16;;;2.8;MLv;12;0.26;202;27.10 S;71.05 W;40 km;from location;confirmed;;2;CSN;yole;Near Coast of Northern Chile;csn_sc62026smbng
+2026-10-07 15:46:17;;;4.5;MLv;32;0.59;137;21.11 S;68.84 W;102 km;from location;confirmed;;2;CSN;scautoloc2@prod-pub-seiscomp6;Chile-Bolivia Border Region;csn_sc62026trbky

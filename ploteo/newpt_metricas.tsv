@@ -1756,3 +1756,31 @@ epoch_inicio	ms_desde_arranque	script	fase	extra
 1791235611	1034	capturar	grillas_fin	
 1791235611	1141	capturar	tif_fin	
 1791235611	1481	capturar	localidades_fin	
+1791388244	0	consulta	arranque	
+1791388244	0	precalentar	arranque	
+1791388244	540	consulta	conexion_fin	host=10.54.217.69
+1791388244	545	consulta	query_origen_fin	
+1791388244	546	consulta	escritura_fin	
+1791388244	4439	precalentar	imports_fin	
+1791388244	5850	precalentar	datos_fin	
+1791388244	6107	precalentar	so_fin	
+1791388250	0	capturar	arranque	
+1791388250	846	capturar	imports_fin	
+1791388250	1159	capturar	catalogo_fin	n=1452
+1791388250	1240	capturar	grillas_fin	
+1791388250	1459	capturar	tif_fin	
+1791388250	1964	capturar	localidades_fin	
+1791388274	0	consulta	arranque	
+1791388274	0	precalentar	arranque	
+1791388274	47	consulta	conexion_fin	host=10.54.217.69
+1791388274	52	consulta	query_origen_fin	
+1791388274	52	consulta	escritura_fin	
+1791388274	818	precalentar	imports_fin	
+1791388274	843	precalentar	datos_fin	
+1791388274	853	precalentar	so_fin	
+1791388275	0	capturar	arranque	
+1791388275	831	capturar	imports_fin	
+1791388275	1064	capturar	catalogo_fin	n=1452
+1791388275	1083	capturar	grillas_fin	
+1791388275	1201	capturar	tif_fin	
+1791388275	1626	capturar	localidades_fin	
